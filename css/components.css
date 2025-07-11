@@ -1,7 +1,7 @@
 .upg {
-	min-height: 120px;
-	width: 120px;
-	border-radius: 25%;
+	min-height: 150px;
+	width: 150px;
+	border-radius: 5%;
 	border: 2px solid;
 	border-color: rgba(0, 0, 0, 0.125);
 	font-size: 10px;
@@ -19,9 +19,9 @@
 }
 
 .achievement {
-	height: 90px;
-	width: 90px;
-	border-radius: 25%;
+	height: 120px;
+	width: 120px;
+	border-radius: 5%;
 	border: 2px solid;
 	border-color: rgba(0, 0, 0, 0.125);
 	font-size: 10px;
@@ -36,7 +36,7 @@
 .buyable {
 	height: 200px;
 	width: 200px;
-	border-radius: 25%;
+	border-radius: 5%;
 	border: 2px solid;
 	border-color: rgba(0, 0, 0, 0.125);
 	font-size: 10px;
@@ -70,6 +70,20 @@
 	color: rgba(0, 0, 0, 0.5);
 }
 
+.milestoneOverpowered {
+	width: 100%;
+	min-width: 120px;
+	padding-left: 5px;
+	padding-right: 5px;
+
+	height: 75px;
+	background-color: #ffad00;
+	border: 4px solid;
+	border-radius: 4px;
+	border-color: rgba(0, 0, 0, 0.125);
+	color: rgba(0, 0, 0, 0.5);
+}
+
 .challenge {
 	background-color: #bf8f8f;
 	position: relative;
@@ -79,7 +93,7 @@
 	width: 300px;
 	height: 300px;
 	font-size: 15px;
-	border-radius: 33.33%;
+	border-radius: 5%;
 }
 
 .challenge.done {

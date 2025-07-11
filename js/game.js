@@ -393,6 +393,8 @@ function hardReset(resetOptions) {
 
 var ticking = false
 
+var diffout = 0
+
 var interval = setInterval(function() {
 	if (player===undefined||tmp===undefined) return;
 	if (ticking) return;
@@ -400,6 +402,7 @@ var interval = setInterval(function() {
 	ticking = true
 	let now = Date.now()
 	let diff = (now - player.time) / 1e3
+	diffout = diff
 	let trueDiff = diff
 	if (player.offTime !== undefined) {
 		if (player.offTime.remain > modInfo.offlineLimit * 3600) player.offTime.remain = modInfo.offlineLimit * 3600

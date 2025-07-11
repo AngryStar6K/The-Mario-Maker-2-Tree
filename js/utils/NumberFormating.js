@@ -1,8 +1,14 @@
 //来源：病毒树
 //From: The Plague Tree
 
-function slog(x){
-	return x.slog(10)
+function slog(n){
+	n = new Decimal(n)
+	return Decimal.add(n.layer,new Decimal(n.mag).slog())
+}
+
+function tet10(n){
+	n = new Decimal(n)
+	return Decimal.tetrate(10,n)
 }
 
 function maxCommas() {
@@ -236,7 +242,7 @@ function standard(decimal, precision){
 		m = new Decimal(1)
 		illion = illion.add(1)
 	}
-	if (decimal.max(1).log10().lt(1e10)) m = m.toStringWithDecimalPlaces(precision)+' '
+	if (decimal.max(1).log10().lt(3000000003)) m = m.toStringWithDecimalPlaces(precision)+' '
 	else m = ''
 	let t2illion = illion.max(1).log10().div(3).floor()
 	let t3illion = t2illion.max(1).log10().div(3).floor()
@@ -321,10 +327,10 @@ function letter(decimal, precision, str) { //AD NG+++
 	if (isNaN(skipped.sign)||isNaN(skipped.layer)||isNaN(skipped.mag)) skipped = new Decimal(0)
 	skipped = skipped.add(7)
 	let lett = Decimal.mul(1e9,Decimal.log10(len))
-	let s = Decimal.slog(skipped).sub(slog(lett)).div(2).floor().add(1)
-	let sl = Decimal.tetrate(Decimal.slog(skipped).sub(Decimal.slog(skipped).sub(slog(lett)).div(2).floor().mul(2)),10).mul(Decimal.log(10,len))
+	let s = slog(skipped).sub(slog(lett)).div(2).floor().add(1)
+	let sl = tet10(slog(skipped).sub(slog(skipped).sub(slog(lett)).div(2).floor().mul(2))).mul(Decimal.log(10,len))
 	if (decimal.layer >= 1e9) return '{'+formatWhole(s)+'}'
-	if (decimal.gte(Decimal.tetrate(Decimal.slog(lett).add(8),10))) return format(sl)+'{'+formatWhole(s)+'}'
+	if (decimal.gte(tet10(slog(lett).add(8)))) return format(sl)+'{'+formatWhole(s)+'}'
 	if (skipped.gte(1e9)) return "["+letter(skipped, precision, str)+"]"
 	if (skipped.gt(7)) ret += "[" + commaFormat(skipped, 0) + "]"
 	if (decimal.gte("ee9")) return ret
@@ -335,7 +341,7 @@ function letter(decimal, precision, str) { //AD NG+++
 	return regularFormat(decimal,precision)
 }
 
-function format(decimal, precision=3) {
+var format = f = function(decimal, precision=3) {
 	decimal = new Decimal(decimal)
 	if (player.notation == 'Standard') {
 		return standard(decimal, precision)
@@ -438,7 +444,7 @@ function AS6KweirdNotation() {
 
 }
 
-function formatWhole(decimal) {
+var formatWhole = fw = function(decimal) {
     decimal = new Decimal(decimal)
     if (decimal.gte(maxCommas())) return format(decimal, 3)
     if (decimal.lte(0.99) && !decimal.eq(0)) return format(decimal, 3)
@@ -463,6 +469,8 @@ function formatTime(s) {
 	else return formatWhole(Ds.div(31536000)) + "y"
 }
 function verse(x) {
+	if (x.lt(1) && x.gte(0)) x = new Decimal(1)
+	if (x.gt(-1) && x.lt(0)) x = new Decimal(-1)
 	s = Decimal.slog(new Decimal(x)).sub(Decimal.log10(9))
 	let verse1 = [2,3,4,5]
 	let verse2 = ["multi","meta","xeno","hyper"]
@@ -477,6 +485,8 @@ function verse(x) {
 }
 
 function verseShort(x) {
+	if (x.lt(1) && x.gt(0)) x = new Decimal(1)
+	if (x.gt(-1) && x.lt(0)) x = new Decimal(-1)
 	s = Decimal.slog(new Decimal(x)).sub(Decimal.log10(9))
 	let verse1 = [2,3,4,5]
 	let verse2 = ["mlt","met","xen","hyp"]
@@ -492,6 +502,7 @@ function verseShort(x) {
 
 function formatTimeLong(s) {
 	s = new Decimal(s)
+	if (s.eq(0)) return format(0) + " seconds"
 	let years = s.div(31556952)
 	if (years.gte("6pt9")) return format(Decimal.slog(years).pow10().div(9e6)) + " omniverse ages"
 	let mlt = verse(years)

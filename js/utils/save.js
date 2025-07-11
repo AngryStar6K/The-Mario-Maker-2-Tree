@@ -208,6 +208,7 @@ function load() {
 	changeTreeQuality();
 	updateLayers();
 	setupModInfo();
+	titleFontSetting();
 
 	setupTemp();
 	updateTemp();
@@ -269,6 +270,18 @@ function exportSave() {
 	document.execCommand("copy");
 	document.body.removeChild(el);
 }
+
+function exportSaveToFile() {
+    let str = btoa(JSON.stringify(player))
+    save();
+    let file = new Blob([str], {type: "text/plain"})
+    window.URL = window.URL || window.webkitURL;
+    let a = document.createElement("a")
+    a.href = window.URL.createObjectURL(file)
+    a.download = "Mario Maker 2 Tree Save - "+new Date().toGMTString()+".txt"
+    a.click()
+}
+
 function importSave(imported = undefined, forced = false) {
 	if (imported === undefined)
 		imported = prompt("Paste your save here");
@@ -287,6 +300,23 @@ function importSave(imported = undefined, forced = false) {
 		return;
 	}
 }
+
+function importSaveFromFile() {
+	/*let a = document.createElement("input")
+    a.setAttribute("type","file")
+    a.click()
+	a.onchange = (files)=>{
+        let fr = new FileReader();
+            if(files.length){
+				let file = files[0];
+				fr.onload = function(){
+				savetest = this.result;
+				};
+				reader.readAsText(file);
+        }
+    }*/
+}
+
 function versionCheck() {
 	let setVersion = true;
 

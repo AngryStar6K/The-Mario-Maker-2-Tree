@@ -16,6 +16,7 @@ function getStartOptions() {
 		tooltipForcing: true,
 		endgameShown: false,
 		maximumOoMsInCommas: 9,
+		titlefont: false,
 	}
 }
 
@@ -30,7 +31,10 @@ function changeMaximumOoMsInCommas() {
 	else if (options.maximumOoMsInCommas == 15) options.maximumOoMsInCommas = 3
 	player.maximumOoMsInCommas = options.maximumOoMsInCommas
 }
-
+function titleFontSetting(){
+	let on = options.titlefont
+	document.body.style.setProperty('--font', on ? 'cursive, "MARIO MAKER", "Lucida Console", "Courier New", monospace' : '"MARIO MAKER", "Lucida Console", "Courier New", monospace');
+}
 function toggleOpt(name) {
 	if (name == "oldStyle" && styleCooldown > 0)
 		return;
@@ -93,4 +97,8 @@ function milestoneShown(layer, id) {
 function changeEndgameShown() {
 	if (options.endgameShown) return options.endgameShown = false
 	if (!options.endgameShown) return options.endgameShown = true
+}
+
+function switchTitleFont() {
+	options.titlefont = !options.titlefont
 }

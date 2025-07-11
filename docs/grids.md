@@ -22,7 +22,7 @@ grid: {
     rows: 4, // If these are dynamic make sure to have a max value as well!
     cols: 5,
     getStartData(id) {
-        return 0
+        return 101: new Decimal(0)
     },
     getUnlocked(id) { // Default
         return true

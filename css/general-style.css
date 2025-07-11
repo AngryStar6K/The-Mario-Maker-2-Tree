@@ -9,9 +9,13 @@ body {
 }
 
 /* General text */
-h1, h2, h3, b, input {
+h1, h2, h3, h4, b, input {
 	display: inline;
-	font-family: "MARIO MAKER", "Lucida Console", "Courier New", monospace
+	font-family: var(--font)
+}
+
+sup, sub {
+	font-family: inherit;
 }
 
 /* These are styles for different states of components. You can make layer-specific versions with .c.locked, for example */

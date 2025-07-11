@@ -13,11 +13,18 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.11 (2024/10/31)",
-	name: "Network Play",
+	num: "0.12 (2025/07/12)",
+	name: "What should we do as a maker?",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
+	<h3>v0.12 (2025/07/12)</h3><br>
+		- Endgame: ee1.000e2,152 cleared courses, unlock total 119 achievements.<br>
+		- Added 2 layers and resources for them.<br>
+		- You can reach 57th layer of Toad tier.<br>
+		- Added 9 achievements.<br>
+		- Fixed the unexpected growth of currencies between game progess at SL to MS layers and rebalanced them.<br>
+		- Support diff to make low TPS games, offline progress to run better.<br>
 	<h3>v0.11 (2024/10/31)</h3><br>
 		- Endgame: ee1.300e156 cleared courses, unlock total 110 achievements.<br>
 		- Added 2 layers and resources for them.<br>
@@ -210,7 +217,7 @@ var cheat9 = false
 
 var displayThings = [
 	function() {
-		let endgameText = `<br>Endgame: Get 110th Achievement, ~${format("ee1e156")} Cleared Courses<br>`
+		let endgameText = `<br>Endgame: Get 119th Achievement, ~${format("ee1e2152")} Cleared Courses<br>`
 		let e = ""
 		if (options.endgameShown) e = endgameText
 		if (!options.endgameShown) e = ""
@@ -223,7 +230,7 @@ var displayThings = [
 
 // Determines when the game "ends"
 function isEndgame() {
-	return hasNormalAchievement(225)
+	return hasNormalAchievement(244)
 }
 
 
@@ -244,18 +251,22 @@ function maxTickLength() {
 function fixOldSave(oldVersion){
 }
 
-function textStyle_h2(text, color='ffffff', shadowcolor=color) {
-	return `<h2 style='color: #${color}; text-shadow: 0 0 10px #${shadowcolor}'>${text}</h2>`
-}
 
-function textStyle_h3(text, color='ffffff') {
-	return `<h3 style='color: #${color}; text-shadow: 0 0 10px #${color}'>${text}</h3>`
-}
+var controlDown = false
+var shiftDown = false
 
-function textStyle_h4(text, color='ffffff', shadowcolor=color) {
-	return `<h4 style='color: #${color}; text-shadow: 0 0 10px #${shadowcolor}'>${text}</h4>`
-}
+window.addEventListener('keydown', function(event) {
+	if (player.toggleKeys) {
+		if (event.keyCode == 16) shiftDown = !shiftDown;
+		if (event.keyCode == 17) controlDown = !controlDown;
+	} else {
+		if (event.keyCode == 16) shiftDown = true;
+		if (event.keyCode == 17) controlDown = true;
+	}
+}, false)
 
-function textStyle_b(text, color='ffffff', shadowcolor=color) {
-	return `<b style='color: #${color}; text-shadow: 0 0 10px #${shadowcolor}'>${text}</b>`
-}
+window.addEventListener('keyup', function(event) {
+	if (player.toggleKeys) return 
+	if (event.keyCode == 16) shiftDown = false;
+	if (event.keyCode == 17) controlDown = false;
+}, false)

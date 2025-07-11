@@ -10,10 +10,11 @@
 	<link rel="stylesheet" type="text/css" href="css/other-tabs.css" />
 	<link rel="stylesheet" type="text/css" href="css/popup.css" />
 	<link rel="stylesheet" type="text/css" href="css/tree-node.css" />
+	<link rel="stylesheet" type="text/css" href="css/MM2Tstyle.css" />
 
 	<link href="https://fonts.googleapis.com/css?family=Inconsolata" rel="stylesheet">
 
-	<script src="https://cdn.jsdelivr.net/npm/vue@2.6.12"></script>
+	<script src="js/vue.js"></script>
 	<script src="js/technical/break_eternity.js"></script>
 	<script src="js/technical/layerSupport.js"></script>
 
@@ -37,8 +38,9 @@
 
 </head>
 
-
 <body onload="load()" onmousemove="updateMouse(event)">
+	<!--<script src="chs.js"></script>
+	<script src="core.js"></script>-->
 	<div id="app">
 		<canvas id="treeCanvas" class="canvas" v-if="!(tmp.gameEnded && !player.keepGoing)"></canvas>
 

@@ -69,7 +69,7 @@ function updateOomps(diff)
 	var pp = new Decimal(player.points);
 	var lp = tmp.other.lastPoints || new Decimal(0);
 	if (pp.gt(lp)) {
-		if (pp.gte("10^^8")) {
+		if (pp.gte("10^^20")) {
 			pp = pp.slog(1e10)
 			lp = lp.slog(1e10)
 			tmp.other.oomps = pp.sub(lp).div(diff)
