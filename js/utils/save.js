@@ -245,6 +245,7 @@ function NaNcheck(data) {
 		}
 		else if (data[item] !== data[item] || checkDecimalNaN(data[item])) {
 			if (!NaNalert) {
+				console.log(data)
 				clearInterval(interval);
 				NaNalert = true;
 				alert("Invalid value found in player, named '" + item + "'. Please let the creator of this mod know! You can refresh the page, and you will be un-NaNed.")
@@ -302,19 +303,42 @@ function importSave(imported = undefined, forced = false) {
 }
 
 function importSaveFromFile() {
-	/*let a = document.createElement("input")
-    a.setAttribute("type","file")
-    a.click()
-	a.onchange = (files)=>{
-        let fr = new FileReader();
-            if(files.length){
-				let file = files[0];
-				fr.onload = function(){
-				savetest = this.result;
-				};
-				reader.readAsText(file);
-        }
-    }*/
+	let a = document.createElement("input")
+    a.type = 'file'
+    a.accept = '.txt,text/plain'
+	a.style.display = 'none'
+
+		a.onchange = event => {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+
+        reader.onload = function(e) {
+            try {
+                const saveDataString = e.target.result; 
+                if (typeof saveDataString !== 'string' || saveDataString.trim() === '') {
+                    throw new Error("Unable to read the file or the file is empty");
+                }
+                importSave(saveDataString)
+            } catch (error) {
+                alert("Importing failed!");
+                console.error("Importing failed:", error);
+            }
+        };
+
+        reader.onerror = function() {
+            alert("An error occured while reading the file");
+            console.error("FileReader error:", reader.error);
+        };
+
+        reader.readAsText(file);
+    };
+
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+
 }
 
 function versionCheck() {
