@@ -63,7 +63,7 @@ var systemComponents = {
 		`
 	},
 
-	
+
 	'layer-tab': {
 		props: ['layer', 'back', 'spacing', 'embedded'],
 		template: `<div v-bind:style="[tmp[layer].style ? tmp[layer].style : {}, (tmp[layer].tabFormat && !Array.isArray(tmp[layer].tabFormat)) ? tmp[layer].tabFormat[player.subtabs[layer].mainTabs].style : {}]" class="noBackground">
@@ -120,10 +120,10 @@ var systemComponents = {
 		<div v-for="thing in tmp.displayThings" class="overlayThing"><span v-if="thing" v-html="thing"></span></div>
 	</div>
 	`
-    },
+	},
 
-    'info-tab': {
-        template: `
+	'info-tab': {
+		template: `
         <div>
         <h2>{{modInfo.name}}</h2>
         <br>
@@ -146,55 +146,55 @@ var systemComponents = {
         <h3>Hotkeys</h3><br>
         <span v-for="key in hotkeys" v-if="player[key.layer].unlocked && tmp[key.layer].hotkeys[key.id].unlocked"><br>{{key.description}}</span></div>
     `
-    },
+	},
 
-    'options-tab': {
-        template: `
+	'options-tab': {
+		template: `
         <table>
             <tr>
                 <td><button class="opt" onclick="save()">Save</button></td>
                 <td><button class="opt" onclick="toggleOpt('autosave')">Autosave: {{ options.autosave?"ON":"OFF" }}</button></td>
-                <td><button class="opt" onclick="hardReset()">HARD RESET</button></td>
+                <td><button class="opt" onclick="hardReset()" style="color: red">HARD RESET</button></td>
+				<td><button class="opt" onclick="exportSave()">Export to clipboard</button></td>
+                <td><button class="opt" onclick="importSave()">Import from prompt</button></td>
             </tr>
             <tr>
-                <td><button class="opt" onclick="exportSave()">Export to clipboard</button></td>
-                <td><button class="opt" onclick="importSave()">Import</button></td>
+                <td><button class="opt" onclick="exportSaveToFile()">Export to file</button></td>
+                <td><button class="opt" onclick="importSaveFromFile()">Import from file </button></td>
                 <td><button class="opt" onclick="toggleOpt('offlineProd')">Offline Prod: {{ options.offlineProd?"ON":"OFF" }}</button></td>
-            </tr>
-            <tr>
-                <td><button class="opt" onclick="switchTheme()">Theme: {{ getThemeName() }}</button></td>
+				<td><button class="opt" onclick="switchTheme()">Theme: {{ getThemeName() }}</button></td>
                 <td><button class="opt" onclick="adjustMSDisp()">Show Milestones: {{ MS_DISPLAYS[MS_SETTINGS.indexOf(options.msDisplay)]}}</button></td>
-                <td><button class="opt" onclick="toggleOpt('hqTree')">High-Quality Tree: {{ options.hqTree?"ON":"OFF" }}</button></td>
             </tr>
             <tr>
-                <td><button class="opt" onclick="toggleOpt('hideChallenges')">Completed Challenges: {{ options.hideChallenges?"HIDDEN":"SHOWN" }}</button></td>
+                <td><button class="opt" onclick="toggleOpt('hqTree')">High-Quality Tree: {{ options.hqTree?"ON":"OFF" }}</button></td>
+				<td><button class="opt" onclick="toggleOpt('hideChallenges')">Completed Challenges: {{ options.hideChallenges?"HIDDEN":"SHOWN" }}</button></td>
                 <td><button class="opt" onclick="toggleOpt('forceOneTab'); needsCanvasUpdate = true">Single-Tab Mode: {{ options.forceOneTab?"ALWAYS":"AUTO" }}</button></td>
 				<td><button class="opt" onclick="toggleOpt('forceTooltips'); needsCanvasUpdate = true">Shift-Click to Toggle Tooltips: {{ options.forceTooltips?"ON":"OFF" }}</button></td>
-			</tr> 
+				<td><button class="opt" onclick="changeNotation()">Notation: {{ player.notation }}</button></td>
+            </tr>
 			<tr>
-                <td><button class="opt" onclick="changeNotation()">Notation: {{ player.notation }}</button></td>
 				<td><button class="opt" onclick="changeEndgameShown()">Show Endgame (Spoiler): {{ options.endgameShown?"ON":"OFF" }}</button></td>
 				<td><button class="opt" onclick="changeMaximumOoMsInCommas()">Maximum OoMs in Commas (Not affact all notations): {{ formatWhole(options.maximumOoMsInCommas) }} </button></td>
 			</tr>
 
         </table>`
-    },
+	},
 
-    'back-button': {
-        template: `
+	'back-button': {
+		template: `
         <button v-bind:class="back" onclick="goBack()">←</button>
         `
-    },
+	},
 
 
-	'tooltip' : {
+	'tooltip': {
 		props: ['text'],
 		template: `<div class="tooltip" v-html="text"></div>
 		`
 	},
 
 	'node-mark': {
-		props: {'layer': {}, data: {}, offset: {default: 0}, scale: {default: 1}},
+		props: { 'layer': {}, data: {}, offset: { default: 0 }, scale: { default: 1 } },
 		template: `<div v-if='data'>
 			<div v-if='data === true' class='star' v-bind:style='{position: "absolute", left: (offset-10) + "px", top: (offset-10) + "px", transform: "scale( " + scale||1 + ", " + scale||1 + ")"}'></div>
 			<img v-else class='mark' v-bind:style='{position: "absolute", left: (offset-22) + "px", top: (offset-15) + "px", transform: "scale( " + scale||1 + ", " + scale||1 + ")"}' v-bind:src="data"></div>
