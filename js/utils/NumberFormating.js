@@ -469,9 +469,10 @@ function formatTime(s) {
 	else return formatWhole(Ds.div(31536000)) + "y"
 }
 function verse(x) {
+	x = new Decimal(x)
 	if (x.lt(1) && x.gte(0)) x = new Decimal(1)
 	if (x.gt(-1) && x.lt(0)) x = new Decimal(-1)
-	s = Decimal.slog(new Decimal(x)).sub(Decimal.log10(9))
+	s = slog(new Decimal(x)).sub(Decimal.log10(9))
 	let verse1 = [2,3,4,5]
 	let verse2 = ["multi","meta","xeno","hyper"]
 	let id = 0;
@@ -485,6 +486,7 @@ function verse(x) {
 }
 
 function verseShort(x) {
+	x = new Decimal(x)
 	if (x.lt(1) && x.gt(0)) x = new Decimal(1)
 	if (x.gt(-1) && x.lt(0)) x = new Decimal(-1)
 	s = Decimal.slog(new Decimal(x)).sub(Decimal.log10(9))
@@ -500,7 +502,7 @@ function verseShort(x) {
 	return [mag,verse2[id]]
 }
 
-function formatTimeLong(s) {
+/*function formatTimeLong(s) {
 	s = new Decimal(s)
 	if (s.eq(0)) return format(0) + " seconds"
 	let years = s.div(31556952)
@@ -534,6 +536,60 @@ function formatTimeLong(s) {
 		}
 	return format(s.div(scale1[id2])) + scale2[id2]
 	
+}*/
+var formatTimeLong = ftl = function (seconds) {
+    seconds = d(seconds).abs()
+    let years = seconds.div(31556952)
+    let mlt = verse(years)
+    let arv1 = [1, 1e15, 1e30, 1e45, 1e60, 1e75, 1e90, 1e105, 1e120, 1e135]
+    let arv2 = ["", "mega", "giga", "tera", "peta", "exa", "zetta", "yotta", "ronna", "quetta"]
+    let id = 0;
+    let arch = mlt[0].max(1).log(1e15).floor().add(1)
+    let archs = mlt[0].max(1).log(1e15)
+    if (mlt[0].gte(arv1[arv1.length - 1])) id = arv1.length - 1;
+    else {
+        while (mlt[0].gte(arv1[id])) id++;
+        if (id > 0) id--;
+    }
+    let mverse = arv2[id] + (arv2[id] != "" ? "-" : "") + mlt[1]
+    if (arch.gte(11)) {
+        mverse = "arch<sup>" + formatWhole(arch) + "</sup>" + (arv2[id] != "" ? "-" : "") + mlt[1]
+        if (arch.gte(10000)) mverse = "arch" + (arv2[id] != "" ? "-" : "") + mlt[1]
+    }
+    if (mlt[1] == "multi") {
+        mverse = arv2[id]
+        if (arch.gte(11)) mverse = "arch<sup>" + formatWhole(arch) + "</sup>"
+        if (arch.gte(10000)) mverse = "arch"
+        if (arv2[id] == "") mverse = "multi"
+    }
+
+    let scale1 = [5.39121e-44, 1e-30, 1e-27, 1e-24, 1e-21, 1e-18, 1e-15, 1e-12, 1e-9, 1e-6, 0.001, 1, 60, 3600, 86400, 31556952, 31556952e3, 31556952e6, 31556952e9, 31556952e12, 31556952e15, 31556952e18, 31556952e21, 31556952e24, 31556952e27, 31556952e30, 31556952e40, 31556952e100]
+    let scale2 = [" Planck Times", " quectoseconds", " rontoseconds", " yoctoseconds", " zeptoseconds", " attoseconds", " femtoseconds"
+        , " picoseconds", " nanoseconds", " microseconds", " milliseconds", " seconds", " minutes"
+        , " hours", " days", " years", " millenniums", " megaannums", " gigaannums", " teraannums", " petaannums", " exaannums", " zettaannums", " yottaannums", " ronnaannums", " quettaannums", " degenerate eras", " black hole eras"]
+    let id2 = 0;
+    if (seconds.gte(scale1[scale1.length - 1])) id2 = scale1.length - 1;
+    else {
+        while (seconds.gte(scale1[id2])) id2++;
+        if (id2 > 0) id2--;
+    }
+    if (seconds.lt('ee9') && seconds.gt(0)) return format(seconds.div(scale1[id2])) + scale2[id2]
+    if (seconds.eq(0)) return format(seconds) + " seconds"
+    else if (years.lt("6pt9")) {
+        if (years.gte("eee56") && years.lt("eee69")) return format(years.log10().log10().div(1e56)) + " new big bangs"
+        if (years.gte("ee120") && years.lt("ee129")) return format(years.log10().div(1e120)) + " big rips"
+        if (years.gte("ee9") && years.lt("6pt9")) {
+            if (arch.lt(11)) return format(mlt[0].div(arv1[id])) + " " + mverse + "verse ages"
+            else if (arch.lt(10000)) return format(mlt[0].div(new Decimal(1e15).pow(arch.sub(1)))) + " " + mverse + "verse ages"
+            else return format(archs) + " " + mverse + "verse ages"
+        }
+    }
+    else {
+        return format(d(10).pow(slog(years)).div(9e6)) + " omniverse ages"
+    }
+    // lodverse ages 9G6~9H6
+    // meskoverse ages 9H6~6.95J5
+    // godverse ages 6.95J5~
 }
 function pluralize(n,singular,plural,round=false) {
 	n = new Decimal(n)
