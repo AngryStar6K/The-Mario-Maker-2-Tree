@@ -7,17 +7,21 @@ let modInfo = {
 
 	discordName: "AngryStar6K",
 	discordLink: "https://smm2.wizul.us/smm2/maker/1J8-NNB-GHG",
-	initialStartPoints: new Decimal (1), // Used for hard resets and new players
+	initialStartPoints: new Decimal(1), // Used for hard resets and new players
 	offlineLimit: 1,  // In hours
 }
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.12 (2025/07/12)",
-	name: "What should we do as a maker?",
+	num: "0.13 (2025/10/09)",
+	name: "Meet different courses",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
+	<h3>v0.13 (2025/10/09)</h3><br>
+		- Endgame: 1.0035F10 cleared courses, unlock total 130 achievements.<br>
+		- Added 4 layers and resources for them.<br>
+		- Added 11 achievements.<br>
 	<h3>v0.12 (2025/07/12)</h3><br>
 		- Endgame: ee1.000e2,152 cleared courses, unlock total 119 achievements.<br>
 		- Added 2 layers and resources for them.<br>
@@ -130,12 +134,12 @@ let winText = `Congratulations! You have reached the end and beaten this game, b
 // (The ones here are examples, all official functions are already taken care of)
 var doNotCallTheseFunctionsEveryTick = ["blowUpEverything"]
 
-function getStartPoints(){
-    return new Decimal(modInfo.initialStartPoints)
+function getStartPoints() {
+	return new Decimal(modInfo.initialStartPoints)
 }
 
 // Determines if it should show points/sec
-function canGenPoints(){
+function canGenPoints() {
 	return true
 }
 
@@ -144,8 +148,8 @@ function inExpertBossChallenge() {
 	if (inChallenge('expert', 11) || inChallenge('expert', 12) || inChallenge('expert', 21) || inChallenge('expert', 22) || inChallenge('expert', 31) || inChallenge('expert', 32) || inChallenge('expert', 41)) return true
 }
 
-function getPointGen() {
-	if(!canGenPoints())
+function originalPointGen () {
+	if (!canGenPoints())
 		return new Decimal(0)
 
 	let gain = new Decimal(1).times(tmp["invincible_star"].effect)
@@ -170,9 +174,26 @@ function getPointGen() {
 	if (hasMilestone('easy', 13)) gain = gain.pow(1000000)
 	if (hasAchievement('achievements', 174)) gain = gain.pow(layerEffect('normal'))
 	if (hasUpgrade('super_hammer', 41) && inChallenge('super_hammer', 11)) gain = gain.times(100)
+	if (hasUpgrade('garbage', 15)) gain = gain.times(tmp.garbage.IVBeff)
 	if (inChallenge('master_sword', 11) && hasUpgrade('master_sword', 65)) gain = gain.max(1).pow(1e-7).max(1)
 	else if (inChallenge('master_sword', 11) && hasUpgrade('master_sword', 45)) gain = gain.max(1).pow(1e-9).max(1)
 	else if (inChallenge('master_sword', 11)) gain = gain.max(1).pow(1e-10).max(1)
+	return gain
+}
+
+function tetraflowPower() {
+	let power = d(0.7)
+	if (hasMilestone('troll', 6)) power = d(0.72)
+	if (hasUpgrade('versus', 371)) power = d(0.75)
+	return power
+}
+
+function getPointGen() {
+	let gain = originalPointGen()
+
+	let tfp = tetraflowPower()
+	if (gain.gte('eee2.997e45')) gain = d(10).tetrate(slog(gain).sub(5.219529205449591).times(tfp).add(5.219529205449591))
+
 	if (gain.gte(player.hardcap)) gain = new Decimal(player.hardcap)
 
 	//困难团boss挑战中的过关数获取
@@ -183,24 +204,26 @@ function getPointGen() {
 	if (hasUpgrade('expert', 42)) gainInExpertBossChallenge = gainInExpertBossChallenge.times(expertBossMagicEffect('morton'))
 	if (hasSEendlessMilestone(1)) gainInExpertBossChallenge = gainInExpertBossChallenge.pow(milestoneEffect('s_expert', 1))
 	if (hasUpgrade('super_acorn', 112)) gainInExpertBossChallenge = gainInExpertBossChallenge.times(upgradeEffect('super_acorn', 112))
-		//最终获取
+	//最终获取
 	if (!inExpertBossChallenge()) return gain
 	if (inExpertBossChallenge()) return gainInExpertBossChallenge
 }
 
 // You can add non-layer related variables that should to into "player" and be saved here, along with default values
-function addedPlayerData() { return {
-	notation: "Scientific",
-	lgpoints: new Decimal (0),
-	hardcap: new Decimal("e1.798e308"),
-	smm1: "RIP SMM1 2024 Apr 9th",
-	yu_ayasaki: "jangpu!",
-	last_first_clear_smm1: "Trimming the Herbs",
-	cheat: false,
-	devSpeed: 1,
-	maximumOoMsInCommas: 9,
-	devTest: d(0),
-}}
+function addedPlayerData() {
+	return {
+		notation: "Scientific",
+		lgpoints: new Decimal(0),
+		hardcap: new Decimal("e1.798e308"),
+		smm1: "RIP SMM1 2024 Apr 9th",
+		yu_ayasaki: "jangpu!",
+		last_first_clear_smm1: "Trimming the Herbs",
+		cheat: false,
+		devSpeed: 1,
+		maximumOoMsInCommas: 9,
+		devTest: d(0),
+	}
+}
 
 // Display extra things at the top of the page
 
@@ -216,21 +239,23 @@ var cheat8 = false
 var cheat9 = false
 
 var displayThings = [
-	function() {
-		let endgameText = `<br>Endgame: Get 119th Achievement, ~${format("ee1e2152")} Cleared Courses<br>`
+	function () {
+		let endgameText = `<br>Endgame: Get 130th Achievement, ~${format("e^9 10.08051")} Cleared Courses<br>`
 		let e = ""
 		if (options.endgameShown) e = endgameText
 		if (!options.endgameShown) e = ""
-		let cheatText = "<h4 style='color: #ff0000; text-shadow: 0 0 10px #ff0000'>This Save is Cheated!</h4>"
+		let cheatText = "<br><h4 style='color: #ff0000; text-shadow: 0 0 10px #ff0000'>This Save is Cheated!</h4>"
+		let tfp = d(1).sub(tetraflowPower())
+		if (getPointGen().gte('eee2.997e45')) e += "<br>Due to your cleared course tetration-overflow<br>Your cleared courses gain is <div class = 'text-superexperience' style = 'display: inline-block'>x→lg<sup>" + f(slog(originalPointGen()).sub(5.219529205449591).times(tfp)) + "</sup>(x)</div><br>Original gain: " + format(originalPointGen()) + " cleared courses/sec<br>"
 		if (!cheat) return e
 		if (cheat) return e + cheatText
-	}	
+	}
 ]
 
 
 // Determines when the game "ends"
 function isEndgame() {
-	return hasNormalAchievement(244)
+	return hasNormalAchievement(265)
 }
 
 
@@ -243,19 +268,19 @@ var backgroundStyle = {
 
 // You can change this if you have things that can be messed up by long tick lengths
 function maxTickLength() {
-	return(3600) // Default is 1 hour which is just arbitrarily large
+	return (3600) // Default is 1 hour which is just arbitrarily large
 }
 
 // Use this if you need to undo inflation from an older version. If the version is older than the version that fixed the issue,
 // you can cap their current resources with this.
-function fixOldSave(oldVersion){
+function fixOldSave(oldVersion) {
 }
 
 
 var controlDown = false
 var shiftDown = false
 
-window.addEventListener('keydown', function(event) {
+window.addEventListener('keydown', function (event) {
 	if (player.toggleKeys) {
 		if (event.keyCode == 16) shiftDown = !shiftDown;
 		if (event.keyCode == 17) controlDown = !controlDown;
@@ -265,8 +290,8 @@ window.addEventListener('keydown', function(event) {
 	}
 }, false)
 
-window.addEventListener('keyup', function(event) {
-	if (player.toggleKeys) return 
+window.addEventListener('keyup', function (event) {
+	if (player.toggleKeys) return
 	if (event.keyCode == 16) shiftDown = false;
 	if (event.keyCode == 17) controlDown = false;
 }, false)
