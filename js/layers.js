@@ -1,6 +1,3 @@
-//v0.12更新之前：
-//全部重新玩，重新调整平衡，解决里程碑弹窗问题，整合早期遗留杂乱代码，解决第4行层级平衡崩溃
-//最后增加新内容完成v0.12
 //中文版最后考虑
 
 const decimalElephant = new Decimal(74751)
@@ -89,7 +86,7 @@ addLayer("achievements", {
     },
     update() {
         if (player.devSpeed == undefined) player.devSpeed = 1
-        if (player.devSpeed > 1) cheat = true
+        //if (player.devSpeed > 1) cheat = true
         if (cheat || cheat1 || cheat2 || cheat3 || cheat4 || cheat5 || cheat6 || cheat7 || cheat8 || cheat9) cheat = true,
             cheat1 = true,
             cheat2 = true,
@@ -1103,6 +1100,94 @@ addLayer("achievements", {
                 return player.achievements.points = player.achievements.points.add("ee1e900")
             },
         },
+        245: {
+            name: "Double click home button",
+            tooltip: "Perform a line-up. <br> Reward: ee1e1200 AP",
+            done() { return player.precision.lineup.gte(1) },
+            onComplete() {
+                return player.achievements.points = player.achievements.points.add("ee1e1200")
+            },
+        },
+        251: {
+            name: "Mom, the Mario is flying!",
+            tooltip: "Unlock Kaizo Course layer. <br> Reward: ee1e1600 AP",
+            done() { return hasUpgrade('precision', 35) },
+            onComplete() {
+                return player.achievements.points = player.achievements.points.add("ee1e1200")
+            },
+        },
+        252: {
+            name: "Pink S+ wow!",
+            tooltip: "Reach versus rating 6,000. <br> Reward: ee1e4800 AP",
+            done() { return player.versus.points.gte(6000) },
+            onComplete() {
+                return player.achievements.points = player.achievements.points.add("ee1e4800")
+            },
+        },
+        253: {
+            name: "Galaxy brain meme",
+            tooltip: "Unlock Puzzle Course layer. <br> Reward: ee1e20,000 AP",
+            done() { return hasUpgrade('kaizo', 45) },
+            onComplete() {
+                return player.achievements.points = player.achievements.points.add("ee1e20000")
+            },
+        },
+        254: {
+            name: "Ice and fire?",
+            tooltip: "Unlock ON/OFF Switch. <br> Reward: ee1e60,000 AP",
+            done() { return hasUpgrade('puzzle', 15) },
+            onComplete() {
+                return player.achievements.points = player.achievements.points.add("ee1e60000")
+            },
+        },
+        255: {
+            name: "The end of Jonathan Bower's -illion system",
+            tooltip: "Clear Nonecxenultillion courses (eee2.997e45). <br> Reward: ee1e1,000,000 AP<br><br><i><s>I forgot Pentalogue LMAO</s></i>",
+            done() { return player.points.gte('eee2.997e45') },
+            onComplete() {
+                return player.achievements.points = player.achievements.points.add("ee1e1000000")
+            },
+        },
+        261: {
+            name: "Let's define what's troll",
+            tooltip: "Unlock Troll Course layer. <br> Reward: ee1e10,000,000,000 AP",
+            done() { return hasUpgrade('puzzle', 41) },
+            onComplete() {
+                return player.achievements.points = player.achievements.points.add("eeee10")
+            },
+        },
+        262: {
+            name: "Super super",
+            tooltip: "Get 1 Super-experience. <br> Reward: eee1.0000e20 AP",
+            done() { return player.versus.s_experienceTotal.gte(1) },
+            onComplete() {
+                return player.achievements.points = player.achievements.points.add("eeee20")
+            },
+        },
+        263: {
+            name: "Yeah!!! We got F!",
+            tooltip: "Get eeee9e15 Cleared Courses. <br> Reward: eee1.000e10,000 AP",
+            done() { return player.points.gte('eeee9e15') },
+            onComplete() {
+                return player.achievements.points = player.achievements.points.add("eeee10000")
+            },
+        },
+        264: {
+            name: "Courage",
+            tooltip: "Unlock Hot Garbage Course layer. <br> Reward: eeee1.0000e10 AP",
+            done() { return hasUpgrade('troll', 35) },
+            onComplete() {
+                return player.achievements.points = player.achievements.points.add("eeeee10")
+            },
+        },
+        265: {
+            name: "Decker",
+            tooltip: "Get 1.0000F10 Cleared Courses. <br> Reward: 1.0000F7 AP",
+            done() { return player.points.gte("10^^10") },
+            onComplete() {
+                return player.achievements.points = player.achievements.points.add("10^^7")
+            },
+        },
     },
     upgrades: {
         11: {
@@ -1814,10 +1899,14 @@ addLayer("stats", {
                         if (player.toad.tierlayer.gte(21) && player.points.gte('ee3.25e79') || player.versus.lag.gt(0))
                             return `<div class = "textAlignLeft">Batoko Wins: ${textStyle_h4(format(player.versus.batoko), 'ffcf03')}</div>`
                     }],
+                    ["raw-html", function () {
+                        if (hasUpgrade('troll', 15))
+                            return `<div class = "textAlignLeft">Total Super-experience: ${textResourceStyle(format(player.versus.s_experienceTotal), 'text-superexperience', 'h4')}</div>`
+                    }],
                     "blank",
                     ["raw-html", function () {
                         if (tmp.themed.layerShown)
-                            return `<div class = "textAlignLeft">Themed Courses: ${textStyle_h4(format(player.themed.points), '748bff')}</div>`
+                            return `<div class = "textAlignLeft">Themed Course: ${textStyle_h4(format(player.themed.points), '748bff')}</div>`
                     }],
                     ["raw-html", function () {
                         if (hasUpgrade('themed', 23))
@@ -1826,7 +1915,7 @@ addLayer("stats", {
                     "blank",
                     ["raw-html", function () {
                         if (tmp.speedrun.layerShown)
-                            return `<div class = "textAlignLeft">Speedrun Courses: ${textStyle_h4(format(player.speedrun.points), '6c3b14')}</div>`
+                            return `<div class = "textAlignLeft">Speedrun Course: ${textStyle_h4(format(player.speedrun.points), '6c3b14')}</div>`
                     }],
                     ["raw-html", function () {
                         if (hasUpgrade('speedrun', 15))
@@ -1841,7 +1930,71 @@ addLayer("stats", {
                     "blank",
                     ["raw-html", function () {
                         if (tmp.precision.layerShown)
-                            return `<div class = "textAlignLeft">Precision Courses: ${textStyle_h4(format(player.precision.points), '808080')}</div>`
+                            return `<div class = "textAlignLeft">Precision Course: ${textStyle_h4(format(player.precision.points), '808080')}</div>`
+                    }],
+                    ["raw-html", function () {
+                        if (hasUpgrade('precision', 15))
+                            return `<div class = "textAlignLeft">Pixel: ${textStyle_h4(format(player.precision.pixel), '808080')}</div>`
+                    }],
+                    ["raw-html", function () {
+                        if (player.toad.tierlayer.gte(84))
+                            return `<div class = "textAlignLeft">Line-up: ${textStyle_h4(format(player.precision.lineup), '808080')}</div>`
+                    }],
+                    ["raw-html", function () {
+                        if (hasUpgrade('kaizo', 13))
+                            return `<div class = "textAlignLeft">Subpixel: ${textStyle_h4(format(player.precision.subpixel), '808080')}</div>`
+                    }],
+                    "blank",
+                    ["raw-html", function () {
+                        if (tmp.kaizo.layerShown)
+                            return `<div class = "textAlignLeft">Kaizo Course: ${textStyle_h4(format(player.kaizo.points), '00a19f')}</div>`
+                    }],
+                    ["raw-html", function () {
+                        if (hasUpgrade('kaizo', 21))
+                            return `<div class = "textAlignLeft">Shell Jump: ${textStyle_h4(format(player.kaizo.sj), '00a19f')}</div>`
+                    }],
+                    ["raw-html", function () {
+                        if (hasUpgrade('kaizo', 32))
+                            return `<div class = "textAlignLeft">Double Shell Jump: ${textStyle_h4(format(player.kaizo.dsj), '00a19f')}</div>`
+                    }],
+                    ["raw-html", function () {
+                        if (hasUpgrade('kaizo', 42))
+                            return `<div class = "textAlignLeft">Triple Shell Jump: ${textStyle_h4(format(player.kaizo.tsj), '00a19f')}</div>`
+                    }],
+                    "blank",
+                    ["raw-html", function () {
+                        if (tmp.puzzle.layerShown)
+                            return `<div class = "textAlignLeft">Puzzle Course: ${textResourceStyle(format(player.puzzle.points), 'text-puzzle', 'h4')}</div>`
+                    }],
+                    ["raw-html", function () {
+                        if (hasMilestone('puzzle', 0))
+                            return `<div class = "textAlignLeft">Puzzle Energy: ${textResourceStyle(format(player.puzzle.energy), 'text-puzzle', 'h4')}</div>`
+                    }],
+                    ["raw-html", function () {
+                        if (hasUpgrade('puzzle', 15))
+                            return `<div class = "textAlignLeft">ON/OFF Switch: ${textResourceStyle(format(tmp.puzzle.onoffGain), 'text-puzzle', 'h4')}</div>`
+                    }],
+                    ["raw-html", function () {
+                        if (hasUpgrade('puzzle', 15))
+                            return `<div class = "textAlignLeft">ON Power: ${textStyle_h4(format(player.puzzle.on), 'f9491f')}</div>`
+                    }],
+                    ["raw-html", function () {
+                        if (hasUpgrade('puzzle', 15))
+                            return `<div class = "textAlignLeft">OFF Power: ${textStyle_h4(format(player.puzzle.off), '6b6aff')}</div>`
+                    }],
+                    "blank",
+                    ["raw-html", function () {
+                        if (tmp.troll.layerShown)
+                            return `<div class = "textAlignLeft">Troll Course: ${textResourceStyle(format(player.troll.points), 'text-troll', 'h4')}</div>`
+                    }],
+                    "blank",
+                    ["raw-html", function () {
+                        if (tmp.garbage.layerShown)
+                            return `<div class = "textAlignLeft">Hot Garbage Course: ${textStyle_h4(format(player.garbage.points), '80808080')}</div>`
+                    }],
+                    ["raw-html", function () {
+                        if (hasUpgrade('garbage', 15))
+                            return `<div class = "textAlignLeft">Invisible Block: ${textStyle_h4(format(player.garbage.invisibleBlocks), '80808080')}</div>`
                     }],
                     ["h-line", "600px"],
                     //开发者测试用，请不要将其显示
@@ -6281,7 +6434,7 @@ addLayer("super_hammer", {
             cost: new Decimal(18888),
             unlocked() { return hasUpgrade('super_hammer', 12) },
             effect() {
-                return player.super_hammer.points.max(10).slog(10)
+                return slog(player.super_hammer.points.max(10))
             },
             effectDisplay() { return "^" + format(upgradeEffect(this.layer, this.id)) },
         },
@@ -7473,7 +7626,7 @@ addLayer("master_sword", {
             },
             rewardDescription: "You can get Rupee in this temple.",
             rewardEffect() {
-                let rg = player.points.max(1).log(10).pow(player.points.max(10).slog(10).max(1))
+                let rg = player.points.max(1).log(10).pow(slog(player.points.max(10)).max(1))
                 if (!inChallenge(this.layer, this.id) && !hasUpgrade(this.layer, 83)) rg = d(0)
                 return rg
             },
@@ -10296,24 +10449,24 @@ addLayer("boomerang_flower", {
             cost: new Decimal(1e31),
             unlocked() { return hasUpgrade('boomerang_flower', 33) },
             effect() {
-                SM = player.super_mushroom.points.max(10).slog(10)
-                FF = player.fire_flower.points.max(10).slog(10)
-                IS = player.invincible_star.points.max(10).slog(10)
-                UP1 = player.oneup_mushroom.points.max(10).slog(10)
-                BBF = player.bouncy_ball_flower.points.max(10).slog(10)
-                BM = player.big_mushroom.points.max(10).slog(10)
-                SL = player.super_leaf.points.max(10).slog(10)
-                CF = player.cape_feather.points.max(10).slog(10)
-                YE = player.yoshi_egg.points.max(10).slog(10)
-                PM = player.propeller_mushroom.points.max(10).slog(10)
-                SB = player.super_bell.points.max(10).slog(10)
-                SH = player.super_hammer.points.max(10).slog(10)
-                MS = player.master_sword.points.max(10).slog(10)
-                SMB2 = player.usa_mushroom.points.max(10).slog(10)
-                FS = player.frog_suit.points.max(10).slog(10)
-                PB = player.power_balloon.points.max(10).slog(10)
-                SA = player.super_acorn.points.max(10).slog(10)
-                BF = player.boomerang_flower.points.max(10).slog(10)
+                SM = slog(player.super_mushroom.points.max(10))
+                FF = slog(player.fire_flower.points.max(10))
+                IS = slog(player.invincible_star.points.max(10))
+                UP1 = slog(player.oneup_mushroom.points.max(10))
+                BBF = slog(player.bouncy_ball_flower.points.max(10))
+                BM = slog(player.big_mushroom.points.max(10))
+                SL = slog(player.super_leaf.points.max(10))
+                CF = slog(player.cape_feather.points.max(10))
+                YE = slog(player.yoshi_egg.points.max(10))
+                PM = slog(player.propeller_mushroom.points.max(10))
+                SB = slog(player.super_bell.points.max(10))
+                SH = slog(player.super_hammer.points.max(10))
+                MS = slog(player.master_sword.points.max(10))
+                SMB2 = slog(player.usa_mushroom.points.max(10))
+                FS = slog(player.frog_suit.points.max(10))
+                PB = slog(player.power_balloon.points.max(10))
+                SA = slog(player.super_acorn.points.max(10))
+                BF = slog(player.boomerang_flower.points.max(10))
                 return SM.times(FF).times(IS).times(UP1).times(BBF).times(BM).times(SL).times(CF).times(YE).times(PM).times(SB).times(SH).times(MS).times(SMB2).times(FS).times(PB).times(SA).times(BF).pow(5)
             },
             effectDisplay() { return format(upgradeEffect(this.layer, this.id)) + "x" },
@@ -11093,7 +11246,7 @@ addLayer("mario", {
 
         let iMhalftime = new Decimal(60)
         if (hasUpgrade('luigi', 11)) iMhalftime = iMhalftime.div(3)
-        if (hasUpgrade('mario', 43)) player.mario.c_im = player.mario.c_im.add((tmp.mario.MgainI.sub(player.mario.c_im).div(2)).div(iMhalftime.div(diff))).max(0)
+        if (hasUpgrade('mario', 43)) player.mario.c_im = player.mario.c_im.add((tmp.mario.MgainI.sub(player.mario.c_im).div(2)).div(iMhalftime.div(d(diff).min(1).max(0.001)))).max(0)
         //automate
         if (hasMilestone('toadette', 0) && player.mario.c_re.gte(buyableCost(this.layer, 11))) setBuyableAmount(this.layer, 11, player[this.layer].c_re.div(10).max(10).log(10).root(1.1).floor().add(1))
         if (hasMilestone('toadette', 0) && player.mario.c_re.gte(buyableCost(this.layer, 12))) setBuyableAmount(this.layer, 12, player[this.layer].c_re.div(1e24).max(10).log(10).max(1.2).log(1.2).floor().add(1))
@@ -11597,6 +11750,13 @@ function toadTierLayerDisplay(decimal, isCapital = true) {
     let C12 = "Dodec"
     let L12 = "dodec"
     let a = "a"
+    let ordinal = "Layer-<span style = 'font-family: \"bahnschrift\", \"Inconsolata\", monospace\'>ω</span>"
+    let ordMag = decimal
+    if (decimal.gte(d(10).tetrate(Number.MAX_SAFE_INTEGER))) ordinal = ordinal + "<sup>2</sup>",
+    ordMag = decimal.layer
+    else if (decimal.gte(d(10).pow(Number.MAX_SAFE_INTEGER))) ordinal = ordinal + (decimal.layer),
+    ordMag = d(10).pow(decimal.mag)
+    if (decimal.gte(Number.MAX_SAFE_INTEGER)) return ordinal + " " + formatWhole(ordMag)
     if (decimal.gte(1000)) return "Layer-" + formatWhole(decimal)
     let num = decimal.toNumber()
     if (num <= 9 && isCapital) return onesC[num]
@@ -11609,6 +11769,8 @@ function toadTierLayerDisplay(decimal, isCapital = true) {
     if (num == 11 && !isCapital) return L11
     if (num == 12 && isCapital) return C12
     if (num == 12 && !isCapital) return L12
+    if (num > 100 && num <= 999 && isCapital && num % 10 == 0) return tensC[Math.floor(num / 10) % 10] + a + hundsL[Math.floor(num / 100)]
+    if (num > 100 && num <= 999 && !isCapital && num % 10 == 0) return tensL[Math.floor(num / 10) % 10] + a + hundsL[Math.floor(num / 100)]
     if (num >= 100 && num <= 999 && isCapital && num % 100 >= 13) return onesCc2[num % 10] + tensL[Math.floor(num / 10) % 10] + a + hundsL[Math.floor(num / 100)]
     if (num >= 100 && num <= 999 && !isCapital && num % 100 >= 13) return onesLc2[num % 10] + tensL[Math.floor(num / 10) % 10] + a + hundsL[Math.floor(num / 100)]
     if (num >= 100 && num <= 999 && isCapital && num % 100 == 11) return C11 + a + hundsL[Math.floor(num / 100)]
@@ -12190,10 +12352,12 @@ addLayer("toad", {
                 if (player.toad.tierlayer.eq(8))
                     return "Toad " + toadTierLayerDisplay(l) + " " + formatWhole(player.toad.supertier[3].div(100).floor()) + "<br>"
                         + "Toad " + toadTierLayerDisplay(l.sub(1)) + " " + formatWhole(player.toad.supertier[3])
-                if (player.toad.tierlayer.gte(9))
+                if (player.toad.tierlayer.eq(9))
                     return "Toad " + toadTierLayerDisplay(l) + " " + formatWhole(player.toad.supertier[3].div(Decimal.pow(10, c.times(3).add(c.pow(2)).div(2))).floor()) + "<br>"
                         + "Toad " + toadTierLayerDisplay(l.sub(1)) + " " + formatWhole(player.toad.supertier[3].div(Decimal.pow(10, c_1.times(3).add(c_1.pow(2)).div(2))).floor()) + "<br>"
                         + "Toad " + toadTierLayerDisplay(l.sub(2)) + " " + formatWhole(player.toad.supertier[3].div(Decimal.pow(10, c_2.times(3).add(c_2.pow(2)).div(2))).floor())
+                if (player.toad.tierlayer.gte(9e15))
+                    return "Toad " + toadTierLayerDisplay(l)
             },
             display() {
                 let l = player.toad.tierlayer
@@ -12493,7 +12657,8 @@ addLayer("toad", {
         else if ((player.toad.tierlayer.lt(15))) player.toad.tierlayer_des = "At Toad pentadec 1, unlock Lag in MPVS layer."
         else if ((player.toad.tierlayer.lt(21))) player.toad.tierlayer_des = "At Toad meicos 1, unlock Batoko in MPVS layer and factor E for Versus Rating."
         else if ((player.toad.tierlayer.lt(30))) player.toad.tierlayer_des = "At Toad triacont 1, unlock Speedrun Course Layer."
-        else if ((player.toad.tierlayer.lt(84))) player.toad.tierlayer_des = "At Toad tetraoctacont 1, TBD."
+        else if ((player.toad.tierlayer.lt(84))) player.toad.tierlayer_des = "At Toad tetraoctacont 1, unlock Line-up in Precision Courses layer."
+        else player.toad.tierlayer_des = "It seems you reached the end of Toad tier layers. Good Job!"
 
         // 等级奖励
         let Tl1base = new Decimal(2)
@@ -12501,11 +12666,18 @@ addLayer("toad", {
         if (hasUpgrade('toadette', 24)) Tl1base = Tl1base.add(clickableEffect('toadette', 11))
         player.toad.level_rew[0] = Decimal.pow(Tl1base, player.toad.level.max(0)) //1级奖励
         player.toad.level_rew[1] = Decimal.pow(1e10, player.toad.level.max(0)) //3级奖励
+
         let Tl3softcapRoot = new Decimal(1.25)
         if (hasUpgrade('easy', 34)) Tl3softcapRoot = new Decimal(1.2)
         if (player.toad.supertier[0].gte(2434)) Tl3softcapRoot = new Decimal(1.165)
         if ((player.toad.tierlayer.gte(11) && player.toad.highest_tierlayer.gte(222)) || player.toad.tierlayer.gte(12)) Tl3softcapRoot = new Decimal(1.13)
-        if (player.toad.level.gte(500)) player.toad.level_rew[1] = Decimal.pow(1e10, player.toad.level.max(500).sub(500).root(Tl3softcapRoot)).times("1e5000")  //3级奖励软上限
+
+        let Tl3TetrAdd = new Decimal(0)
+        if (hasUpgrade('troll', 14)) Tl3TetrAdd = Tl3TetrAdd.add(0.15)
+        let Tl3rw = d(0)
+        if (player.toad.level.gte(500)) Tl3rw = Decimal.pow(1e10, player.toad.level.max(500).sub(500).root(Tl3softcapRoot)).times("1e5000")  //3级奖励软上限
+        if (Tl3TetrAdd.gt(0)) Tl3rw = d(10).tetrate(slog(Tl3rw).add(Tl3TetrAdd))
+        player.toad.level_rew[1] = Tl3rw
         player.toad.level_rew[2] = player.toad.points.max(1).root(5).min(decimalInfinity) //11级奖励      
         player.toad.level_rew[3] = player.luigi.points.max(1e10).log(1e10).pow(1.5).min(decimalInfinity) //66级奖励
         player.toad.level_rew[4] = player.toad.level.max(1).pow(2) //2600级奖励
@@ -12917,6 +13089,11 @@ addLayer("toad", {
                     ["display-text", function () {
                         if ((player.toad.tierlayer.gte(30)))
                             return "Toad triacont 1: Unlock Speedrun Course layer."
+                    }
+                    ],
+                    ["display-text", function () {
+                        if ((player.toad.tierlayer.gte(84)))
+                            return "Toad tetraoctacont 1: Unlock Line-up in Precision Course layer."
                     }
                     ],
                 ]
@@ -14257,6 +14434,10 @@ addLayer("normal", {
             layerDataReset(this.layer, kept)
         }
     },
+    tetraflowPower() {
+        let p = d(0.5)
+        return p
+    },
     getResetGain() {
         let mult = new Decimal(1) //gainMult
         if (player.toad.supertier[1].gte(69)) mult = mult.times(3)
@@ -14269,6 +14450,8 @@ addLayer("normal", {
         if (hasUpgrade('versus', 231)) mult = mult.times(upgradeEffect('versus', 231))
         if (hasUpgrade('versus', 234)) mult = mult.times('1e345')
         let gain = player.easy.points.max(1).div("1e641").max(1).log(1e10).times(mult).floor()
+        let tetraflowPower = tmp.normal.tetraflowPower
+        if (gain.gte('e2.997e45')) gain = d(10).tetrate(slog(gain).sub(3.219529205449591).times(tetraflowPower).add(3.219529205449591))
         return gain
     },
     getNextAt() {
@@ -14313,7 +14496,9 @@ addLayer("normal", {
         if (hasUpgrade('expert', 65)) eff = eff.pow(100)
         if (hasSEendlessUpgrade(12)) eff = eff.pow(upgradeEffect('s_expert', 12))
         if (hasUpgrade('super_acorn', 121)) eff = eff.pow(upgradeEffect('super_acorn', 121))
-        if (hasUpgrade('coop', 14)) eff = eff.pow(upgradeEffect('coop', 14))
+        let tetrAdd = d(0)
+        if (hasUpgrade('troll', 14)) tetrAdd = tetrAdd.add(0.15)
+        if (tetrAdd.gt(0)) eff = d(10).tetrate(slog(eff).add(tetrAdd))
         return eff
         /*
         you should use this.layer instead of <layerID>
@@ -14354,9 +14539,7 @@ addLayer("normal", {
         12: {
             title: "A simple gap",
             description() {
-                let time = new Decimal(player.normal.resetTime)
-                if (hasUpgrade(this.layer, 14)) time = time.add(3600)
-                if (hasUpgrade(this.layer, 15)) time = time.add(upgradeEffect(this.layer, 15))
+                let time = this.time()
                 if (time.abs().lt(31556952000))
                     return "Normal Endless reset time multiplies Toad gain.<br>Time: " + formatTime(new Decimal(time))
                 else return "Normal Endless reset time multiplies Toad gain.<br>Time: " + formatTimeLong(new Decimal(time))
@@ -14364,9 +14547,7 @@ addLayer("normal", {
             cost: new Decimal(10),
             unlocked() { return hasUpgrade(this.layer, 11) },
             effect() {
-                let time = new Decimal(player.normal.resetTime)
-                if (hasUpgrade(this.layer, 14)) time = time.add(3600)
-                if (hasUpgrade(this.layer, 15)) time = time.add(upgradeEffect(this.layer, 15))
+                let time = this.time()
                 let eff = Decimal.pow("1e100000", time.root(3))
                 if (time.lte(31556926080) && hasUpgrade(this.layer, 33)) eff = Decimal.pow("1e200000", time.max(1).root(3))
                 if (time.gte(31556926080) && hasUpgrade(this.layer, 33)) eff = Decimal.pow("1e100000", time.max(1).root(3)).times("5.49087e316008111")
@@ -14377,6 +14558,7 @@ addLayer("normal", {
                 let time = new Decimal(player.normal.resetTime)
                 if (hasUpgrade(this.layer, 14)) time = time.add(3600)
                 if (hasUpgrade(this.layer, 15)) time = time.add(upgradeEffect(this.layer, 15))
+                if (hasMilestone('puzzle', 0)) time = time.add(tmp.puzzle.energyEff)
                 return time
             },
             effectDisplay() { return format(upgradeEffect(this.layer, this.id)) + "x" },
@@ -14457,6 +14639,7 @@ addLayer("normal", {
             unlocked() { return hasUpgrade(this.layer, 24) },
             effect() {
                 let eff = player.normal.semi_auto.max(1).root(1.8)
+
                 return eff
             },
         },
@@ -17840,6 +18023,7 @@ addLayer("s_expert", {
         if (inChallenge('coop', 11)) mult = mult.div(Decimal.pow(1000, player.s_expert.resets.max(0)))
         if (hasUpgrade('versus', 232)) mult = mult.times(upgradeEffect('versus', 232))
         if (hasUpgrade('versus', 233)) mult = mult.times(1e40)
+
         return mult
     },
     gainExp() {                             // Returns the exponent to your gain of the prestige resource.
@@ -18493,7 +18677,7 @@ addLayer("s_expert", {
             player.s_expert.pow_block = pbkc
         }
         if (player.versus.skill.gte(2.024e10) && pbk.lt(pbkc)) player.s_expert.pow_block = player.s_expert.pow_block.add(tmp.s_expert.multPowBlock.times(diff))
-        
+
         if (player.s_expert.lava.lt(0)) player.s_expert.lava = d(0)
     },
     bars: {
@@ -18845,6 +19029,12 @@ addLayer("coop", {
             respecUpgID = 280
             experienceSpent = d(154)
         }
+        if (hasMilestone('versus', 16)) {
+            respecUpgID = 370
+            experienceSpent = d(20397)
+        }
+
+        let s_experienceSpent = d(0)
         if (player.versus.respec) {
             player.versus.respec = false
             player.versus.upgrades.length
@@ -18856,6 +19046,8 @@ addLayer("coop", {
             }
             player.versus.experienceSpent = experienceSpent
             player.versus.experience = player.versus.experienceTotal
+            player.versus.s_experienceSpent = s_experienceSpent
+            player.versus.s_experience = player.versus.s_experienceTotal
         }
     },
 
@@ -19456,6 +19648,10 @@ addLayer("versus", {
             control_history: [],
             history_notation: ['', '', '', '', ''],
             history_gain: [d(0), d(0), d(0), d(0), d(0)],
+            s_experienceTotal: d(0),
+            s_experienceBest: d(0),
+            s_experienceSpent: d(0),
+            s_experience: d(0),
         }
     },
 
@@ -20309,7 +20505,7 @@ addLayer("versus", {
             fullDisplay: "10-1",
             cost: new Decimal(0),
             branches: [291],
-            canAfford() { return player.versus.experience.gte(195) && player.speedrun.points.gte(1e12) && !(hasUpgrade('versus', 302) || hasUpgrade('versus', 303) || hasUpgrade('versus', 304)) },
+            canAfford() { return player.versus.experience.gte(195) && player.speedrun.points.gte(1e12) && tmp.versus.researchRow10to12CanPurchase >= 1 },
             onPurchase() {
                 return player.versus.experienceSpent = player.versus.experienceSpent.add(195),
                     player.speedrun.points = player.speedrun.points.sub(1e12)
@@ -20320,6 +20516,8 @@ addLayer("versus", {
                 return b
             },
             effect() {
+                if (tmp.versus.researchRow10to12CanPurchase < 0) return d(1)
+                if (hasMilestone('precision', 1)) return this.base()
                 let t = d(player.speedrun.resetTime)
                 let eff = this.base().pow(d(1).sub(t.div(20)).max(0))
                 return eff
@@ -20350,12 +20548,13 @@ addLayer("versus", {
             fullDisplay: "10-2",
             cost: new Decimal(0),
             branches: [291],
-            canAfford() { return player.versus.experience.gte(195) && player.speedrun.points.gte(1e12) && !(hasUpgrade('versus', 301) || hasUpgrade('versus', 303) || hasUpgrade('versus', 304)) },
+            canAfford() { return player.versus.experience.gte(195) && player.speedrun.points.gte(1e12) && tmp.versus.researchRow10to12CanPurchase >= 1 },
             onPurchase() {
                 return player.versus.experienceSpent = player.versus.experienceSpent.add(195),
                     player.speedrun.points = player.speedrun.points.sub(1e12)
             },
             base() {
+                if (tmp.versus.researchRow10to12CanPurchase < 0) return d(1)
                 let b = d(50)
                 if (hasUpgrade('versus', 331)) b = b.pow(2)
                 return b
@@ -20385,17 +20584,20 @@ addLayer("versus", {
             fullDisplay: "10-3",
             cost: new Decimal(0),
             branches: [291],
-            canAfford() { return player.versus.experience.gte(195) && player.speedrun.points.gte(1e12) && !(hasUpgrade('versus', 302) || hasUpgrade('versus', 301) || hasUpgrade('versus', 304)) },
+            canAfford() { return player.versus.experience.gte(195) && player.speedrun.points.gte(1e12) && tmp.versus.researchRow10to12CanPurchase >= 1 },
             onPurchase() {
                 return player.versus.experienceSpent = player.versus.experienceSpent.add(195),
                     player.speedrun.points = player.speedrun.points.sub(1e12)
             },
             base() {
+                if (tmp.versus.researchRow10to12CanPurchase < 0) return d(1)
                 let b = d(100000)
+                if (hasUpgrade('precision', 12)) b = b.times(upgradeEffect('precision', 12))
                 if (hasUpgrade('versus', 331)) b = b.pow(2)
                 return b
             },
             effect() {
+                if (hasMilestone('precision', 1)) return this.base()
                 let t = d(player.speedrun.resetTime)
                 let eff = this.base().pow(t.min(600).div(600))
                 return eff
@@ -20426,12 +20628,13 @@ addLayer("versus", {
             fullDisplay: "10-4",
             cost: new Decimal(0),
             branches: [291],
-            canAfford() { return player.versus.experience.gte(195) && player.speedrun.points.gte(1e12) && !(hasUpgrade('versus', 302) || hasUpgrade('versus', 303) || hasUpgrade('versus', 301)) },
+            canAfford() { return player.versus.experience.gte(195) && player.speedrun.points.gte(1e12) && tmp.versus.researchRow10to12CanPurchase >= 1 },
             onPurchase() {
                 return player.versus.experienceSpent = player.versus.experienceSpent.add(195),
                     player.speedrun.points = player.speedrun.points.sub(1e12)
             },
             base() {
+                if (tmp.versus.researchRow10to12CanPurchase < 0) return d(1)
                 let b = d(10000)
                 if (hasUpgrade('versus', 331)) b = b.pow(2).times(10)
                 return b
@@ -20548,6 +20751,7 @@ addLayer("versus", {
                 return b
             },
             effect() {
+                if (hasMilestone('precision', 1)) return this.base()
                 let t = d(player.coop.resetTime)
                 let eff = this.base().sub(1).div(108).times(t).add(1).min(this.base())
                 return eff
@@ -20689,6 +20893,7 @@ addLayer("versus", {
                     player.speedrun.points = player.speedrun.points.sub(1e60)
             },
             effect() {
+                if (hasMilestone('precision', 1)) return d(500)
                 let t = d(player.coop.resetTime)
                 let eff = t.times(1.5).add(1).min(500)
                 return eff
@@ -20805,7 +21010,307 @@ addLayer("versus", {
                 return s
             },
         },
+        341: {
+            fullDisplay: "14-1",
+            cost: new Decimal(0),
+            branches: [331, 332],
+            canAfford() { return player.versus.experience.gte(10) && player.precision.points.gte(120) && (hasUpgrade('versus', 331) || hasUpgrade('versus', 332)) },
+            onPurchase() {
+                return player.versus.experienceSpent = player.versus.experienceSpent.add(10),
+                    player.precision.points = player.precision.points.sub(120)
+            },
+            tooltip() {
+                let t = `${textColor("[Unite]", 'd0d0a0')} You can buy 2 routes of researches on row 10~12<br><br>
+                        Cost: ${fw(10)} experience and ${formatWhole(120)} Precision Courses<br>`
+                return t
+            },
+            unlocked() { return hasUpgrade('versus', 331) || hasUpgrade('versus', 332) },
+            style() {
+                let color = '#000000'
+                if (hasUpgrade(this.layer, this.id)) color = '#808080'
+                let s = {
+                    'border-radius': '0%',
+                    'border-color': '#d0d0a0',
+                    'background-color': color,
+                    'font-size': '20px',
+                    'color': '#ffffff',
+                    'min-height': '60px',
+                    'width': '60px',
+                }
+                return s
+            },
+        },
+        351: {
+            fullDisplay: "15-1",
+            cost: new Decimal(0),
+            branches: [341],
+            canAfford() { return player.versus.experience.gte(1485) && player.precision.points.gte(5e16) && hasUpgrade('versus', 341) },
+            onPurchase() {
+                return player.versus.experienceSpent = player.versus.experienceSpent.add(1485),
+                    player.precision.points = player.precision.points.sub(5e16)
+            },
+            tooltip() {
+                let t = `${textColor("[Unite]", 'd0d0a0')} You can buy 3 routes of researches on row 10~12, autobuy max of experience<br><br>
+                        Cost: ${fw(1485)} experience and ${formatWhole(5e16)} Precision Courses<br>`
+                return t
+            },
+            unlocked() { return hasUpgrade('versus', 341) },
+            style() {
+                let color = '#000000'
+                if (hasUpgrade(this.layer, this.id)) color = '#808080'
+                let s = {
+                    'border-radius': '0%',
+                    'border-color': '#d0d0a0',
+                    'background-color': color,
+                    'font-size': '20px',
+                    'color': '#ffffff',
+                    'min-height': '60px',
+                    'width': '60px',
+                }
+                return s
+            },
+        },
+        361: {
+            fullDisplay: "16-1",
+            cost: new Decimal(0),
+            branches: [351],
+            canAfford() { return player.versus.experience.gte(7707) && player.precision.points.gte(1e31) && hasUpgrade('versus', 351) },
+            onPurchase() {
+                return player.versus.experienceSpent = player.versus.experienceSpent.add(7707),
+                    player.precision.points = player.precision.points.sub(1e31)
+            },
+            tooltip() {
+                let t = `${textColor("[Unite]", 'd0d0a0')} You can buy all 4 routes of researches on row 10~12<br><br>
+                        Cost: ${fw(7707)} experience and ${formatWhole(1e31)} Precision Courses<br>`
+                return t
+            },
+            unlocked() { return hasUpgrade('versus', 351) },
+            style() {
+                let color = '#000000'
+                if (hasUpgrade(this.layer, this.id)) color = '#808080'
+                let s = {
+                    'border-radius': '0%',
+                    'border-color': '#d0d0a0',
+                    'background-color': color,
+                    'font-size': '20px',
+                    'color': '#ffffff',
+                    'min-height': '60px',
+                    'width': '60px',
+                }
+                return s
+            },
+        },
+        371: {
+            fullDisplay: "17-1",
+            cost: new Decimal(0),
+            branches: [361],
+            canAfford() { return player.versus.s_experience.gte(1) && hasUpgrade('versus', 361) },
+            onPurchase() {
+                return player.versus.s_experienceSpent = player.versus.s_experienceSpent.add(1)
+            },
+            tooltip() {
+                let t = `${textResourceStyle("[Super]", 'text-superexperience', 'span')} Weaken CC tetraflow again<br><br>
+                        Cost: ${fw(1)} Super-experience`
+                return t
+            },
+            unlocked() { return hasUpgrade('versus', 361) && hasUpgrade('troll', 15) },
+            style() {
+                let color = '#000000'
+                if (hasUpgrade(this.layer, this.id)) color = 'linear-gradient(45deg, #ffcf03 0%, #f83a11 100%)'
+                let s = {
+                    'border-radius': '0%',
+                    'border-color': '#ff0000',
+                    'background': color,
+                    'font-size': '20px',
+                    'color': '#ffffff',
+                    'min-height': '60px',
+                    'width': '60px',
+                }
+                return s
+            },
+        },
+        372: {
+            fullDisplay: "17-2",
+            cost: new Decimal(0),
+            branches: [361],
+            canAfford() { return player.versus.s_experience.gte(1) && hasUpgrade('versus', 361) },
+            onPurchase() {
+                return player.versus.s_experienceSpent = player.versus.s_experienceSpent.add(1)
+            },
+            tooltip() {
+                let t = `${textResourceStyle("[Super]", 'text-superexperience', 'span')} ${f(172000)}x Troll Courses gain<br><br>
+                        Cost: ${fw(1)} Super-experience`
+                return t
+            },
+            unlocked() { return hasUpgrade('versus', 361) && hasUpgrade('troll', 15) },
+            style() {
+                let color = '#000000'
+                if (hasUpgrade(this.layer, this.id)) color = 'linear-gradient(45deg, #ffcf03 0%, #f83a11 100%)'
+                let s = {
+                    'border-radius': '0%',
+                    'border-color': '#ff0000',
+                    'background': color,
+                    'font-size': '20px',
+                    'color': '#ffffff',
+                    'min-height': '60px',
+                    'width': '60px',
+                }
+                return s
+            },
+        },
+        373: {
+            fullDisplay: "17-3",
+            cost: new Decimal(0),
+            branches: [361],
+            canAfford() { return player.versus.s_experience.gte(1) && hasUpgrade('versus', 361) },
+            onPurchase() {
+                return player.versus.s_experienceSpent = player.versus.s_experienceSpent.add(1)
+            },
+            tooltip() {
+                let t = `${textResourceStyle("[Super]", 'text-superexperience', 'span')} Re-enable ON/OFF Power negative effect, but effect ^(-1) from original (So, it's positive now!)<br><br>
+                        Cost: ${fw(1)} Super-experience`
+                return t
+            },
+            unlocked() { return hasUpgrade('versus', 361) && hasUpgrade('troll', 15) },
+            style() {
+                let color = '#000000'
+                if (hasUpgrade(this.layer, this.id)) color = 'linear-gradient(45deg, #ffcf03 0%, #f83a11 100%)'
+                let s = {
+                    'border-radius': '0%',
+                    'border-color': '#ff0000',
+                    'background': color,
+                    'font-size': '20px',
+                    'color': '#ffffff',
+                    'min-height': '60px',
+                    'width': '60px',
+                }
+                return s
+            },
+        },
+        374: {
+            fullDisplay: "17-4",
+            cost: new Decimal(0),
+            branches: [361],
+            canAfford() { return player.versus.s_experience.gte(1) && hasUpgrade('versus', 361) },
+            onPurchase() {
+                return player.versus.s_experienceSpent = player.versus.s_experienceSpent.add(1)
+            },
+            tooltip() {
+                let t = `${textColor("[Qol]", 'a060ff')} Ignore ON/OFF Power gain conditions<br><br>
+                        Cost: ${fw(1)} Super-experience`
+                return t
+            },
+            unlocked() { return hasUpgrade('versus', 361) && hasUpgrade('troll', 15) },
+            style() {
+                let color = '#000000'
+                if (hasUpgrade(this.layer, this.id)) color = 'linear-gradient(45deg, #ffcf03 0%, #f83a11 100%)'
+                let s = {
+                    'border-radius': '0%',
+                    'border-color': '#ff0000',
+                    'background': color,
+                    'font-size': '20px',
+                    'color': '#ffffff',
+                    'min-height': '60px',
+                    'width': '60px',
+                }
+                return s
+            },
+        },
+        381: {
+            fullDisplay: "18-1",
+            cost: new Decimal(0),
+            branches: [371, 372, 373, 374],
+            canAfford() { return player.versus.s_experience.gte(15) && (hasUpgrade('versus', 371) || hasUpgrade('versus', 372) || hasUpgrade('versus', 373) || hasUpgrade('versus', 374)) },
+            onPurchase() {
+                return player.versus.s_experienceSpent = player.versus.s_experienceSpent.add(15)
+            },
+            tooltip() {
+                let t = `${textResourceStyle("[Super]", 'text-superexperience', 'span')} Tetrate Hot Garbage Courses effect by ^^2.5<br><br>
+                        Cost: ${fw(15)} Super-experience`
+                return t
+            },
+            unlocked() { return (hasUpgrade('versus', 371) || hasUpgrade('versus', 372) || hasUpgrade('versus', 373) || hasUpgrade('versus', 374)) && hasUpgrade('garbage', 12) },
+            style() {
+                let color = '#000000'
+                if (hasUpgrade(this.layer, this.id)) color = 'linear-gradient(45deg, #ffcf03 0%, #f83a11 100%)'
+                let s = {
+                    'border-radius': '0%',
+                    'border-color': '#ff0000',
+                    'background': color,
+                    'font-size': '20px',
+                    'color': '#ffffff',
+                    'min-height': '60px',
+                    'width': '60px',
+                }
+                return s
+            },
+        },
+        382: {
+            fullDisplay: "18-2",
+            cost: new Decimal(0),
+            branches: [371, 372, 373, 374],
+            canAfford() { return player.versus.s_experience.gte(22) && (hasUpgrade('versus', 371) || hasUpgrade('versus', 372) || hasUpgrade('versus', 373) || hasUpgrade('versus', 374)) },
+            onPurchase() {
+                return player.versus.s_experienceSpent = player.versus.s_experienceSpent.add(22)
+            },
+            tooltip() {
+                let t = `${textResourceStyle("[Super]", 'text-superexperience', 'span')} Total Super-experience adds to effective Hot Garbage Courses, makes HGC effect stronger<br><br>
+                        Cost: ${fw(22)} Super-experience`
+                return t
+            },
+            unlocked() { return (hasUpgrade('versus', 371) || hasUpgrade('versus', 372) || hasUpgrade('versus', 373) || hasUpgrade('versus', 374)) && hasUpgrade('garbage', 12) },
+            style() {
+                let color = '#000000'
+                if (hasUpgrade(this.layer, this.id)) color = 'linear-gradient(45deg, #ffcf03 0%, #f83a11 100%)'
+                let s = {
+                    'border-radius': '0%',
+                    'border-color': '#ff0000',
+                    'background': color,
+                    'font-size': '20px',
+                    'color': '#ffffff',
+                    'min-height': '60px',
+                    'width': '60px',
+                }
+                return s
+            },
+        },
     },
+
+    researchRow10to12CanPurchase() {
+        let rt = 1
+        if (hasUpgrade('versus', 341)) rt = 2
+        if (hasUpgrade('versus', 351)) rt = 3
+        if (hasUpgrade('versus', 361)) rt = 4
+        let s = rt > 1 ? 's' : ''
+        r = rt
+        if (hasUpgrade('versus', 301)) r -= 1
+        if (hasUpgrade('versus', 302)) r -= 1
+        if (hasUpgrade('versus', 303)) r -= 1
+        if (hasUpgrade('versus', 304)) r -= 1
+
+        if (r < 0) {
+            player.versus.respec = true
+            doReset('coop')
+            alert('Do not cheese! You cannot purchase more than ' + rt + ' route' + s + ' of row 10~12 researches! Research tree destroyed itself and it forced a coop reset!')
+        }
+
+        return r
+    },
+
+    negativeExperienceDetects() {
+        if (player.versus.experience.lt(0)) {
+            player.versus.respec = true
+            doReset('coop')
+            alert('You have negative experience! Research tree destroyed itself and it forced a coop reset!')
+        }
+        else if (player.versus.s_experience.lt(0)) {
+            player.versus.respec = true
+            doReset('coop')
+            alert('You have negative super-experience! Research tree destroyed itself and it forced a coop reset!')
+        }
+        return
+    },
+
     buyables: {
         11: {
             title: "",
@@ -20820,6 +21325,7 @@ addLayer("versus", {
                 if (hasUpgrade('coop', 53)) m = m.times(2)
                 if (hasUpgrade('themed', 34)) m = m.times(upgradeEffect('themed', 34))
                 if (hasUpgrade('speedrun', 24)) m = m.add(upgradeEffect('speedrun', 24))
+                if (hasUpgrade('precision', 15)) m = m.times(tmp.precision.pixelEff)
                 return m
             },
             gain() {
@@ -20837,6 +21343,9 @@ addLayer("versus", {
             canAfford() { return player[this.layer].points.gte(this.cost()) },
             buy() {
                 setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
+            },
+            buyMax() {
+                if (hasUpgrade('versus', 351) && tmp.versus.buyables[11].canAfford) setBuyableAmount(this.layer, this.id, player.versus.points.max(0).div(200).min(40).floor())
             },
             unlocked() { return hasUpgrade('versus', 22) },
             style() {
@@ -20860,6 +21369,7 @@ addLayer("versus", {
             },
             mult() {
                 let m = d(1)
+                if (hasUpgrade('precision', 15)) m = m.times(tmp.precision.pixelEff)
                 return m
             },
             gain() {
@@ -20870,13 +21380,16 @@ addLayer("versus", {
             display() {
                 let display = ` Gain experience from MP Co-op Clears. <br>
                 Bought: ${formatWhole(player[this.layer].buyables[this.id])}<br>
-                Mult: ${formatWhole(tmp.versus.buyables[12].mult)}<br>
+                Mult: ${format(tmp.versus.buyables[12].mult)}<br>
                 Cost: ${formatWhole(this.cost())} Coop Clears`
                 return display
             },
             canAfford() { return player.coop.points.gte(this.cost()) },
             buy() {
                 setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
+            },
+            buyMax() {
+                if (hasUpgrade('versus', 351) && tmp.versus.buyables[12].canAfford) setBuyableAmount(this.layer, this.id, player.coop.points.div(1e16).max(1).log(100000).floor().add(1))
             },
             unlocked() { return hasUpgrade('versus', 22) },
             style() {
@@ -20903,6 +21416,7 @@ addLayer("versus", {
                 if (hasUpgrade('coop', 55)) m = m.times(2)
                 if (hasMilestone('versus', 11)) m = m.add(1)
                 if (hasUpgrade('themed', 34)) m = m.times(upgradeEffect('themed', 34))
+                if (hasUpgrade('precision', 15)) m = m.times(tmp.precision.pixelEff)
                 return m
             },
             gain() {
@@ -20920,6 +21434,9 @@ addLayer("versus", {
             canAfford() { return player.points.gte(this.cost()) },
             buy() {
                 setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
+            },
+            buyMax() {
+                if (hasUpgrade('versus', 351) && tmp.versus.buyables[13].canAfford) setBuyableAmount(this.layer, this.id, player.points.max(1e10).log(10).log(10).div(1e42).max(1).log(1e15).floor().add(1))
             },
             unlocked() { return hasUpgrade('versus', 22) },
             style() {
@@ -20943,6 +21460,7 @@ addLayer("versus", {
             },
             mult() {
                 let m = d(1)
+                if (hasUpgrade('precision', 15)) m = m.times(tmp.precision.pixelEff)
                 return m
             },
             gain() {
@@ -20953,13 +21471,16 @@ addLayer("versus", {
             display() {
                 let display = ` Gain experience from your lag competition played. <br>
                 Bought: ${formatWhole(player[this.layer].buyables[this.id])}<br>
-                Mult: ${formatWhole(tmp.versus.buyables[14].mult)}<br>
+                Mult: ${format(tmp.versus.buyables[14].mult)}<br>
                 Cost: ${format(this.cost())} lag competition played`
                 return display
             },
             canAfford() { return player.versus.lag.gte(this.cost()) },
             buy() {
                 setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
+            },
+            buyMax() {
+                if (hasUpgrade('versus', 351) && tmp.versus.buyables[14].canAfford) setBuyableAmount(this.layer, this.id, player.versus.lag.max(1).log(3).root(1.2).floor())
             },
             unlocked() { return hasUpgrade('coop', 52) || tmp.themed.layerShown },
             style() {
@@ -21301,7 +21822,7 @@ addLayer("versus", {
         12: {
             requirementDescription: "Versus Rating: 3200",
             effectDescription() { return `${f(100000)}x Themed Courses gain. Unlock research row 8. ` },
-            done() { return tmp.versus.researchRow1to7bought },
+            done() { return player.versus.points.gte(3200) },
             unlocked() { return player.versus.skill.gte(2.024e10) || player.s_expert.pow_block.gt(0) },
         },
         13: {
@@ -21331,6 +21852,36 @@ addLayer("versus", {
             },
             done() { return player.versus.points.gte(5000) },
             unlocked() { return player.versus.skill.gte(2.024e10) || player.s_expert.pow_block.gt(0) },
+        },
+        16: {
+            requirementDescription: "Have all researches in row 1~16",
+            effectDescription: "Respeccing won't reset row 1~16 research.",
+            done() { return tmp.versus.researchRow1to16bought },
+            unlocked() { return tmp.precision.layerShown },
+        },
+        17: {
+            requirementDescription: "Versus Rank <b style = 'color: #e9aca9'>S<sup>+</sup></b>",
+            effectDescription() {
+                return `Versus Rating Past 6000 powers Kaizo Courses gain hardcap, passive generate 100% Precision Course and Kaizo Courses every second.<br>Currently: ^${f(this.effect())}`
+            },
+            effect() {
+                let eff = player.versus.points.max(6000).sub(6000).div(5).add(1)
+                return eff
+            },
+            done() { return player.versus.points.gte(6000) },
+            unlocked() { return tmp.kaizo.layerShown },
+        },
+        18: {
+            requirementDescription: "Versus Rating: <b style = 'color: #e9aca9'>6500</b>",
+            effectDescription: "3x Triple Shell Jump gain.",
+            done() { return player.versus.points.gte(6500) },
+            unlocked() { return tmp.kaizo.layerShown },
+        },
+        19: {
+            requirementDescription: "Versus Rating: <b style = 'color: #e9aca9'>7000</b>",
+            effectDescription: "Keep ON/OFF Power and mode on row 18 reset.",
+            done() { return player.versus.points.gte(7000) },
+            unlocked() { return tmp.troll.layerShown },
         },
     },
     bars: {
@@ -21382,13 +21933,16 @@ addLayer("versus", {
             return rating
         },
         result() {
-            let base = tmp.versus.ratingGain.fromCC.add(tmp.versus.ratingGain.fromM).add(tmp.versus.ratingGain.fromSkill).add(tmp.versus.ratingGain.fromExpRes).add(tmp.versus.batokoEff)
+            let base = tmp.versus.ratingGain.fromCC.add(tmp.versus.ratingGain.fromM).add(tmp.versus.ratingGain.fromSkill).add(tmp.versus.ratingGain.fromExpRes).add(tmp.versus.batokoEff).times(tmp.kaizo.SJeff)
             let rating = base
             if (rating.gte(1000)) rating = base.sub(1000).div(3).add(1000).floor().min(2000)
             if (rating.gte(2000)) rating = base.sub(4000).pow(0.8).add(2000).floor().min(3000)
             if (rating.gte(3000)) rating = base.sub(10000).max(0).root(3).add(3000).floor().min(4000)
             if (rating.gte(4000)) rating = base.div(1000010000).log(10).pow(2).add(4000).floor().min(5000)
-            if (rating.gte(5000)) rating = base.div(4.1954731360e40).log(10).root(2).add(5000).min(6000)
+            if (rating.gte(5000)) rating = base.div(4.1954731360e40).log(10).root(2).add(5000).floor().min(6000)
+            if (rating.gte(6000)) rating = base.max('1e3200001').div('1e3200000').log(10).log(10).floor().add(6000).min(6500)
+            if (rating.gte(6500)) rating = base.log(10).log(10).sub(500).pow(0.2).floor().add(6500).min(7000)
+            if (rating.gte(7000)) rating = slog(base).sub(4.05314304).pow(2).add(7000).floor()
             return rating
         },
     },
@@ -21431,11 +21985,14 @@ addLayer("versus", {
         if (hasUpgrade('speedrun', 15)) m = m.times(tmp.speedrun.TAeff)
         if (hasUpgrade('versus', 324)) m = m.times(100)
         if (hasMilestone('versus', 15)) m = m.times(100)
+        if (tmp.kaizo.layerShown) m = m.times(layerEffect('kaizo'))
+        if (hasMilestone('kaizo', 1)) m = m.times('1e4000')
         m = m.floor()
         return m
     },
     batokoEff() {
         let eff = player.versus.batoko.times(300).max(0).pow(2.025).floor()
+        if (hasUpgrade('precision', 44)) eff = eff.pow(upgradeEffect('precision', 44))
         return eff
     },
 
@@ -21448,6 +22005,20 @@ addLayer("versus", {
             }
         }
         return bought >= res.length
+    },
+
+    researchRow1to16bought() {
+        return player.versus.experienceSpent.gte(20397)
+    },
+
+    automate() {
+        if (hasUpgrade('versus', 351)) {
+            let b = tmp.versus.buyables
+            b[11].buyMax()
+            b[12].buyMax()
+            b[13].buyMax()
+            b[14].buyMax()
+        }
     },
 
     skillReward: {
@@ -21546,7 +22117,18 @@ addLayer("versus", {
             player.versus.lag = player.versus.lag.add(tmp.versus.lagMult.times(diff))
 
         if (hasUpgrade('versus', 324)) player.versus.batoko = player.versus.batoko.add(tmp.versus.batokoMult.div(10).times(diff))
+
+        if (hasUpgrade('troll', 15)) player.versus.s_experienceTotal = slog(player.versus.experienceTotal).sub(2.945).times(5.45).add(1).pow(1.25).floor()
+        player.versus.s_experience = player.versus.s_experienceTotal.max(player.versus.s_experienceBest).sub(player.versus.s_experienceSpent)
+
+        if (player.versus.s_experienceBest.lt(player.versus.s_experienceTotal)) player.versus.s_experienceBest = player.versus.s_experienceTotal
     },
+
+    s_expNext() {
+        let next = d(10).tetrate(player.versus.s_experienceTotal.add(1).pow(0.8).sub(1).div(5.45).add(2.945))
+        return next
+    },
+
     tabFormat: [
         ["display-text", function () {
             let ratingcolor = "ffffff"
@@ -21599,6 +22181,11 @@ addLayer("versus", {
                     ["display-text", function () {
                         if (player.toad.tierlayer.gte(21)) return `E = floor((Batoko Wins·300)<sup>2.025</sup>) = ${formatWhole(tmp.versus.batokoEff)}`
                     }],
+                    ["display-text", function () {
+                        let e = ''
+                        if (hasUpgrade('kaizo', 25)) e = '·lg(E)'
+                        if (hasUpgrade('kaizo', 21)) return `F = 10<sup>10<sup>lg(Shell Jump)</sup>·15000000${e}</sup> = ${formatWhole(tmp.kaizo.SJeff)}`
+                    }],
                     "blank",
                     ["display-text", function () {
                         let B = ""
@@ -21606,20 +22193,29 @@ addLayer("versus", {
                         let D = ""
                         let E = ""
                         let F = ""
+                        let Fp = ""
                         let G = ""
                         let H = ""
                         if (hasUpgrade('coop', 34)) B = "+B"
                         if (player.versus.skill.gte(5)) C = "+C"
                         if (hasUpgrade('versus', 241)) D = "+D"
                         if (player.toad.tierlayer.gte(21)) E = "+E"
+                        if (hasUpgrade('kaizo', 21)) F = ")·F",
+                            Fp = "("
                         let formula = "RB"
                         if (player.versus.points.gte(1000)) formula = "(RB-1000)/3+1000      (Softcapped because you reached rank C)"
                         if (player.versus.points.gte(2000)) formula = "(RB-4000)<sup>0.8</sup> + 2000      (Softcapped^2 because you reached rank B)"
                         if (player.versus.points.gte(3000)) formula = "<sup>3</sup>√(RB-10000) + 3000      (Softcapped^3 because you reached rank A)"
                         if (player.versus.points.gte(4000)) formula = "lg(RB/1,000,010,000)<sup>2</sup> + 4000      (Softcapped^4 because you reached rank S)"
                         if (player.versus.points.gte(5000)) formula = "lg(RB/4.1954731360e40)<sup>0.5</sup> + 5000      (Softcapped^5 because you reached rank S+)"
-                        if (player.versus.points.gte(6000)) formula = "TBD      (Softcapped^6 because you reached rank Pink S+)"
-                        return `Rating base (RB) formula = A${B}${C}${D}${E}${F}${G}${H}<br>
+                        if (player.versus.points.gte(6000)) formula = "lg(lg(RB/1.000e3,200,000)) + 6000     (Softcapped^6 because you reached rank Pink S+)"
+                        if (player.versus.points.gte(6500)) formula = "(lg(lg(RB)) - 500)<sup>0.2</sup> + 6500     (Softcapped^7 because you reached versus rating 6500)"
+                        if (player.versus.points.gte(7000)) formula = "(slog<sub>10</sub>(RB) - 4.05314304)<sup>2</sup> + 7000    (Softcapped^8 because you reached versus rating 7000)"
+                        if (player.versus.points.gte(7500)) formula = "TBD     (Softcapped^9 because you reached versus rating 7500)"
+                        if (player.versus.points.gte(7800)) formula = "TBD     (Softcapped^10 because you reached versus rating 7800)"
+                        if (player.versus.points.gte(7900)) formula = "TBD     (Softcapped^11 because you reached versus rating 7900)"
+                        if (player.versus.points.gte(8000)) formula = "(Hardcapped because you reached max versus rating, GG!)"
+                        return `Rating base (RB) formula = ${Fp}A${B}${C}${D}${E}${F}${G}${H}<br>
                         Rating: ${formula}`
                     }],
                     "blank",
@@ -21640,6 +22236,14 @@ addLayer("versus", {
                     ["display-text", function () {
                         if (tmp.themed.layerShown) return `You keep your best total experience on reset for researches, but effects based on total experience are now based on current total experience<br>
                         Your current total experience is ${formatWhole(player.versus.experienceTotal)}`
+                    }],
+                    ["display-text", function () {
+                        if (hasUpgrade('troll', 15)) return `You have ${textResourceStyle(formatWhole(player.versus.s_experience) + '/' + formatWhole(player.versus.s_experienceTotal.max(player.versus.s_experienceBest)), 'text-superexperience')} Super-experience`
+                    }],
+                    ["display-text", function () {
+                        if (hasUpgrade('troll', 15)) return `Super-experience works like experience, Super-experience gain is auto update based on experience<br>
+                        Your current total Super-experience is ${formatWhole(player.versus.s_experienceTotal)}<br>
+                        Next Super-experience at ${formatWhole(tmp.versus.s_expNext)} experience`
                     }],
                     "blank",
                     "buyables",
@@ -21672,6 +22276,16 @@ addLayer("versus", {
                             "blank",
                             ["row", [["upgrade", 331], "blank", ["upgrade", 332], "blank"]],
                             "blank",
+                            ["row", [["upgrade", 341], "blank"]],
+                            "blank",
+                            ["row", [["upgrade", 351], "blank"]],
+                            "blank",
+                            ["row", [["upgrade", 361], "blank"]],
+                            "blank",
+                            ["row", [["upgrade", 371], "blank", ["upgrade", 372], "blank", ["upgrade", 373], , "blank", ["upgrade", 374],]],
+                            "blank",
+                            ["row", [["upgrade", 381], "blank", ["upgrade", 382]]],
+                            "blank",
                         ]],
                         ["blank", ['30px', '30px']],
                         ["display-text", function () {
@@ -21692,6 +22306,11 @@ addLayer("versus", {
                             if (tmp.versus.upgrades[311].unlocked || tmp.versus.upgrades[312].unlocked || tmp.versus.upgrades[313].unlocked || tmp.versus.upgrades[314].unlocked) rrt.push(rowtext + '11')
                             if (tmp.versus.upgrades[321].unlocked || tmp.versus.upgrades[322].unlocked || tmp.versus.upgrades[323].unlocked || tmp.versus.upgrades[324].unlocked) rrt.push(rowtext + '12')
                             if (tmp.versus.upgrades[331].unlocked || tmp.versus.upgrades[332].unlocked) rrt.push(rowtext + '13')
+                            if (tmp.versus.upgrades[341].unlocked) rrt.push(rowtext + '14')
+                            if (tmp.versus.upgrades[351].unlocked) rrt.push(rowtext + '15')
+                            if (tmp.versus.upgrades[361].unlocked) rrt.push(rowtext + '16')
+                            if (tmp.versus.upgrades[371].unlocked || tmp.versus.upgrades[372].unlocked || tmp.versus.upgrades[373].unlocked || tmp.versus.upgrades[374].unlocked) rrt.push(rowtext + '17')
+                            if (tmp.versus.upgrades[381].unlocked || tmp.versus.upgrades[382].unlocked) rrt.push(rowtext + '18')
                             if (rrt.length < 1) return;
                             rrt[rrt.length - 1] += rowtextfin
                             return rrt.join('<br>')
@@ -21987,6 +22606,7 @@ addLayer("themed", {
         if (player.versus.skill.gte(1e17)) m = m.times(skillReward(6))
         if (hasUpgrade('themed', 24)) m = m.times(upgradeEffect('themed', 24))
         if (hasMilestone('versus', 12)) m = m.times(100000)
+        if (hasMilestone('precision', 0)) m = m.times(100)
         return m               // Factor in any bonuses multiplying gain here.
     },
     gainExp() {                             // Returns the exponent to your gain of the prestige resource.
@@ -22006,6 +22626,27 @@ addLayer("themed", {
     },
 
     layerShown() { return hasMilestone('versus', 10) },          // Returns a bool for if this layer's node should be visible in the tree.
+
+    passiveGeneration() {
+        return hasMilestone('precision', 8)
+    },
+
+    doReset(resettingLayer) {
+        if (layers[resettingLayer].row >= 16) {
+            let kept = ["unlocked", "auto"]
+            if (hasMilestone('precision', 3)) {
+                kept.push("milestones")
+            }
+            if (hasMilestone('precision', 4)) {
+                kept.push("upgrades")
+            }
+            layerDataReset(this.layer, kept)
+        }
+    },
+
+    hotkeys: [
+        { key: "H", description: "Shift+H: Reset for Themed Courses", onPress() { if (canReset(this.layer)) doReset(this.layer) } },
+    ],
 
     upgrades: {
         11: {
@@ -22106,7 +22747,11 @@ addLayer("themed", {
         },
         24: {
             title: "1-1 but...",
-            description: "World 1-1 clears boost Themed Courses gain.",
+            description() {
+                let des = "World 1-1 clears boost Themed Courses gain."
+                if (this.effect().gte('e2.997e45')) des += ' (Tetration-softcapped)'
+                return des
+            },
             currencyDisplayName: "Cleared Courses",
             currencyInternalName: "cc",
             currencyLayer: "achievements",
@@ -22114,6 +22759,7 @@ addLayer("themed", {
             unlocked() { return hasUpgrade(this.layer, this.id - 1) },
             effect() {
                 let eff = player.themed.w11.pow(player.themed.w11.max(2).ssqrt()).max(1)
+                if (eff.gte('e2.997e45')) eff = d(10).tetrate(slog(eff).sub(3.219529205449591).times(0.1).add(3.219529205449591))
                 return eff
             },
             effectDisplay() {
@@ -22135,6 +22781,7 @@ addLayer("themed", {
             cost: new Decimal("ee1.5e190"),
             unlocked() { return hasUpgrade(this.layer, this.id - 1) },
             effect() {
+                if (hasMilestone('precision', 2)) return d(25)
                 let eff = d(5).sub(player.themed.w11time.div(2)).max(1).pow(2).ceil()
                 return eff
             },
@@ -22398,6 +23045,8 @@ addLayer("themed", {
         if (hasUpgrade('versus', 291)) m = m.times(25)
         if (hasUpgrade('speedrun', 15)) m = m.times(tmp.speedrun.TAeff)
         if (hasMilestone('versus', 15)) m = m.times(100)
+        if (hasMilestone('precision', 4)) m = m.times(125)
+        if (hasUpgrade('precision', 43)) m = m.times(upgradeEffect('precision', 43))
         m = m.floor()
         return m
     },
@@ -22597,6 +23246,7 @@ addLayer("speedrun", {
         if (hasUpgrade('versus', 302)) m = m.times(hasUpgrade('versus', 331) ? d(2500) : d(50))
         if (hasUpgrade('versus', 303)) m = m.times(upgradeEffect('versus', 303))
         if (player.versus.skill.gte(2.025e85)) m = m.times(skillReward(7))
+        if (hasMilestone('precision', 0)) m = m.times(100)
         return m               // Factor in any bonuses multiplying gain here.
     },
     gainExp() {                             // Returns the exponent to your gain of the prestige resource.
@@ -22616,6 +23266,25 @@ addLayer("speedrun", {
     onPrestige() {
         return player.s_expert.points = d(0)
     },
+
+    doReset(resettingLayer) {
+        if (layers[resettingLayer].row >= 16) {
+            let kept = ["unlocked", "auto"]
+            if (hasMilestone('precision', 5)) {
+                kept.push("milestones")
+                kept.push("upgrades")
+            }
+            layerDataReset(this.layer, kept)
+        }
+    },
+
+    passiveGeneration() {
+        if (hasMilestone('precision', 9)) return d(1e10)
+    },
+
+    hotkeys: [
+        { key: "r", description: "R: Reset for Speedrun Courses", onPress() { if (canReset(this.layer)) doReset(this.layer) } },
+    ],
 
     upgrades: {
         11: {
@@ -22731,12 +23400,13 @@ addLayer("speedrun", {
         },
         31: {
             title: "TA go go go!",
-            description() { 
+            description() {
                 let r4 = ''
                 let id = '15'
                 if (hasUpgrade('speedrun', 43)) r4 = ' and 4',
-                id = '20'
-                return `Bought Speedrun Course upgrades in row 3${r4} (11th~${id}th) powers TA Course effect` },
+                    id = '20'
+                return `Bought Speedrun Course upgrades in row 3${r4} (11th~${id}th) powers TA Course effect`
+            },
             canAfford() { return player.speedrun.points.gte(1e28) },
             onPurchase() {
                 player.speedrun.points = player.speedrun.points.sub(1e28)
@@ -22761,12 +23431,12 @@ addLayer("speedrun", {
         },
         32: {
             title: "The perfect wall-kick",
-            description() { 
+            description() {
                 let r4 = ''
                 let id = '15'
                 if (hasUpgrade('speedrun', 43)) r4 = ' and 4',
-                id = '20'
-                return `Bought Speedrun Course upgrades in row 3${r4} (11th~${id}th) powers the theoretical time of your TA Course effect but weaker.` 
+                    id = '20'
+                return `Bought Speedrun Course upgrades in row 3${r4} (11th~${id}th) powers the theoretical time of your TA Course effect but weaker.`
             },
             canAfford() { return player.speedrun.points.gte(3e30) },
             onPurchase() {
@@ -22951,6 +23621,7 @@ addLayer("speedrun", {
         if (hasUpgrade('versus', 323)) m = m.times(upgradeEffect('versus', 323))
         if (hasUpgrade('speedrun', 41)) m = m.times(1000)
         if (hasNormalAchievement(243)) m = m.times(9.999e9)
+        if (hasMilestone('precision', 2)) m = m.times(10)
         m = m.floor()
         return m
     },
@@ -22964,6 +23635,7 @@ addLayer("speedrun", {
     TAeff() {
         let eff = player.speedrun.TA.add(1).log(10).times(2).pow(2).add(1)
         if (hasUpgrade('speedrun', 31)) eff = eff.pow(upgradeEffect('speedrun', 31))
+        if (hasUpgrade('precision', 13)) eff = eff.pow(upgradeEffect('precision', 13))
         return eff
     },
 
@@ -23003,7 +23675,7 @@ addLayer("speedrun", {
                 return display
             },
             canAfford() { return player[this.layer].TA.gte(this.cost()) },
-            buyMax() { if (player.speedrun.TA.gte(1e15)) return setBuyableAmount('speedrun', 11, player.speedrun.TA.div(1e15).max(1).log(10).root(1.145).floor().add(1)).min(9) },
+            buyMax() { if (player.speedrun.TA.gte(1e15)) return setBuyableAmount('speedrun', 11, player.speedrun.TA.div(1e15).max(1).log(10).root(1.145).floor().add(1).min(9)) },
             canBuyMax() { return false },
             buy() {
                 if (!this.canBuyMax()) player[this.layer].TA = player[this.layer].TA.sub(this.cost()),
@@ -23016,7 +23688,7 @@ addLayer("speedrun", {
             },
             unlocked() { return hasMilestone('speedrun', 2) },
             auto() {
-                //if (this.canAfford()) this.buyMax()
+                if (this.canAfford() && hasMilestone('precision', 10)) this.buyMax()
             },
             style() {
                 if (this.canAfford() && getBuyableAmount(this.layer, this.id).lt(this.purchaseLimit)) return { color: 'white' }
@@ -23034,7 +23706,7 @@ addLayer("speedrun", {
                 return display
             },
             canAfford() { return player[this.layer].TA.gte(this.cost()) },
-            buyMax() { if (player.speedrun.TA.gte(1e25)) return setBuyableAmount('speedrun', 12, player.speedrun.TA.div(1e25).max(1).log(10).root(1.145).floor().add(1)).min(9) },
+            buyMax() { if (player.speedrun.TA.gte(1e25)) return setBuyableAmount('speedrun', 12, player.speedrun.TA.div(1e25).max(1).log(10).root(1.145).floor().add(1).min(9)) },
             canBuyMax() { return false },
             buy() {
                 if (!this.canBuyMax()) player[this.layer].TA = player[this.layer].TA.sub(this.cost()),
@@ -23047,7 +23719,7 @@ addLayer("speedrun", {
             },
             unlocked() { return hasUpgrade('speedrun', 42) },
             auto() {
-                //if (this.canAfford()) this.buyMax()
+                if (this.canAfford() && hasMilestone('precision', 10)) this.buyMax()
             },
             style() {
                 if (this.canAfford() && getBuyableAmount(this.layer, this.id).lt(this.purchaseLimit)) return { color: 'white' }
@@ -23058,6 +23730,9 @@ addLayer("speedrun", {
             cost(x) { return new Decimal(10).pow(Decimal.pow(x, 1.145)).times(1e45) },
             base() {
                 let b = d(1.5)
+                if (hasUpgrade('precision', 11)) b = b.add(0.5)
+                if (hasUpgrade('precision', 14)) b = b.add(0.2)
+                if (hasUpgrade('kaizo', 11)) b = b.add(0.3)
                 return b
             },
             display() {
@@ -23082,7 +23757,7 @@ addLayer("speedrun", {
             },
             unlocked() { return hasUpgrade('speedrun', 45) },
             auto() {
-                //if (this.canAfford()) this.buyMax()
+                if (this.canAfford() && hasMilestone('precision', 10)) this.buyMax()
             },
             style() {
                 if (this.canAfford()) return { color: 'white' }
@@ -23095,6 +23770,8 @@ addLayer("speedrun", {
             player.speedrun.TA = player.speedrun.TA.add(tmp.speedrun.TAmult)
             player.speedrun.holdtime = d(0)
         }
+
+        if (hasMilestone('precision', 7)) player.speedrun.TA = player.speedrun.TA.add(tmp.speedrun.TAmult.times(diff))
     },
 
     tabFormat: [
@@ -23159,6 +23836,75 @@ addLayer("speedrun", {
     },
 })
 
+function lineupReset() {
+    let range = [-50, 50]
+    let t = Math.random() * (range[1] - range[0])
+    t = Math.floor(t * 10) / 10 - 50
+    player.precision.targetx = t
+    player.precision.x = 0
+    player.precision.steps = 0
+}
+
+function lineupCheck() {
+    let p = player.precision
+    if (Math.abs(p.x - p.targetx) < 0.100001) {
+        player.precision.lineup = player.precision.lineup.add(tmp.precision.LUmult)
+        player.precision.lineupHistory = ["Success! +" + fw(tmp.precision.LUmult) + " Line-ups"].concat(player.precision.lineupHistory.slice(0, 4))
+        if (player.precision.steps == getLineUpFinesse() && hasUpgrade('kaizo', 13)) player.precision.subpixel = player.precision.subpixel.add(tmp.precision.subPmult)
+    }
+    else {
+        player.precision.lineupHistory = ["Failed! Your Mario touched the spike!"].concat(player.precision.lineupHistory.slice(0, 4))
+    }
+    lineupReset()
+}
+
+function calculatePrecisionFinesse(target) {
+    target = Math.round(target * 10) / 10
+    if (target == 0) return 0
+    const sign = target / Math.abs(target)
+    target = Math.abs(target)
+    const tens = Math.floor(target / 10)
+    const ones = Math.floor(target % 10)
+    const tenths = Math.floor((target * 10) % 10)
+    let steps = {
+        tens: tens,
+        ones: ones,
+        tenths: tenths,
+        sign: sign,
+        count: 0
+    }
+    if (ones >= 5) {
+        if (ones >= 6 && tenths <= 5) {
+            steps.tens += 1
+            steps.ones = ones - 10
+        }
+        else if (tenths >= 5) {
+            steps.tens += 1
+            steps.ones = ones - 9
+            steps.tenths = tenths - 10
+        }
+    }
+    else if (tenths >= 5) {
+        steps.ones += 1
+        steps.tenths = tenths - 10
+    }
+    steps.tens *= sign
+    steps.ones *= sign
+    steps.tenths *= sign
+    steps.count = Math.abs(steps.tens) + Math.abs(steps.ones) + Math.abs(steps.tenths)
+    return steps
+}
+
+function getLineUpFinesse() {
+    let finesseArr = []
+    let target = player.precision.targetx
+    let targets = [target - 0.1, target, target + 0.1]
+    for (let t of targets) {
+        finesseArr.push(calculatePrecisionFinesse(t).count)
+    }
+    return Math.min(...finesseArr)
+}
+
 // 第三十二层：微操关卡 (Precision Courses)
 addLayer("precision", {
     componentStyles: {
@@ -23175,9 +23921,14 @@ addLayer("precision", {
             unlocked: true,                     // You can add more variables here to add them to your layer.
             points: new Decimal(0),             // "points" is the internal name for the main resource of the layer.
             pixel: d(0),
+            lineup: d(0),
             Tjump: d(0),
+            x: 0, //对像素坐标
+            targetx: 5,
+            lineupHistory: [],
             subpixel: d(0),
             fire_bubbles: d(0),
+            steps: 0,
         }
     },
 
@@ -23191,7 +23942,7 @@ addLayer("precision", {
     baseResource: "Themed Courses",                 // The name of the resource your prestige gain is based on.
     baseAmount() { return player.themed.points },  // A function to return the current amount of baseResource.
 
-    requires: new Decimal('10^^1000'),//new Decimal("1e1335"),v0.13              // The amount of the base needed to  gain 1 of the prestige currency.
+    requires: new Decimal('1e1335'),              // The amount of the base needed to  gain 1 of the prestige currency.
     // Also the amount required to unlock the layer.
 
     type: "normal",                         // Determines the formula used for calculating prestige currency.
@@ -23199,6 +23950,7 @@ addLayer("precision", {
 
     gainMult() {                            // Returns your multiplier to your gain of the prestige resource.
         let m = d(1)
+        if (player.toad.tierlayer.gte(84)) m = m.times(tmp.precision.LUEff)
         return m               // Factor in any bonuses multiplying gain here.
     },
     gainExp() {                             // Returns the exponent to your gain of the prestige resource.
@@ -23211,11 +23963,587 @@ addLayer("precision", {
         return eff
     },
 
-    /*onPrestige() {
+    onPrestige() {
         return player.s_expert.points = d(0)
-    },*/
+    },
+
+    softcap() {
+        let sc = d(1e15)
+        return sc
+    },
+
+    softcapPower() {
+        let scp = d(0.2)
+        if (hasUpgrade('precision', 23)) scp = d(0.35)
+        if (hasUpgrade('precision', 32)) scp = d(0.6)
+        if (hasUpgrade('precision', 33)) scp = d(1)
+        return scp
+    },
+
+    passiveGeneration() {
+        return hasMilestone('versus', 17)
+    },
+
+    doReset(resettingLayer) {
+        if (layers[resettingLayer].row > layers[this.layer].row) {
+            let kept = ["unlocked", "auto"]
+            if (hasMilestone('troll', 1)) {
+                kept.push("milestones")
+            }
+            if (hasMilestone('troll', 5)) {
+                kept.push("upgrades")
+            }
+            layerDataReset(this.layer, kept)
+        }
+    },
+
+    upgrades: {
+        11: {
+            title: "Precise",
+            description: "Add 0.5 to \"What's the theoretical limit III \" effect base.",
+            cost: new Decimal(50),
+            unlocked() { return tmp.precision.layerShown },
+        },
+        12: {
+            title: "Pixel perfect",
+            description: "Best Precision Course multiplies research 10-3 effect. (Before exp. cal.)",
+            cost: new Decimal(500),
+            unlocked() { return hasUpgrade(this.layer, this.id - 1) },
+            effect() {
+                let eff = player.precision.best.max(1).pow(1.13)
+                return eff
+            },
+            effectDisplay() {
+                return `${format(upgradeEffect(this.layer, this.id))}x`
+            },
+        },
+        13: {
+            title: "Peaceful precision",
+            description() { return `Best Precision Course powers TA Course effect` },
+            canAfford() { return player.precision.points.gte(1000) },
+            onPurchase() {
+                player.precision.points = player.precision.points.sub(1000)
+            },
+            currencyDisplayName() {
+                return `Cleared Courses + ${f(1000)} Precision Courses`
+            },
+            currencyInternalName: "points",
+            cost: new Decimal("ee1e2400"),
+            unlocked() { return hasUpgrade(this.layer, this.id - 1) },
+            effect() {
+                let eff = player.precision.best.add(1).log(1e10).pow(0.5).add(1)
+                return eff
+            },
+            effectDisplay() {
+                return `^${format(upgradeEffect(this.layer, this.id))}`
+            },
+        },
+        14: {
+            title: "P-switch platform",
+            description() { return `Add another 0.2 to \"What's the theoretical limit III \" effect base.` },
+            canAfford() { return player.precision.points.gte(2e17) },
+            onPurchase() {
+                player.precision.points = player.precision.points.sub(2e17)
+            },
+            currencyDisplayName() {
+                return `Cleared Courses + ${f(2e17)} Precision Courses`
+            },
+            currencyInternalName: "points",
+            cost: new Decimal("ee1e3980"),
+            unlocked() { return hasUpgrade(this.layer, this.id - 1) },
+        },
+        15: {
+            title: "Philosophy of precision",
+            description() { return `Unlock Pixels.` },
+            canAfford() { return player.precision.points.gte(3e18) },
+            onPurchase() {
+                player.precision.points = player.precision.points.sub(3e18)
+            },
+            currencyDisplayName() {
+                return `Cleared Courses + ${f(3e18)} Precision Courses`
+            },
+            currencyInternalName: "points",
+            cost: new Decimal("ee1e4240"),
+            unlocked() { return hasUpgrade(this.layer, this.id - 1) },
+        },
+        21: {
+            title: "16-pixel wide",
+            description() { return `Pixel boosts itself.` },
+            currencyDisplayName() {
+                return `Pixels`
+            },
+            currencyInternalName: "pixel",
+            currencyLayer: "precision",
+            cost: new Decimal(50),
+            unlocked() { return hasUpgrade(this.layer, 15) },
+            effect() {
+                let eff = player.precision.pixel.max(1).pow(0.5)
+                return eff
+            },
+            effectDisplay() {
+                return `${format(upgradeEffect(this.layer, this.id))}x`
+            },
+        },
+        22: {
+            title: "24-pixel wide",
+            description() { return `Precision Courses multiply Pixels gain (Starts at ${f(1e17)} Prc)` },
+            currencyDisplayName() {
+                return `Pixels`
+            },
+            currencyInternalName: "pixel",
+            currencyLayer: "precision",
+            cost: new Decimal(2000),
+            unlocked() { return hasUpgrade(this.layer, this.id - 1) },
+            effect() {
+                let eff = d(10).pow(player.precision.points.div(1e17).max(1).log(10).pow(0.5))
+                return eff
+            },
+            effectDisplay() {
+                return `${format(upgradeEffect(this.layer, this.id))}x`
+            },
+        },
+        23: {
+            title: "32-pixel wide",
+            description() { return `Weaken Precision Courses gain softcap` },
+            currencyDisplayName() {
+                return `Pixels`
+            },
+            currencyInternalName: "pixel",
+            currencyLayer: "precision",
+            cost: new Decimal(400000),
+            unlocked() { return hasUpgrade(this.layer, this.id - 1) },
+        },
+        24: {
+            title: "Spike pixels",
+            description() { return `${f(10000000)}x Pixels gain` },
+            currencyDisplayName() {
+                return `Pixels`
+            },
+            currencyInternalName: "pixel",
+            currencyLayer: "precision",
+            cost: new Decimal(200000000),
+            unlocked() { return hasUpgrade(this.layer, this.id - 1) },
+        },
+        25: {
+            title: "SMB1 Line-up",
+            description() { return `Pixels multiply line-up gain` },
+            cost: new Decimal(6e25),
+            unlocked() { return hasUpgrade(this.layer, this.id - 1) },
+            effect() {
+                let eff = player.precision.pixel.div(1e35).add(10).log(10).pow(2)
+                return eff
+            },
+            effectDisplay() {
+                return `${format(upgradeEffect(this.layer, this.id))}x`
+            },
+        },
+        31: {
+            title: "Toad's line-up",
+            description() { return `Every Toad tier layers past Toad octaoctacont (88th, including) multiplies Line-up gain by 1.5x.` },
+            cost: new Decimal(1e32),
+            unlocked() { return hasUpgrade(this.layer, 25) },
+            effect() {
+                let eff = d(1.5).pow(player.toad.tierlayer.max(87).sub(87))
+                return eff
+            },
+            effectDisplay() {
+                return `${format(upgradeEffect(this.layer, this.id))}x`
+            },
+        },
+        32: {
+            title: "Finally we got every research... Really?",
+            description() { return `Weaken Precision Course softcap again.` },
+            cost: new Decimal(1e36),
+            unlocked() { return hasUpgrade(this.layer, this.id - 1) },
+        },
+        33: {
+            title: "Precision inflation",
+            description() { return `Remove Precision Course softcap` },
+            canAfford() { return player.precision.points.gte(1e72) },
+            onPurchase() {
+                player.precision.points = player.precision.points.sub(1e72)
+            },
+            currencyDisplayName() {
+                return `Cleared Courses + ${f(1e72)} Precision Courses`
+            },
+            currencyInternalName: "points",
+            cost: new Decimal("ee1e8000"),
+            unlocked() { return hasUpgrade(this.layer, this.id - 1) },
+        },
+        34: {
+            title: "Nope, there'll be row 17 researches...",
+            description() { return `Every Toad tier layers past Toad triacontahect (130th, including) multiplies Pixels gain by 1000x.` },
+            cost: new Decimal(1e243),
+            unlocked() { return hasUpgrade(this.layer, this.id - 1) },
+            effect() {
+                let eff = d(1000).pow(player.toad.tierlayer.max(129).sub(129))
+                return eff
+            },
+            effectDisplay() {
+                return `${format(upgradeEffect(this.layer, this.id))}x`
+            },
+        },
+        35: {
+            title: "Shells shells and shells",
+            description() { return `Unlock Kaizo Course layer` },
+            cost: new Decimal(1e260),
+            unlocked() { return hasUpgrade(this.layer, this.id - 1) },
+        },
+        41: {
+            title: "Is there any difference?",
+            description() { return `3x Subpixels gain` },
+            cost: new Decimal('1e500'),
+            unlocked() { return hasUpgrade(this.layer, 35) },
+        },
+        42: {
+            title: "Exactly 16-pixel wide hitbox",
+            description() { return `Multiply Subpixels gain by lg(Kaizo Courses)${this.effPow().gt(1) ? f(this.effPow()) : ''} ` },
+            canAfford() { return player.precision.points.gte('1e777') },
+            onPurchase() {
+                player.precision.points = player.precision.points.sub('1e777')
+            },
+            currencyDisplayName() {
+                return `Cleared Courses + ${f('1e777')} Precision Courses`
+            },
+            currencyInternalName: "points",
+            cost: new Decimal("ee1e40555"),
+            unlocked() { return hasUpgrade(this.layer, this.id - 1) },
+            effPow() {
+                let p = d(1)
+                return p
+            },
+            effect() {
+                let eff = player.kaizo.points.max(10).log(10).pow(this.effPow())
+                return eff
+            },
+            effectDisplay() {
+                return `${format(upgradeEffect(this.layer, this.id))}x`
+            },
+        },
+        43: {
+            title: "World 1-1, but a pricision course",
+            description() { return `Subpixel multiply World 1-1 clears gain, but this effect can't go beyond Research 8-2 effect^0.5.` },
+            cost: new Decimal('1e960'),
+            unlocked() { return hasUpgrade(this.layer, this.id - 1) },
+            effect() {
+                let eff = tmp.precision.subPEff.min(upgradeEffect('versus', 282).pow(0.5)).max(1)
+                return eff
+            },
+            effectDisplay() {
+                return `${format(upgradeEffect(this.layer, this.id))}x`
+            },
+        },
+        44: {
+            title: "Precision versus course... makes draws",
+            description() { return `Subpixel powers Batoko Wins effect.` },
+            cost: new Decimal('1e1350'),
+            unlocked() { return hasUpgrade(this.layer, this.id - 1) },
+            effect() {
+                let eff = player.precision.subpixel.add(1).pow(0.2)
+                return eff
+            },
+            effectDisplay() {
+                return `^${format(upgradeEffect(this.layer, this.id))}`
+            },
+        },
+        45: {
+            title: "LETO SQUAD",
+            description() { return `${f(5000)}x Subpixel gain` },
+            cost: new Decimal('1e5000'),
+            unlocked() { return hasUpgrade(this.layer, this.id - 1) },
+        },
+    },
+
+    milestones: {
+        0: {
+            requirementDescription: "Upload 1 Precision Course",
+            effectDescription: "Gain 100x Themed Courses and Speedrun Courses.",
+            done() { return player.precision.points.gte(1) },
+        },
+        1: {
+            requirementDescription: "Upload 2 Precision Courses",
+            effectDescription: "Research 10-1, 10-3, 11-3, 12-3 are always maxed.",
+            done() { return player.precision.points.gte(2) },
+        },
+        2: {
+            requirementDescription: "Upload 3 Precision Courses",
+            effectDescription: "10th Themed Course upgrade effect is always maxed then squared, 10x TA Course gain.",
+            done() { return player.precision.points.gte(3) },
+        },
+        3: {
+            requirementDescription: "Upload 5 Precision Courses",
+            effectDescription: "Keep Themed Course milestones on row 17 reset.",
+            done() { return player.precision.points.gte(5) },
+        },
+        4: {
+            requirementDescription: "Upload 9 Precision Courses",
+            effectDescription: "Keep Themed Course upgrades on row 17 reset, 125x World 1-1 clears.",
+            done() { return player.precision.points.gte(9) },
+        },
+        5: {
+            requirementDescription: "Upload 40 Precision Courses",
+            effectDescription: "Keep Speedrun Course milestones and upgrades on row 17 reset, 15x TA Courses.",
+            done() { return player.precision.points.gte(40) },
+        },
+        6: {
+            requirementDescription: "Upload 180 Precision Courses",
+            effectDescription: "Unlock Research row 14.",
+            done() { return player.precision.points.gte(180) },
+        },
+        7: {
+            requirementDescription: "Upload 360 Precision Courses",
+            effectDescription: "Passive generate 100% of TA Courses every second.",
+            done() { return player.precision.points.gte(180) },
+        },
+        8: {
+            requirementDescription() { return `Upload ${f(1e18)} Precision Courses` },
+            effectDescription: "Passive generate 100% of Themed Courses every second.",
+            done() { return player.precision.points.gte(1e18) },
+        },
+        9: {
+            requirementDescription() { return `Upload ${f(1e21)} Precision Courses` },
+            effectDescription() { return `Passive generate ${formatPercent(1e10)} of Speedrun Courses every second.` },
+            done() { return player.precision.points.gte(1e21) },
+        },
+        10: {
+            requirementDescription() { return `Upload ${f(1e170)} Precision Courses` },
+            effectDescription() { return `Autobuy Speedrun Course buyables.` },
+            done() { return player.precision.points.gte(1e170) },
+        },
+    },
+
+    clickables: {
+        11: {
+            title() {
+                let t = ""
+                return t
+            },
+            display() {
+                let d = "Move left 10 pixels (x-10)"
+                return d
+            },
+            canClick() { return true },
+            onClick() {
+                player.precision.x -= 10,
+                    player.precision.steps += 1
+            },
+            unlocked() { return player.toad.tierlayer.gte(84) },
+            style() {
+                return {
+                    'border-radius': '5px',
+                    'min-height': '80px',
+                    'width': '100px',
+                    'font-size': '12px'
+                }
+            },
+        },
+        12: {
+            title() {
+                let t = ""
+                return t
+            },
+            display() {
+                let d = "Move left 1 pixel (x-1)"
+                return d
+            },
+            canClick() { return true },
+            onClick() {
+                player.precision.x -= 1,
+                    player.precision.steps += 1
+            },
+            unlocked() { return player.toad.tierlayer.gte(84) },
+            style() {
+                return {
+                    'border-radius': '5px',
+                    'min-height': '80px',
+                    'width': '100px',
+                    'font-size': '12px'
+                }
+            },
+        },
+        13: {
+            title() {
+                let t = ""
+                return t
+            },
+            display() {
+                let d = "Move left 0.1 pixels (x-0.1)"
+                return d
+            },
+            canClick() { return true },
+            onClick() {
+                player.precision.x -= 0.1,
+                    player.precision.steps += 1
+            },
+            unlocked() { return player.toad.tierlayer.gte(84) },
+            style() {
+                return {
+                    'border-radius': '5px',
+                    'min-height': '80px',
+                    'width': '100px',
+                    'font-size': '12px'
+                }
+            },
+        },
+        14: {
+            title() {
+                let t = ""
+                return t
+            },
+            display() {
+                let d = "Jump!"
+                return d
+            },
+            canClick() { return true },
+            onClick() {
+                lineupCheck()
+            },
+            unlocked() { return player.toad.tierlayer.gte(84) },
+            style() {
+                return {
+                    'border-radius': '5px',
+                    'min-height': '80px',
+                    'width': '100px',
+                    'font-size': '15px'
+                }
+            },
+        },
+        15: {
+            title() {
+                let t = ""
+                return t
+            },
+            display() {
+                let d = "Move right 0.1 pixels (x+0.1)"
+                return d
+            },
+            canClick() { return true },
+            onClick() {
+                player.precision.x += 0.1,
+                    player.precision.steps += 1
+            },
+            unlocked() { return player.toad.tierlayer.gte(84) },
+            style() {
+                return {
+                    'border-radius': '5px',
+                    'min-height': '80px',
+                    'width': '100px',
+                    'font-size': '12px'
+                }
+            },
+        },
+        16: {
+            title() {
+                let t = ""
+                return t
+            },
+            display() {
+                let d = "Move right 1 pixel (x+1)"
+                return d
+            },
+            canClick() { return true },
+            onClick() {
+                player.precision.x += 1,
+                    player.precision.steps += 1
+            },
+            unlocked() { return player.toad.tierlayer.gte(84) },
+            style() {
+                return {
+                    'border-radius': '5px',
+                    'min-height': '80px',
+                    'width': '100px',
+                    'font-size': '12px'
+                }
+            },
+        },
+        17: {
+            title() {
+                let t = ""
+                return t
+            },
+            display() {
+                let d = "Move right 10 pixels (x+10)"
+                return d
+            },
+            canClick() { return true },
+            onClick() {
+                player.precision.x += 10,
+                    player.precision.steps += 1
+            },
+            unlocked() { return player.toad.tierlayer.gte(84) },
+            style() {
+                return {
+                    'border-radius': '5px',
+                    'min-height': '80px',
+                    'width': '100px',
+                    'font-size': '12px'
+                }
+            },
+        },
+    },
+
+    hotkeys: [
+        { key: "w", description: "W: Reset for Precision Courses", onPress() { if (canReset(this.layer)) doReset(this.layer) } },
+    ],
 
     layerShown() { return hasNormalAchievement(244) },          // Returns a bool for if this layer's node should be visible in the tree.
+
+    pixelMult() {
+        let m = d(1)
+        if (hasUpgrade('precision', 21)) m = m.times(upgradeEffect('precision', 21))
+        if (hasUpgrade('precision', 22)) m = m.times(upgradeEffect('precision', 22))
+        if (hasUpgrade('precision', 24)) m = m.times(10000000)
+        if (player.toad.tierlayer.gte(84)) m = m.times(tmp.precision.LUEff)
+        if (hasUpgrade('precision', 34)) m = m.times(upgradeEffect('precision', 34))
+        return m
+    },
+
+    pixelEff() {
+        let eff = player.precision.pixel.add(10).log(10).pow(0.05).max(1)
+        if (hasUpgrade('kaizo', 64)) eff = eff.pow(2).times(2)
+        return eff
+    },
+
+    LUmult() {
+        let m = d(1)
+        if (hasUpgrade('precision', 25)) m = m.times(upgradeEffect('precision', 25))
+        if (hasUpgrade('precision', 31)) m = m.times(upgradeEffect('precision', 31))
+        if (hasUpgrade('kaizo', 13)) m = m.times(tmp.precision.subPEff)
+        m = m.floor()
+        return m
+    },
+
+    LUEff() {
+        let eff = d(10).pow(player.precision.lineup.max(0).add(1).log10().pow(0.95).times(6))
+        return eff
+    },
+
+    subPmult() {
+        let m = d(1)
+        if (hasUpgrade('precision', 41)) m = m.times(3)
+        if (hasUpgrade('precision', 42)) m = m.times(upgradeEffect('precision', 42))
+        if (hasUpgrade('precision', 45)) m = m.times(5000)
+        if (hasUpgrade('kaizo', 31)) m = m.times(upgradeEffect('kaizo', 31))
+        m = m.floor()
+        return m
+    },
+
+    subPEff() {
+        let eff = player.precision.subpixel.pow(8).add(1).max(1)
+        return eff
+    },
+
+    FBmult() { //abandoned
+        let m = d(1)
+        return m
+    },
+
+    update(diff) {
+        if (hasUpgrade('precision', 15)) player.precision.pixel = player.precision.pixel.add(tmp.precision.pixelMult.times(diff))
+
+        if (hasMilestone('kaizo', 0)) player.precision.lineup = player.precision.lineup.add(tmp.precision.LUmult.times(diff).times(0.1)),
+            player.precision.subpixel = player.precision.subpixel.add(tmp.precision.subPmult.times(diff).times(0.1))
+    },
 
     tabFormat: [
         ["display-text", function () {
@@ -23226,7 +24554,6 @@ addLayer("precision", {
         }],
         "blank",
         "prestige-button",
-        ["display-text", () => `WIP`],
         ["display-text", () => `Your have uploaded ${formatWhole(player.themed.points)} Themed Courses`],
         ["display-text", () => `Your best amount of Precision Courses is ${formatWhole(player.precision.best)}`],
         ["microtabs", "stuff"],
@@ -23240,7 +24567,6 @@ addLayer("precision", {
                     ["blank", "15px"],
                     ["raw-html", () => `<div style="opacity:.5">Spike is the most central part of precision courses. The hitbox of spike is bigger than SMM1's in SMM2. If a block have 16 pixels wide (horizontal), The hitbox of spike is 15.8 pixels wide. It means if players want to jump out between two spike blocks, they have only 0.2 pixels of fault tolarance. This jump is called "Line-up".`],
                     ["upgrades", [1, 2, 3, 4, 5, 6, 7, 8, 9]],
-                    ["display-text", () => "coming soon in v0.13! WIP" ]
                 ]
             },
             "Milestones": {
@@ -23250,10 +24576,2042 @@ addLayer("precision", {
                     "milestones",
                 ]
             },
-            "Precision Skills": {
-                unlocked() { return false },
+            "Pixel": {
+                unlocked() { return hasUpgrade('precision', 15) },
                 content: [
                     ["blank", "15px"],
+                    ["display-text", () => `You have ${textStyle_h2(formatWhole(player.precision.pixel), '808080')} Pixels (+${f(tmp.precision.pixelMult)}/sec)`],
+                    ["display-text", () => `All 4 experience buyable mult is multiplied by ${textStyle_h2(f(tmp.precision.pixelEff) + 'x', '808080')}`],
+                ]
+            },
+            "Line-up": {
+                unlocked() { return player.toad.tierlayer.gte(84) },
+                content: [
+                    ["blank", "15px"],
+                    ["display-text", () => `You made ${textStyle_h2(formatWhole(player.precision.lineup), '808080')} Line-ups (+${fw(tmp.precision.LUmult)}/once)`],
+                    ["display-text", () => `Precision Courses and Pixels gain is multiplied by ${textStyle_h2(f(tmp.precision.LUEff) + 'x', '808080')}`],
+                    ["display-text", function () { if (hasUpgrade('kaizo', 13)) return `You have ${textStyle_h2(formatWhole(player.precision.subpixel), '808080')} Subpixels (+${fw(tmp.precision.subPmult)}/once)` }],
+                    ["display-text", function () { if (hasUpgrade('kaizo', 13)) return `Line-up gain is multiplied by ${textStyle_h2(f(tmp.precision.subPEff) + 'x', '808080')}` }],
+                    "blank",
+                    ["clickables", [1]],
+                    "blank",
+                    ["display-text", () => `Your Mario is at coordinate X: ${f(player.precision.x)} &emsp; Target X: ${f(player.precision.targetx)}`],
+                    "blank",
+                    ["display-text", function () { if (hasUpgrade('kaizo', 13)) return `Steps: ${textColor(fw(player.precision.steps), player.precision.steps > getLineUpFinesse() ? 'ff0000' : '00ff00')}` }],
+                    "blank",
+                    ["display-text", function () { return player.precision.lineupHistory.join('<br>') }],
+                    "blank",
+                    ["display-text", () => `Move Mario and make coordinate X to target X±0.1 pixels，then jump, you complete the line-up`],
+                    "blank",
+                    ["display-text", function () { if (hasUpgrade('kaizo', 13)) return `If you used the minimum steps for a successful line-up, you would gain subpixels ` }],
+                    "blank",
+                    "blank",
+                ]
+            },
+        },
+    },
+})
+
+
+// 第三十三层：Kaizo关卡 (Kaizo Courses)
+addLayer("kaizo", {
+    componentStyles: {
+        "upgrade"() {
+            return {
+                'border-radius': '10%',
+                'width': '150px',
+                'min-height': '150px',
+            }
+        }
+    },
+    startData() {
+        return {                  // startData is a function that returns default data for a layer. 
+            unlocked: true,                     // You can add more variables here to add them to your layer.
+            points: new Decimal(0),             // "points" is the internal name for the main resource of the layer.
+            sj: d(0),
+            dsj: d(0),
+            tsj: d(0),
+            reclaim: d(0),
+            juggle: d(0),
+            midair: d(0),
+        }
+    },
+
+    color: "#00a19f",                       // The color for this layer, which affects many elements.
+    resource: "Kaizo Courses",            // The name of this layer's main prestige resource.
+    row: 16,                                 // The row this layer is on (0 is the first row).
+    symbol: "Kz",
+    position: 1,
+    branches: ['speedrun'],
+
+    baseResource: "Speedrun Courses",                 // The name of the resource your prestige gain is based on.
+    baseAmount() { return player.speedrun.points },  // A function to return the current amount of baseResource.
+
+    requires: new Decimal('1e2610'),              // The amount of the base needed to  gain 1 of the prestige currency.
+    // Also the amount required to unlock the layer.
+
+    type: "normal",                         // Determines the formula used for calculating prestige currency.
+    exponent: 0.0008,                          // "normal" prestige gain is (currency^exponent).
+
+    gainMult() {                            // Returns your multiplier to your gain of the prestige resource.
+        let m = d(1)
+        if (hasUpgrade('kaizo', 12)) m = m.times(upgradeEffect('kaizo', 12))
+        if (hasUpgrade('kaizo', 14)) m = m.times(upgradeEffect('kaizo', 14))
+        return m               // Factor in any bonuses multiplying gain here.
+    },
+    gainExp() {                             // Returns the exponent to your gain of the prestige resource.
+        let e = d(1)
+        return e
+    },
+
+    softcap() {
+        let sc = d('1e1200')
+        if (hasMilestone('versus', 17)) sc = sc.pow(milestoneEffect('versus', 17))
+        sc = sc.pow(tmp.kaizo.DSJeff)
+        if (hasMilestone('troll', 3)) sc = sc.pow(1.5)
+        return sc
+    },
+
+    softcapPower() {
+        return d(0)
+    },
+
+    effect() {
+        let eff = d(10).pow(player.kaizo.points.max(0).add(1).log(10).pow(0.75))
+        if (hasUpgrade('kaizo', 15)) eff = d(10).pow(player.kaizo.points.max(0).add(1).log(10).pow(1.3).times(1.25))
+        return eff
+    },
+
+    onPrestige() {
+        return player.s_expert.points = d(0)
+    },
+
+    layerShown() { return hasNormalAchievement(251) },          // Returns a bool for if this layer's node should be visible in the tree.
+
+    passiveGeneration() {
+        return hasMilestone('versus', 17)
+    },
+
+    doReset(resettingLayer) {
+        if (layers[resettingLayer].row > layers[this.layer].row) {
+            let kept = ["unlocked", "auto"]
+            if (hasMilestone('troll', 2)) {
+                kept.push("milestones")
+            }
+            if (hasMilestone('troll', 5)) {
+                kept.push("upgrades")
+            }
+            layerDataReset(this.layer, kept)
+        }
+    },
+
+    hotkeys: [
+        { key: "k", description: "K: Reset for Kaizo Courses", onPress() { if (canReset(this.layer)) doReset(this.layer) } },
+    ],
+
+    upgrades: {
+        11: {
+            title: "The monty moles",
+            description: "Add 0.3 to \"What's the theoretical limit III\" effect base.",
+            cost: new Decimal(12),
+            unlocked() { return tmp.kaizo.layerShown },
+        },
+        12: {
+            title: "Kaizo speedrunning",
+            description() { return `TA Courses multiply Kaizo Courses gain (Starts at ${f('1e650')} TA Courses)` },
+            cost: new Decimal(144),
+            unlocked() { return hasUpgrade(this.layer, this.id - 1) },
+            effect() {
+                let eff = player.speedrun.TA.max(10).log(10).sub(650).max(1).pow(2)
+                return eff
+            },
+            effectDisplay() {
+                return `${format(upgradeEffect(this.layer, this.id))}x`
+            },
+        },
+        13: {
+            title: "Exactly equal to",
+            description() { return `Unlock Subpixel in Precision Course layer.` },
+            cost: new Decimal(1296),
+            unlocked() { return hasUpgrade(this.layer, this.id - 1) },
+        },
+        14: {
+            title: "An S+ kaizo player",
+            description() { return `Each versus rating past 5000 multiply Kaizo Course by 2x.` },
+            cost: new Decimal(1111111),
+            unlocked() { return hasUpgrade(this.layer, this.id - 1) },
+            effect() {
+                let eff = d(2).pow(player.versus.points.max(5000).sub(5000))
+                return eff
+            },
+            effectDisplay() {
+                return `${format(upgradeEffect(this.layer, this.id))}x`
+            },
+        },
+        15: {
+            title: "Bob-omb spin jumps",
+            description() { return `Kaizo Course effect is much better.` },
+            cost: new Decimal(5e12),
+            unlocked() { return hasUpgrade(this.layer, this.id - 1) },
+        },
+        21: {
+            title: "A shell to heaven",
+            description() { return `Unlock Shell Jump and factor F.` },
+            cost: new Decimal('1e2642'),
+            unlocked() { return hasUpgrade(this.layer, 15) },
+        },
+        22: {
+            title: "4 layers",
+            description() { return `OoM^4s of CC multiplies Shell Jumps gain.` },
+            cost: new Decimal('6e3361'),
+            unlocked() { return hasUpgrade(this.layer, this.id - 1) },
+            effect() {
+                let eff = player.points.max('eee10').log(10).log(10).log(10).log(10)
+                return eff
+            },
+            effectDisplay() {
+                return `${format(upgradeEffect(this.layer, this.id))}x`
+            },
+        },
+        23: {
+            title: "Shell jump mastery",
+            description() { return `Unlock Shell Jump buyables.` },
+            cost: new Decimal('5e3601'),
+            unlocked() { return hasUpgrade(this.layer, this.id - 1) },
+        },
+        24: {
+            title: "Drop back-kick shell jump",
+            description() { return `Every Verses Rating past 6000 multiplies "Single Shell Jump Mastery I" effect base by +0.08x.` },
+            currencyDisplayName: "Shell Jumps",
+            currencyInternalName: "sj",
+            currencyLayer: "kaizo",
+            cost: new Decimal(1000000),
+            unlocked() { return hasUpgrade(this.layer, this.id - 1) },
+            effect() {
+                let eff = player.versus.points.max(6000).sub(6000).times(0.08).add(1)
+                return eff
+            },
+            effectDisplay() {
+                return `${format(upgradeEffect(this.layer, this.id))}x`
+            },
+        },
+        25: {
+            title: "Drop front-kick shell jump",
+            description() { return `lg(Factor E powers Factor F).` },
+            cost: new Decimal('1e4561'),
+            unlocked() { return hasUpgrade(this.layer, this.id - 1) },
+            effect() {
+                let eff = tmp.versus.batokoEff.max(1).log(10).max(1)
+                return eff
+            },
+            effectDisplay() {
+                return `^${format(upgradeEffect(this.layer, this.id))}`
+            },
+        },
+        31: {
+            title: "Up-throw back-kick shell jump",
+            description() { return `Shell Jumps multiply Subpixel gain.` },
+            cost: new Decimal('3e8401'),
+            unlocked() { return hasUpgrade(this.layer, 25) },
+            effect() {
+                let eff = player.kaizo.sj.max(1).pow(2).max(1)
+                return eff
+            },
+            effectDisplay() {
+                return `${format(upgradeEffect(this.layer, this.id))}x`
+            },
+        },
+        32: {
+            title: "Shell jump expansion",
+            description() { return `Unlock Double Shell Jump.` },
+            cost: new Decimal('1e56641'),
+            unlocked() { return hasUpgrade(this.layer, this.id - 1) },
+        },
+        33: {
+            title: "100 shell jumps consistency",
+            description() { return `Shell Jumps multiply Double Shell Jumps gain.` },
+            cost: new Decimal('1e74751'),
+            unlocked() { return hasUpgrade(this.layer, this.id - 1) },
+            effect() {
+                let eff = player.kaizo.sj.max(1).log(10).pow(0.7)
+                return eff
+            },
+            effectDisplay() {
+                return `${format(upgradeEffect(this.layer, this.id))}x`
+            },
+        },
+        34: {
+            title: "90 double shell jumps consistency",
+            description() { return `Double Shell Jumps multiply Shell Jumps gain.` },
+            cost: new Decimal('1e92000'),
+            unlocked() { return hasUpgrade(this.layer, this.id - 1) },
+            effect() {
+                let eff = player.kaizo.dsj.max(1).pow(10)
+                return eff
+            },
+            effectDisplay() {
+                return `${format(upgradeEffect(this.layer, this.id))}x`
+            },
+        },
+        35: {
+            title: "Double mastery",
+            description() { return `Unlock Double Shell Jump buyables.` },
+            cost: new Decimal('1e106000'),
+            unlocked() { return hasUpgrade(this.layer, this.id - 1) },
+        },
+        41: {
+            title: "Up-throw front-kick shell jump",
+            description() { return `${f(160000)}x Double Shell Jumps gain.` },
+            cost: new Decimal('1e163000'),
+            unlocked() { return hasUpgrade(this.layer, 35) },
+        },
+        42: {
+            title: "Triple triple",
+            description() { return `Unlock Triple Shell Jump.` },
+            cost: new Decimal('1e280000'),
+            unlocked() { return hasUpgrade(this.layer, this.id - 1) },
+        },
+        43: {
+            title: "Triple grand master",
+            description() { return `Versus Rating past 6500 multiplies Triple Shell Jump gain.` },
+            cost: new Decimal('1e560000'),
+            unlocked() { return hasUpgrade(this.layer, this.id - 1) },
+            effect() {
+                let eff = d(10).pow(player.versus.points.sub(6500).max(0).pow(1.05))
+                return eff
+            },
+            effectDisplay() {
+                return `${format(upgradeEffect(this.layer, this.id))}x`
+            },
+        },
+        44: {
+            title: "80 triple shell jumps consistency",
+            description() { return `Unlock Triple Shell Jump buyables.` },
+            cost: new Decimal('1e633000'),
+            unlocked() { return hasUpgrade(this.layer, this.id - 1) },
+        },
+        45: {
+            title: "How to clear this?",
+            description() { return `Unlock a new layer on row 16. ${tmp.troll.layerShown ? 'Allow you to upload more Puzzle Courses' : ''}` },
+            cost: new Decimal('1e750000'),
+            unlocked() { return hasUpgrade(this.layer, this.id - 1) },
+        },
+        51: {
+            title: "Low air shell jump",
+            description() { return `SSJM II provides SSJM I free levels.` },
+            cost: new Decimal('1e975000'),
+            unlocked() { return hasUpgrade(this.layer, 45) },
+        },
+        52: {
+            title: "Trampoline reflect snowball jump",
+            description() { return `DSJM III provides SSJM I free levels.` },
+            cost: new Decimal('1e980000'),
+            unlocked() { return hasUpgrade(this.layer, this.id - 1) },
+        },
+        53: {
+            title: "Trampoline reflect shell jump",
+            description() { return `DSJM IV provides SSJM II free levels.` },
+            cost: new Decimal('1e985000'),
+            unlocked() { return hasUpgrade(this.layer, this.id - 1) },
+        },
+        54: {
+            title: "Skeleton shell drop air jump",
+            description() { return `DSJM IV provides DSJM III free levels.` },
+            cost: new Decimal('1e987000'),
+            unlocked() { return hasUpgrade(this.layer, this.id - 1) },
+        },
+        55: {
+            title: "Skeleton shell drop air jump",
+            description() { return `TSJM V provides DSJM III free levels.` },
+            cost: new Decimal('1e1162000'),
+            unlocked() { return hasUpgrade(this.layer, this.id - 1) },
+        },
+        61: {
+            title: "Reclaim shell jump",
+            description() { return `TSJM VI provides DSJM IV free levels, TSJM V base is multiplied by 1.8x` },
+            cost: new Decimal('1e1219000'),
+            unlocked() { return hasUpgrade(this.layer, 55) },
+        },
+        62: {
+            title: "Midair spring jump",
+            description() { return `TSJM VI provides TSJM V free levels.` },
+            cost: new Decimal('1e1256000'),
+            unlocked() { return hasUpgrade(this.layer, this.id - 1) },
+        },
+        63: {
+            title: "Midair pow block jump",
+            description() { return `Puzzle Courses provides TSJM VI free levels by a reduced rate. (2PzC→1Lv)` },
+            cost: new Decimal('1e1399750'),
+            unlocked() { return hasUpgrade(this.layer, this.id - 1) },
+        },
+        64: {
+            title: "Midair P-switch jump",
+            description() { return `Pixel effect is much stronger.` },
+            cost: new Decimal('1e1467500'),
+            unlocked() { return hasUpgrade(this.layer, this.id - 1) },
+        },
+        65: {
+            title: "Juggles",
+            description() { return `Puzzle Course requirement base is 1.75 instead of 2.` },
+            cost: new Decimal('1e1510000'),
+            unlocked() { return hasUpgrade(this.layer, this.id - 1) },
+        },
+    },
+
+    milestones: {
+        0: {
+            requirementDescription() { return `Upload ${f(1e60)} Kaizo Courses` },
+            effectDescription: "Passive generate 10% of Line-ups and Subpixels every second.",
+            done() { return player.kaizo.points.gte(1e60) },
+        },
+        1: {
+            requirementDescription() { return `Upload ${f('3e1201')} Kaizo Courses` },
+            effectDescription() { return `${f('1e4000')}x Batoko Wins gain` },
+            done() { return player.kaizo.points.gte('3e1201') },
+        },
+    },
+
+    buyables: {
+        11: {
+            title: "Single Shell Jump Mastery I",
+            cost(x) {
+                let c = new Decimal(5).pow(Decimal.pow(x, 1.125))
+                if (x.gte(225)) c = new Decimal('1e340').times(Decimal.pow(1000, (x.sub(225).pow(1.5))))
+                return c
+            },
+            free() {
+                let free = d(0)
+                if (hasUpgrade('kaizo', 51)) free = free.add(getBuyableAmount('kaizo', 12))
+                if (hasUpgrade('kaizo', 52)) free = free.add(getBuyableAmount('kaizo', 21))
+                return free
+            },
+            display() {
+                let display = ` Multiply Shell Jump gain by ${f(this.effBase())} per level. <br>
+                Level: ${formatWhole(player[this.layer].buyables[this.id])}${this.free().gte(1) ? (' + ' + fw(this.free())) : ''}<br>
+                Effect: ${format(this.effect())}x<br>
+                Cost: ${format(this.cost())} Shell Jumps`
+                return display
+            },
+            canAfford() { return player[this.layer].sj.gte(this.cost()) },
+            buyMax() {
+                if (player.kaizo.sj.lt('1e340')) setBuyableAmount('kaizo', 11, player.kaizo.sj.max(1).log(5).root(1.125).floor().add(1).min(225))
+                else setBuyableAmount('kaizo', 11, player.kaizo.sj.div('1e340').max(1).log(1000).root(1.5).add(225).floor().add(1))
+            },
+            canBuyMax() { return false },
+            buy() {
+                if (!this.canBuyMax()) player[this.layer].sj = player[this.layer].sj.sub(this.cost()),
+                    setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
+                if (this.canBuyMax()) this.buyMax()
+            },
+            effBase() {
+                let b = d(3)
+                if (hasUpgrade('kaizo', 24)) b = b.times(upgradeEffect('kaizo', 24))
+                return b
+            },
+            effect(x) {
+                let effect = this.effBase().pow(x.add(this.free()))
+                return effect
+            },
+            unlocked() { return hasUpgrade('kaizo', 23) },
+            auto() {
+                if (this.canAfford() && hasMilestone('puzzle', 2)) this.buyMax()
+            },
+        },
+        12: {
+            title: "Single Shell Jump Mastery II",
+            cost(x) { return new Decimal(1000).pow(Decimal.pow(x, 1.75)).times(1e22) },
+            free() {
+                let free = d(0)
+                if (hasUpgrade('kaizo', 53)) free = free.add(getBuyableAmount('kaizo', 22))
+                return free
+            },
+            display() {
+                let display = ` Multiply Shell Jump gain by ${f(this.effBase())} per level. <br>
+                Level: ${formatWhole(player[this.layer].buyables[this.id])}${this.free().gte(1) ? (' + ' + fw(this.free())) : ''}<br>
+                Effect: ${format(this.effect())}x<br>
+                Cost: ${format(this.cost())} Shell Jumps`
+                return display
+            },
+            canAfford() { return player[this.layer].sj.gte(this.cost()) },
+            buyMax() { return setBuyableAmount('kaizo', 12, player.kaizo.sj.div(1e22).max(1).log(1000).root(1.75).floor().add(1)) },
+            canBuyMax() { return false },
+            buy() {
+                if (!this.canBuyMax()) player[this.layer].sj = player[this.layer].sj.sub(this.cost()),
+                    setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
+                if (this.canBuyMax()) this.buyMax()
+            },
+            effBase() {
+                let b = d(24)
+                return b
+            },
+            effect(x) {
+                let effect = this.effBase().pow(x.add(this.free()))
+                return effect
+            },
+            unlocked() { return hasUpgrade('kaizo', 23) },
+            auto() {
+                if (this.canAfford() && hasMilestone('puzzle', 2)) this.buyMax()
+            },
+        },
+        21: {
+            title: "Double Shell Jump Mastery III",
+            cost(x) { return new Decimal(10).pow(Decimal.pow(x, 1.45)) },
+            free() {
+                let free = d(0)
+                if (hasUpgrade('kaizo', 54)) free = free.add(getBuyableAmount('kaizo', 22))
+                if (hasUpgrade('kaizo', 55)) free = free.add(getBuyableAmount('kaizo', 31))
+                return free
+            },
+            display() {
+                let display = ` Multiply Double Shell Jump gain by ${f(this.effBase())} per level. <br>
+                Level: ${formatWhole(player[this.layer].buyables[this.id])}${this.free().gte(1) ? (' + ' + fw(this.free())) : ''}<br>
+                Effect: ${format(this.effect())}x<br>
+                Cost: ${format(this.cost())} Double Shell Jumps`
+                return display
+            },
+            canAfford() { return player[this.layer].dsj.gte(this.cost()) },
+            buyMax() { return setBuyableAmount('kaizo', 21, player.kaizo.dsj.max(1).log(10).root(1.45).floor().add(1)) },
+            canBuyMax() { return false },
+            buy() {
+                if (!this.canBuyMax()) player[this.layer].dsj = player[this.layer].dsj.sub(this.cost()),
+                    setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
+                if (this.canBuyMax()) this.buyMax()
+            },
+            effBase() {
+                let b = d(10)
+                if (hasUpgrade('kaizo', 35)) b = b.times(buyableEffect('kaizo', 22))
+                return b
+            },
+            effect(x) {
+                let effect = this.effBase().pow(x.add(this.free()))
+                return effect
+            },
+            unlocked() { return hasUpgrade('kaizo', 35) },
+            auto() {
+                if (this.canAfford() && hasMilestone('puzzle', 3)) this.buyMax()
+            },
+        },
+        22: {
+            title: "Double Shell Jump Mastery IV",
+            cost(x) { return new Decimal(1000).pow(Decimal.pow(x, 1.4)).times(6e16) },
+            free() {
+                let free = d(0)
+                if (hasUpgrade('kaizo', 61)) free = free.add(getBuyableAmount('kaizo', 32))
+                return free
+            },
+            display() {
+                let display = `Multiply "Double Shell Jump Mastery III" by +${f(this.effBase())} per level. <br>
+                Level: ${formatWhole(player[this.layer].buyables[this.id])}${this.free().gte(1) ? (' + ' + fw(this.free())) : ''}<br>
+                Effect: ${format(this.effect())}x<br>
+                Cost: ${format(this.cost())} Double Shell Jumps`
+                return display
+            },
+            canAfford() { return player[this.layer].dsj.gte(this.cost()) },
+            buyMax() { return setBuyableAmount('kaizo', 22, player.kaizo.dsj.div(6e16).max(1).log(1000).root(1.4).floor().add(1)) },
+            canBuyMax() { return false },
+            buy() {
+                if (!this.canBuyMax()) player[this.layer].dsj = player[this.layer].dsj.sub(this.cost()),
+                    setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
+                if (this.canBuyMax()) this.buyMax()
+            },
+            effBase() {
+                let b = d(1)
+                return b
+            },
+            effect(x) {
+                let effect = this.effBase().times(x.add(this.free())).add(1)
+                return effect
+            },
+            unlocked() { return hasUpgrade('kaizo', 35) },
+            auto() {
+                if (this.canAfford() && hasMilestone('puzzle', 3)) this.buyMax()
+            },
+        },
+        31: {
+            title: "Triple Shell Jump Mastery V",
+            cost(x) { return new Decimal(10).pow(Decimal.pow(x, 1.4)).times(20000) },
+            free() {
+                let free = d(0)
+                if (hasUpgrade('kaizo', 62)) free = free.add(getBuyableAmount('kaizo', 32))
+                return free
+            },
+            display() {
+                let display = `Multiply Triple Shell Jump gain by ${f(this.effBase())} per level. <br>
+                Level: ${formatWhole(player[this.layer].buyables[this.id])}${this.free().gte(1) ? (' + ' + fw(this.free())) : ''}<br>
+                Effect: ${format(this.effect())}x<br>
+                Cost: ${format(this.cost())} Triple Shell Jumps`
+                return display
+            },
+            canAfford() { return player[this.layer].tsj.gte(this.cost()) },
+            buyMax() { return setBuyableAmount('kaizo', 31, player.kaizo.tsj.div(20000).max(1).log(10).root(1.4).floor().add(1)) },
+            canBuyMax() { return false },
+            buy() {
+                if (!this.canBuyMax()) player[this.layer].tsj = player[this.layer].tsj.sub(this.cost()),
+                    setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
+                if (this.canBuyMax()) this.buyMax()
+            },
+            effBase() {
+                let b = d(12)
+                if (hasUpgrade('kaizo', 61)) b = b.times(1.8)
+                return b
+            },
+            effect(x) {
+                let effect = this.effBase().pow(x.add(this.free())).max(1)
+                return effect
+            },
+            unlocked() { return hasUpgrade('kaizo', 44) },
+            auto() {
+                if (this.canAfford() && hasMilestone('puzzle', 4)) this.buyMax()
+            },
+        },
+        32: {
+            title: "Triple Shell Jump Mastery VI",
+            cost(x) { return new Decimal(1000).pow(Decimal.pow(x, 1.6)).times(3e14) },
+            free() {
+                let free = d(0)
+                if (hasUpgrade('kaizo', 63)) free = free.add(player.puzzle.points.max(0).div(2).floor())
+                return free
+            },
+            display() {
+                let display = `Multiply Triple Shell Jump gain by ${f(this.effBase())} per level. <br>
+                Level: ${formatWhole(player[this.layer].buyables[this.id])}${this.free().gte(1) ? (' + ' + fw(this.free())) : ''}<br>
+                Effect: ${format(this.effect())}x<br>
+                Cost: ${format(this.cost())} Triple Shell Jumps`
+                return display
+            },
+            canAfford() { return player[this.layer].tsj.gte(this.cost()) },
+            buyMax() { return setBuyableAmount('kaizo', 32, player.kaizo.tsj.div(3e14).max(1).log(1000).root(1.6).floor().add(1)) },
+            canBuyMax() { return false },
+            buy() {
+                if (!this.canBuyMax()) player[this.layer].tsj = player[this.layer].tsj.sub(this.cost()),
+                    setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
+                if (this.canBuyMax()) this.buyMax()
+            },
+            effBase() {
+                let b = d(100)
+                return b
+            },
+            effect(x) {
+                let effect = this.effBase().pow(x.add(this.free())).max(1)
+                return effect
+            },
+            unlocked() { return hasUpgrade('kaizo', 44) },
+            auto() {
+                if (this.canAfford() && hasMilestone('puzzle', 4)) this.buyMax()
+            },
+        },
+    },
+
+    SJmult: {
+        1() {
+            let m = d(1)
+            if (hasUpgrade('kaizo', 22)) m = m.times(upgradeEffect('kaizo', 22))
+            if (hasUpgrade('kaizo', 23)) m = m.times(buyableEffect('kaizo', 11)),
+                m = m.times(buyableEffect('kaizo', 12))
+            if (hasUpgrade('kaizo', 34)) m = m.times(upgradeEffect('kaizo', 34))
+            if (hasUpgrade('kaizo', 42)) m = m.times(tmp.kaizo.TSJeff)
+            if (hasUpgrade('puzzle', 13)) m = m.times(upgradeEffect('puzzle', 13))
+            return m
+        },
+        2() {
+            let m = d(1)
+            if (hasUpgrade('kaizo', 33)) m = m.times(upgradeEffect('kaizo', 33))
+            if (hasUpgrade('kaizo', 35)) m = m.times(buyableEffect('kaizo', 21))
+            if (hasUpgrade('kaizo', 41)) m = m.times(160000)
+            if (hasUpgrade('kaizo', 42)) m = m.times(tmp.kaizo.TSJeff)
+            return m
+        },
+        3() {
+            let m = d(1)
+            if (hasMilestone('versus', 18)) m = m.times(3)
+            if (hasUpgrade('kaizo', 43)) m = m.times(upgradeEffect('kaizo', 43))
+            if (hasUpgrade('kaizo', 44)) m = m.times(buyableEffect('kaizo', 31)),
+                m = m.times(buyableEffect('kaizo', 32))
+            if (hasUpgrade('kaizo', 45) || tmp.troll.layerShown) m = m.times(layerEffect('puzzle'))
+            return m
+        },
+        reclaim() {
+            let m = d(1)
+            return m
+        },
+        juggle() {
+            let m = d(1)
+            return m
+        },
+    },
+
+    SJeff() {
+        if (!hasUpgrade('kaizo', 21)) return d(1)
+        let eff = d(10).pow(d(10).pow(player.kaizo.sj.add(1).log(2).pow(0.5)).sub(1).times(15000000))
+        if (hasUpgrade('kaizo', 25)) eff = eff.pow(upgradeEffect('kaizo', 25))
+        return eff
+    },
+
+    DSJeff() {
+        if (!hasUpgrade('kaizo', 32)) return d(1)
+        let eff = player.kaizo.dsj.add(1).log(10).pow(0.37)
+        return eff
+    },
+
+    TSJeff() {
+        if (!hasUpgrade('kaizo', 42)) return d(1)
+        let eff = d(10).pow(player.kaizo.tsj.add(1).log(10).pow(0.8).times(10)).max(1)
+        return eff
+    },
+
+    update(diff) {
+        if (hasUpgrade('kaizo', 21)) player.kaizo.sj = player.kaizo.sj.add(tmp.kaizo.SJmult[1].times(diff))
+        if (hasUpgrade('kaizo', 32)) player.kaizo.dsj = player.kaizo.dsj.add(tmp.kaizo.SJmult[2].times(diff))
+        if (hasUpgrade('kaizo', 42)) player.kaizo.tsj = player.kaizo.tsj.add(tmp.kaizo.SJmult[3].times(diff))
+    },
+
+    tabFormat: [
+        ["display-text", function () {
+            let bef1e1000 = "You have uploaded"
+            if (player.kaizo.points.gte("1e1000")) bef1e1000 = ""
+            let maindisplay = `${bef1e1000} ${textStyle_h2(formatWhole(player.kaizo.points), '00a19f')} Kaizo Courses`
+            maindisplay += `, multiplying Batoko gain by ${textStyle_h2(f(layerEffect('kaizo')) + 'x', '00a19f')}`
+            return maindisplay
+        }],
+        "blank",
+        "prestige-button",
+        ["display-text", () => `Your have uploaded ${formatWhole(player.speedrun.points)} Speedrun Courses`],
+        ["display-text", () => `Your best amount of Kaizo Courses is ${formatWhole(player.kaizo.best)}`],
+        ["microtabs", "stuff"],
+        ["blank", "65px"],
+    ],
+    microtabs: {
+        stuff: {
+            "Upgrades": {
+                unlocked() { return true },
+                content: [
+                    ["blank", "15px"],
+                    ["raw-html", () => `<div style="opacity:.5">Kaizo is from Japanese word "改造". Shell jumps, midair spring jumps... Kaizo course is an important part of SMM2`],
+                    ["upgrades", [1, 2, 3, 4, 5, 6, 7, 8, 9]],
+                ]
+            },
+            "Milestones": {
+                unlocked() { return true },
+                content: [
+                    ["blank", "15px"],
+                    "milestones",
+                ]
+            },
+            "Shell Jump": {
+                unlocked() { return hasUpgrade('kaizo', 21) },
+                content: [
+                    ["blank", "15px"],
+                    ["display-text", () => `You made ${textStyle_h2(fw(player.kaizo.sj), '00a19f')} Shell Jumps (+${fw(tmp.kaizo.SJmult[1])}/s)`],
+                    ["display-text", () => `Factor F is ${textStyle_h2(fw(tmp.kaizo.SJeff), '00a19f')}`],
+                    "blank",
+                    ["buyables", [1]],
+                    "blank",
+                    ["display-text", function () { if (hasUpgrade('kaizo', 32)) return `You made ${textStyle_h2(fw(player.kaizo.dsj), '00a19f')} Double Shell Jumps (+${fw(tmp.kaizo.SJmult[2])}/s)` }],
+                    ["display-text", function () { if (hasUpgrade('kaizo', 32)) return `Power Kaizo Course gain hardcap by ${textStyle_h2('^' + f(tmp.kaizo.DSJeff), '00a19f')}` }],
+                    "blank",
+                    ["buyables", [2]],
+                    "blank",
+                    ["display-text", function () { if (hasUpgrade('kaizo', 42)) return `You made ${textStyle_h2(fw(player.kaizo.tsj), '00a19f')} Triple Shell Jumps (+${fw(tmp.kaizo.SJmult[3])}/s)` }],
+                    ["display-text", function () { if (hasUpgrade('kaizo', 42)) return `Multiply Single and Double Shell Jumps gain by ${textStyle_h2(f(tmp.kaizo.TSJeff) + 'x', '00a19f')}` }],
+                    "blank",
+                    ["buyables", [3]],
+                    "blank",
+                ]
+            },
+        },
+    },
+})
+
+
+function resetPzE() {
+    if (hasUpgrade('puzzle', 44)) return;
+    player.puzzle.energy = d(0),
+        player.puzzle.points = d(0),
+        resetonoff()
+}
+
+function resetonoff() {
+    player.puzzle.on = d(0),
+        player.puzzle.off = d(0)
+}
+
+// 第三十四层：解谜关卡 (Puzzle Courses)
+addLayer("puzzle", {
+    componentStyles: {
+        "upgrade"() {
+            return {
+                'border-radius': '10%',
+                'width': '150px',
+                'min-height': '150px',
+            }
+        }
+    },
+    startData() {
+        return {                  // startData is a function that returns default data for a layer. 
+            unlocked: true,                     // You can add more variables here to add them to your layer.
+            points: new Decimal(0),             // "points" is the internal name for the main resource of the layer.
+            energy: d(0),
+            on: d(0),
+            off: d(0),
+            mode: 'none',
+        }
+    },
+
+    color: "#f9491f",                       // The color for this layer, which affects many elements.
+    resource: "Puzzle Courses",            // The name of this layer's main prestige resource.
+    row: 16,                                 // The row this layer is on (0 is the first row).
+    symbol: "Pz",
+    position: 2,
+
+    nodeStyle() {
+        return {
+            background: 'linear-gradient(45deg, #f9491f 50%, #6b6aff 50%)',
+            'background-size': '150% 150%',
+            'background-position': '25% 25%'
+        }
+    },
+
+    baseResource: "Cleared Courses",                 // The name of the resource your prestige gain is based on.
+    baseAmount() { return player.points },  // A function to return the current amount of baseResource.
+
+    requires: new Decimal('eee1e14'),              // The amount of the base needed to  gain 1 of the prestige currency.
+    // Also the amount required to unlock the layer.
+
+    type: "custom",                         // Determines the formula used for calculating prestige currency.
+
+    canReset() {
+        let OoM3base = tmp.puzzle.OoM3base
+        let enough = player.points.gte(d(10).pow(d(10).pow(d(10).pow(OoM3base.pow(player.puzzle.points).times(1e13).add(9e13).div(tmp.puzzle.OoM3costReduce)))))
+        return (enough && hasUpgrade('kaizo', 45))
+    },
+    OoM3base() {
+        let OoM3base = d(2)
+        if (hasUpgrade('kaizo', 65)) OoM3base = d(1.75)
+        if (hasUpgrade('puzzle', 23)) OoM3base = d(1.5)
+        if (hasUpgrade('puzzle', 32)) OoM3base = d(1.25)
+        if (hasUpgrade('puzzle', 33)) OoM3base = d(1.1)
+        if (hasUpgrade('puzzle', 34)) OoM3base = d(1.01)
+        if (hasUpgrade('puzzle', 45)) OoM3base = d(1.002)
+        return OoM3base
+    },
+    OoM3costReduce() {
+        let OoM3reduce = d(1)
+        if (hasUpgrade('puzzle', 15)) OoM3reduce = OoM3reduce.times(tmp.puzzle.off.e[1])
+        return OoM3reduce
+    },
+    getResetGain() {
+        let OoM3base = tmp.puzzle.OoM3base
+        let gain = player.points.max('ee10').log(10).log(10).log(10).sub(9e13).div(1e13).times(tmp.puzzle.OoM3costReduce).max(1).log(OoM3base).floor()
+        if ((!tmp[this.layer].canBuyMax) || tmp[this.layer].baseAmount.lt(tmp[this.layer].requires)) return decimalOne
+        else return gain.floor().sub(player[this.layer].points).add(1).max(1)
+    },
+    getNextAt() {
+        let gain = tmp.puzzle.getResetGain
+        let nextshow = new Decimal(-1)
+        let OoM3base = tmp.puzzle.OoM3base
+        if ((!tmp[this.layer].canBuyMax) || !tmp[this.layer].canReset) nextshow = new Decimal(-1)
+        else nextshow = new Decimal(0)
+        return d(10).pow(d(10).pow(d(10).pow(OoM3base.pow(gain.add(nextshow).add(player.puzzle.points)).times(1e13).add(9e13).div(tmp.puzzle.OoM3costReduce))))
+    },
+    prestigeButtonText() {
+        return "Reset for <b>+" + formatWhole(tmp.puzzle.getResetGain) + "</b> Puzzle Courses<br><br>" + format(player.points) + " / " + format(tmp.puzzle.getNextAt) + " Cleared Courses"
+    },
+
+    gainMult() {                            // Returns your multiplier to your gain of the prestige resource.
+        let m = d(1)
+        return m               // Factor in any bonuses multiplying gain here.
+    },
+    gainExp() {                             // Returns the exponent to your gain of the prestige resource.
+        let e = d(1)
+        return e
+    },
+
+    layerShown() { return hasNormalAchievement(253) },
+
+    effect() {
+        let eff = d(35).pow(player.puzzle.points.max(0).pow(1.01))
+        return eff
+    },
+
+    effectDescription() {
+        return `, multiplying Triple Shell Jump gain by ${textResourceStyle(format(tmp[this.layer].effect) + 'x', 'text-puzzle')}`
+    },
+
+    doReset(resettingLayer) {
+        if (layers[resettingLayer].row > layers[this.layer].row) {
+            let kept = ["unlocked", "auto"]
+            if (hasMilestone('troll', 4)) {
+                kept.push("milestones")
+            }
+            if (hasMilestone('troll', 5)) {
+                kept.push("upgrades")
+            }
+            if (hasMilestone('versus', 19)) {
+                kept.push("on", "off", "mode")
+            }
+            layerDataReset(this.layer, kept)
+        }
+    },
+
+    hotkeys: [
+        { key: "z", description: "Z: Reset for Puzzle Courses", onPress() { if (canReset(this.layer)) doReset(this.layer) } },
+    ],
+
+    upgrades: {
+        11: {
+            title: "Complex",
+            description: "10x Puzzle Energy gain",
+            cost: new Decimal(15),
+            unlocked() { return tmp.puzzle.layerShown },
+        },
+        12: {
+            title: "Patience is key",
+            description: "Versus Rating past 6500 multiplies Puzzle Energy gain",
+            cost: new Decimal(21),
+            unlocked() { return hasUpgrade(this.layer, this.id - 1) },
+            effect() {
+                let x = player.versus.points.sub(6500).max(0)
+                let eff = d(2).pow(x)
+                if (hasUpgrade(this.layer, 24)) eff = x.max(2).pow(x)
+                return eff
+            },
+            effectDisplay() {
+                return `${format(upgradeEffect(this.layer, this.id))}x`
+            },
+        },
+        13: {
+            title: "Revival shell jump",
+            description: "Double Shell Jumps multiply Single Shell Jump gain",
+            cost: new Decimal(28),
+            unlocked() { return hasUpgrade(this.layer, this.id - 1) },
+            effect() {
+                let eff = player.kaizo.dsj.max(1).pow(16.5)
+                return eff
+            },
+            effectDisplay() {
+                return `${format(upgradeEffect(this.layer, this.id))}x`
+            },
+        },
+        14: {
+            title: "Puzzle experience",
+            description: "Total experience multiplies Puzzle Energy gain.",
+            cost: new Decimal(34),
+            unlocked() { return hasUpgrade(this.layer, this.id - 1) },
+            effect() {
+                let eff = d(10).pow(player.versus.experienceTotal.log(10).div(8).pow(0.95))
+                return eff
+            },
+            effectDisplay() {
+                return `${format(upgradeEffect(this.layer, this.id))}x`
+            },
+        },
+        15: {
+            title: "On and off",
+            description: "Unlock ON/OFF switch",
+            cost: new Decimal(48),
+            unlocked() { return hasUpgrade(this.layer, this.id - 1) },
+        },
+        21: {
+            title: "Rhythm switches",
+            description: "Base ON/OFF Power gain is x<sup>2</sup> instead of x",
+            cost: new Decimal(178),
+            unlocked() { return hasUpgrade(this.layer, 15) },
+        },
+        22: {
+            title: "Shell puzzles",
+            description: "Single Shell Jumps multiply ON Power gain",
+            cost: new Decimal(191),
+            unlocked() { return hasUpgrade(this.layer, this.id - 1) },
+            effect() {
+                let eff = player.kaizo.sj.max(10).log(10).div(30000).pow(10)
+                return eff
+            },
+            effectDisplay() {
+                return `${format(upgradeEffect(this.layer, this.id))}x`
+            },
+        },
+        23: {
+            title: "The puzzle knowledge",
+            description: "Puzzle Course requirement base is 1.5 instead of 1.75",
+            cost: new Decimal(191),
+            unlocked() { return hasUpgrade(this.layer, this.id - 1) },
+        },
+        24: {
+            title: "Uno Más (One More)",
+            description: "Get one more ON/OFF Power gain formula power (It means x<sup>2</sup> → x<sup>3</sup> lol)",
+            cost: new Decimal(387),
+            unlocked() { return hasUpgrade(this.layer, this.id - 1) },
+        },
+        25: {
+            title: "Which first? Locked door or P door?",
+            description: "Formula of 2nd Puzzle Course upgrade is now max(x, 2)<sup>x</sup> instead of 2<sup>x</sup> which x is max(Versus Rating - 6500, 0)",
+            cost: new Decimal(427),
+            unlocked() { return hasUpgrade(this.layer, this.id - 1) },
+        },
+        31: {
+            title: "Solution in your mind",
+            description: "OoM^4s of Achievement Power increases ON/OFF Power gain formula power",
+            cost: new Decimal(441),
+            unlocked() { return hasUpgrade(this.layer, 25) },
+            effect() {
+                let eff = player.achievements.points.max('ee10').log(10).log(10).log(10).log(10)
+                return eff
+            },
+            effectDisplay() {
+                return `+${format(upgradeEffect(this.layer, this.id))}<br>Formula: x<sup>${f(tmp.puzzle.onoffPowerFormulaPower)}</sup>`
+            },
+        },
+        32: {
+            title: "Refreshing doors",
+            description: "Puzzle Course requirement base is 1.25 instead of 1.5",
+            cost: new Decimal(639),
+            unlocked() { return hasUpgrade(this.layer, this.id - 1) },
+        },
+        33: {
+            title: "WOW inflation again!",
+            description: "Puzzle Course requirement base is 1.1 instead of 1.25",
+            cost: new Decimal(1945),
+            unlocked() { return hasUpgrade(this.layer, this.id - 1) },
+        },
+        34: {
+            title: "WOW inflation again^2!",
+            description: "Puzzle Course requirement base is 1.01 instead of 1.1",
+            cost: new Decimal(10024),
+            unlocked() { return hasUpgrade(this.layer, this.id - 1) },
+        },
+        35: {
+            title: "Send your 1UP to move across the ON/OFF bridge",
+            description: "^350 ON Power positive effect, ^20 OFF Power positive effect",
+            cost: new Decimal(784000),
+            unlocked() { return hasUpgrade(this.layer, this.id - 1) },
+        },
+        41: {
+            title: "\"THE CON ARTIST\"",
+            description: "Unlock a new layer on row 18",
+            cost: new Decimal(1333333),
+            unlocked() { return hasUpgrade(this.layer, 35) },
+            tooltip: "<i><s>Highest floor discovered while using the \"Expert Mode\", \"Volatile Garbage\" and \"All-Spin\" mods.</s></i>"
+        },
+        42: {
+            title: "Weaken weakness",
+            description: "Weaken ON/OFF Power negative effects",
+            cost: new Decimal(2540000),
+            unlocked() { return hasUpgrade(this.layer, this.id - 1) },
+        },
+        43: {
+            title: "ON/OFF maze",
+            description: "lg(ON Power+10)·lg(OFF Power+10) multiplies ON/OFF Switches gain (Before Troll Course effect)",
+            cost: new Decimal(2650000),
+            unlocked() { return hasUpgrade(this.layer, this.id - 1) },
+            effect() {
+                let eff = player.puzzle.on.add(10).log(10).times(player.puzzle.off.add(10).log(10)).max(1)
+                return eff
+            },
+            effectDisplay() {
+                return `${format(upgradeEffect(this.layer, this.id))}x`
+            },
+        },
+        44: {
+            title: "Fast switching",
+            description: "Remove ON/OFF Power negative effects. Turning switch doesn't reset Puzzle Courses and ON/OFF Power",
+            cost: new Decimal(4600000),
+            unlocked() { return hasUpgrade(this.layer, this.id - 1) },
+        },
+        45: {
+            title: "Even the Level Viewer can't solve it",
+            description: "Puzzle Course requirement base is 1.002 instead of 1.01",
+            cost: new Decimal(5585555),
+            unlocked() { return hasUpgrade(this.layer, this.id - 1) },
+        },
+    },
+
+    clickables: {
+        11: {
+            title: "Turn Switch to: ON",
+            display() {
+                return "Gain ON Power"
+            },
+            canClick() { return player.puzzle.mode != 'on' },
+            onClick() {
+                return player.puzzle.mode = 'on'
+            },
+            unlocked() { return hasUpgrade('puzzle', 15) },
+        },
+        12: {
+            title: "Turn Switch to: None",
+            display() {
+                return "Reset ON/OFF Power and Puzzle Courses"
+            },
+            canClick() { return player.puzzle.mode != 'none' },
+            onClick() {
+                player.puzzle.mode = 'none',
+                    resetPzE()
+            },
+            unlocked() { return hasUpgrade('puzzle', 15) },
+            style() {
+                if (this.canClick()) return {
+                    background: 'linear-gradient(45deg, #f9491f 50%, #6b6aff 50%)',
+                    'background-size': '150% 150%',
+                    'background-position': '25% 25%'
+                }
+            },
+        },
+        13: {
+            title: "Turn Switch to: OFF",
+            display() {
+                return "Gain OFF Power"
+            },
+            canClick() { return player.puzzle.mode != 'off' },
+            onClick() {
+                return player.puzzle.mode = 'off'
+            },
+            unlocked() { return hasUpgrade('puzzle', 15) },
+            style() {
+                if (this.canClick()) return {
+                    background: '#6b6aff'
+                }
+            },
+        },
+    },
+
+    grid: {
+        rows: 1, // If these are dynamic make sure to have a max value as well!
+        cols: 2,
+        getStartData(id) {
+            return ''
+        },
+        getUnlocked(id) { // Default
+            return hasUpgrade('puzzle', 15)
+        },
+        getCanClick(data, id) {
+            return false
+        },
+        onClick(data, id) {
+        },
+        getTitle(data, id) {
+            if (player.puzzle.mode == 'none') return '?'
+            else return ''
+        },
+        getStyle(data, id) {
+            if (player.puzzle.mode == 'none') return {
+                'font-size': '20px',
+                color: 'white',
+                'border': '5px solid white',
+                'background-color': '#00000000',
+                height: '96px',
+                width: '96px',
+                'transition-duration': '0s',
+            }
+            let s = {
+                'border': '5px solid',
+                height: '96px',
+                width: '96px'
+            }
+            if (id == 101) {
+                if (player.puzzle.mode == 'on') {
+                    s['background-color'] = '#f9491f'
+                    s['border-color'] = '#bb2f14'
+                }
+                else if (player.puzzle.mode == 'off') {
+                    s['background-color'] = '#00000000'
+                    s.border = '5px dashed #bb2f14'
+                    s['border-length'] = '24px'
+                    s['border-spacing'] = '16px'
+                }
+            }
+            else if (id == 102) {
+                if (player.puzzle.mode == 'on') {
+                    s['background-color'] = '#00000000'
+                    s.border = '5px dashed #3f44bf'
+                    s['border-length'] = '24px'
+                    s['border-spacing'] = '16px'
+                }
+                else if (player.puzzle.mode == 'off') {
+                    s['background-color'] = '#6b6aff'
+                    s['border-color'] = '#3f44bf'
+                }
+            }
+            s['transition-duration'] = '0s'
+            return s
+        },
+    },
+
+    energyMult() {
+        let m = d(0)
+        if (hasMilestone('puzzle', 0)) m = d(7).pow(player.puzzle.points.sub(10).max(0).pow(0.925))
+        if (hasUpgrade('puzzle', 11)) m = m.times(10)
+        if (hasUpgrade('puzzle', 12)) m = m.times(upgradeEffect('puzzle', 12))
+        if (hasUpgrade('puzzle', 14)) m = m.times(upgradeEffect('puzzle', 14))
+        if (hasUpgrade('puzzle', 15)) m = m.times(tmp.puzzle.on.e[1])
+        return m
+    },
+
+    energyEff() {
+        let eff = d(10).pow(player.puzzle.energy.pow(0.3).times(8e16))
+        return eff
+    },
+
+    onoffGain() {
+        let g = d(0)
+        if (hasUpgrade('kaizo', 15)) g = player.puzzle.best.pow(0.4).floor()
+        if (hasUpgrade('puzzle', 43)) g = g.times(upgradeEffect('puzzle', 43))
+        if (hasUpgrade('troll', 11)) g = g.pow(layerEffect('troll'))
+        return g
+    },
+
+    onoffPowerFormulaPower() {
+        let p = d(1)
+        if (hasUpgrade('puzzle', 21)) p = p.add(1)
+        if (hasUpgrade('puzzle', 24)) p = p.add(1)
+        if (hasUpgrade('puzzle', 31)) p = p.add(upgradeEffect('puzzle', 31))
+        if (hasUpgrade('troll', 13)) p = p.add(upgradeEffect('troll', 13))
+        return p
+    },
+
+    onoffPowerBase() {
+        let g = d(1)
+        let p = tmp.puzzle.onoffPowerFormulaPower
+        g = g.times(tmp.puzzle.onoffGain).pow(p)
+        return g
+    },
+
+    on: {
+        g() { //gain
+            let g = d(1)
+            g = g.times(tmp.puzzle.onoffPowerBase)
+            g = g.div(tmp.puzzle.off.e[2])
+            if (hasUpgrade('puzzle', 22)) g = g.times(upgradeEffect('puzzle', 22))
+            return g
+        },
+        e: { //effect
+            1() { //加成
+                let eff = d(10).pow(player.puzzle.on.max(1).pow(2.5).log(10).pow(0.95)).max(1)
+                if (hasUpgrade('puzzle', 35)) eff = eff.pow(350)
+                if (hasUpgrade('troll', 21)) eff = eff.pow(upgradeEffect('troll', 21))
+                return eff
+            },
+            2() { //削弱异色资源
+                let pow = d(0.5)
+                if (hasUpgrade('puzzle', 42)) pow = d(0.2)
+                if (hasUpgrade('puzzle', 44)) pow = d(0)
+                if (hasUpgrade('versus', 373)) {
+                    pow = d(-0.5)
+                    if (hasUpgrade('troll', 24)) pow = d(-0.9)
+                    if (hasUpgrade('troll', 25)) pow = d(-1)
+                }
+                let eff = player.puzzle.on.max(1).pow(pow)
+                return eff
+            },
+        },
+    },
+
+    off: {
+        g() { //同理
+            let g = d(1)
+            g = g.times(tmp.puzzle.onoffPowerBase)
+            g = g.div(tmp.puzzle.on.e[2])
+            return g
+        },
+        e: {
+            1() {
+                let eff = d(10).pow(player.puzzle.off.max(1).pow(3.5).log(10).pow(0.95)).max(1)
+                if (hasUpgrade('puzzle', 35)) eff = eff.pow(20)
+                if (hasUpgrade('troll', 21)) eff = eff.pow(upgradeEffect('troll', 21))
+                return eff
+            },
+            2() {
+                let pow = d(0.5)
+                if (hasUpgrade('puzzle', 42)) pow = d(0.2)
+                if (hasUpgrade('puzzle', 44)) pow = d(0)
+                if (hasUpgrade('versus', 373)) {
+                    pow = d(-0.5)
+                    if (hasUpgrade('troll', 24)) pow = d(-0.9)
+                    if (hasUpgrade('troll', 25)) pow = d(-1)
+                }
+                let eff = player.puzzle.off.max(1).pow(pow)
+                return eff
+            },
+        },
+    },
+
+    milestones: {
+        0: {
+            requirementDescription: "Upload 10 Puzzle Courses",
+            effectDescription: "Start to generate Puzzle Energy, Puzzle Energy gain is based on Puzzle Course.",
+            done() { return player.puzzle.points.gte(10) },
+        },
+        1: {
+            requirementDescription: "Upload 175 Puzzle Courses",
+            effectDescription: "You can buy max of Puzzle Courses.",
+            done() { return player.puzzle.points.gte(175) },
+        },
+        2: {
+            requirementDescription: "Upload 365 Puzzle Courses",
+            effectDescription: "Autobuy Single Shell Jump buyables.",
+            done() { return player.puzzle.points.gte(365) },
+        },
+        3: {
+            requirementDescription() { return `Upload ${f(2025)} Puzzle Courses` },
+            effectDescription: "Autobuy Double Shell Jump buyables.",
+            done() { return player.puzzle.points.gte(2025) },
+        },
+        4: {
+            requirementDescription() { return `Upload ${f(10000)} Puzzle Courses` },
+            effectDescription: "Autobuy Triple Shell Jump buyables.",
+            done() { return player.puzzle.points.gte(10000) },
+        },
+        5: {
+            requirementDescription() { return `Upload ${f(1000000)} Puzzle Courses` },
+            effectDescription: "Autobuy Puzzle Courses and Puzzle Course resets nothing.",
+            done() { return player.puzzle.points.gte(1000000) },
+        },
+    },
+
+    resetsNothing() { return hasMilestone('puzzle', 5) },
+    autoPrestige() { return hasMilestone('puzzle', 5) },
+
+    canBuyMax() {
+        return hasMilestone('puzzle', 1)
+    },
+
+    update(diff) {
+        if (hasMilestone('puzzle', 0)) player.puzzle.energy = player.puzzle.energy.add(tmp.puzzle.energyMult.times(diff))
+
+        if (hasUpgrade('puzzle', 15)) {
+            if (player.puzzle.mode == 'on' || hasUpgrade('versus', 374)) player.puzzle.on = player.puzzle.on.add(tmp.puzzle.on.g.times(diff))
+            if (player.puzzle.mode == 'off' || hasUpgrade('versus', 374)) player.puzzle.off = player.puzzle.off.add(tmp.puzzle.off.g.times(diff))
+        }
+
+        if (hasMilestone('troll', 2) && player.puzzle.points.lt(165)) player.puzzle.points = d(165),
+            player.puzzle.best = d(165).max(player.puzzle.best)
+        else if (hasMilestone('troll', 1) && player.puzzle.points.lt(87)) player.puzzle.points = d(87),
+            player.puzzle.best = d(87).max(player.puzzle.best)
+        else if (hasMilestone('troll', 0) && player.puzzle.points.lt(9)) player.puzzle.points = d(9),
+            player.puzzle.best = d(9).max(player.puzzle.best)
+    },
+
+    tabFormat: [
+        ["display-text", function () {
+            let bef1e1000 = "You have uploaded"
+            if (player.puzzle.points.gte("1e1000")) bef1e1000 = ""
+            let maindisplay = `${bef1e1000} ${textResourceStyle(formatWhole(player.puzzle.points), 'text-puzzle')} Puzzle Courses`
+            maindisplay += tmp.puzzle.effectDescription()
+            return maindisplay
+        }],
+        "blank",
+        "prestige-button",
+        ["display-text", () => `Your have ${formatWhole(player.points)} Cleared Courses`],
+        ["display-text", () => `Your best amount of Puzzle Courses is ${formatWhole(player.puzzle.best)}`],
+        ["microtabs", "stuff"],
+        ["blank", "65px"],
+    ],
+    microtabs: {
+        stuff: {
+            "Upgrades": {
+                unlocked() { return true },
+                content: [
+                    ["blank", "15px"],
+                    ["raw-html", () => `<div style="opacity:.5">Puzzle courses are different from speedrun, kaizo courses and so on. They requires thinking not skills.`],
+                    ["upgrades", [1, 2, 3, 4, 5, 6, 7, 8, 9]],
+                ]
+            },
+            "Milestones": {
+                unlocked() { return true },
+                content: [
+                    ["blank", "15px"],
+                    "milestones",
+                ]
+            },
+            "Energy": {
+                unlocked() { return hasMilestone('puzzle', 0) },
+                content: [
+                    ["blank", "15px"],
+                    ["display-text", function () {
+                        return `You have ${textResourceStyle(format(player.puzzle.energy), 'text-puzzle')} Puzzle Energy (+${f(tmp.puzzle.energyMult)}/s)`
+                    }],
+                    ["display-text", function () {
+                        return `Adding ${textResourceStyle(formatTimeLong(tmp.puzzle.energyEff), 'text-puzzle')} to 2nd Normal Endless Challenge layer upgrade`
+                    }],
+                ]
+            },
+            "ON/OFF Switch": {
+                unlocked() { return hasUpgrade('puzzle', 15) },
+                content: [
+                    ["blank", "15px"],
+                    ["display-text", function () {
+                        return `You have ${textResourceStyle(formatWhole(tmp.puzzle.onoffGain), 'text-puzzle')} ON/OFF Switches (Auto update based on Puzzle Courses)`
+                    }],
+                    ["display-text", function () {
+                        return `Base ON/OFF Power gain is ${textResourceStyle(format(tmp.puzzle.onoffPowerBase), 'text-puzzle')}/sec`
+                    }],
+                    "blank",
+                    "clickables",
+                    "blank",
+                    "grid",
+                    "blank",
+                    ["row", [
+                        ["display-text", function () {
+                            return `You have <br>${textStyle_h2(format(player.puzzle.on), 'f9491f')}<br>ON Power <br>(+${f(tmp.puzzle.on.g)}/s)<br><br>
+                            Puzzle Energy gain is multiplied by<br>${textStyle_h2(format(tmp.puzzle.on.e[1]) + 'x', 'f9491f')}<br><br>
+                            But OFF Power gain is divided by<br>${textStyle_h2('/' + format(tmp.puzzle.on.e[2]), 'f9491f')}`
+                        },
+                            {
+                                width: '300px',
+                                height: '450px',
+                                display: 'flex',
+                                'flex-direction': 'column',
+                            }],
+                        ["blank", ["30px", "30px"]],
+                        ["display-text", function () {
+                            return `You have <br>${textStyle_h2(format(player.puzzle.off), '6b6aff')}<br>OFF Power <br>(+${f(tmp.puzzle.off.g)}/s)<br><br>
+                            OoM^3 of Puzzle Course req. is divided by<br>${textStyle_h2('/' + format(tmp.puzzle.off.e[1]), '6b6aff')}<br><br>
+                            But ON Power gain is divided by<br>${textStyle_h2('/' + format(tmp.puzzle.off.e[2]), '6b6aff')}`
+                        },
+                            {
+                                width: '300px',
+                                height: '450px',
+                                display: 'flex',
+                                'flex-direction': 'column',
+                            }],
+                    ]]
+                ]
+            },
+        },
+    },
+})
+
+// 第三十五层：工艺关卡 (Troll Courses)
+addLayer("troll", {
+    componentStyles: {
+        "upgrade"() {
+            return {
+                'border-radius': '10%',
+                'width': '150px',
+                'min-height': '150px',
+            }
+        }
+    },
+    startData() {
+        return {                  // startData is a function that returns default data for a layer. 
+            unlocked: true,                     // You can add more variables here to add them to your layer.
+            points: new Decimal(0),             // "points" is the internal name for the main resource of the layer.
+        }
+    },
+
+    color: "#ffb258",                       // The color for this layer, which affects many elements.
+    resource: "Troll Courses",            // The name of this layer's main prestige resource.
+    row: 17,                                 // The row this layer is on (0 is the first row).
+    symbol: "Tro",
+    position: 0,
+
+    branches: ['puzzle'],
+
+    nodeStyle() {
+        return {
+            background: 'linear-gradient(315deg, #1aa10f 10%, #ffb258 10%, #ffb258 20%, #1aa10f 20%, #1aa10f 30%, #ffb258 30%, #ffb258 70%, white 70%, white 80%, #ffb258 80%, #ffb258 90%, white 90%',
+            'background-size': '110% 110%',
+            'background-position': '40% 40%'
+        }
+    },
+    baseResource: "Puzzle Courses",                 // The name of the resource your prestige gain is based on.
+    baseAmount() { return player.puzzle.points },  // A function to return the current amount of baseResource.
+
+    requires: new Decimal(1512225),              // The amount of the base needed to  gain 1 of the prestige currency.
+    // Also the amount required to unlock the layer.
+
+    type: "normal",                         // Determines the formula used for calculating prestige currency.
+    exponent: 0.8,                          // "normal" prestige gain is (currency^exponent).
+    base: new Decimal(2),
+
+    gainMult() {                            // Returns your multiplier to your gain of the prestige resource.
+        let m = new Decimal(1)               // Factor in any bonuses multiplying gain here.
+        if (hasUpgrade('troll', 12)) m = m.times(upgradeEffect('troll', 12))
+        if (hasUpgrade('versus', 372)) m = m.times(172000)
+        if (hasUpgrade('troll', 33)) m = m.times('1e10000')
+        if (hasUpgrade('troll', 34)) m = m.times('1e1000000')
+        return m
+    },
+    gainExp() {                             // Returns the exponent to your gain of the prestige resource.
+        return new Decimal(1)
+    },
+
+    layerShown() { return hasNormalAchievement(261) },
+
+    hotkeys: [
+        { key: "g", description: "G: Reset for Troll Courses", onPress() { if (canReset(this.layer)) doReset(this.layer) } },
+    ],
+
+    softcapPower: 1,
+
+    milestones: {
+        0: {
+            requirementDescription: "Upload 1 Troll Course",
+            effectDescription: "You start with 9 Puzzle Courses.",
+            done() { return player.troll.points.gte(1) },
+        },
+        1: {
+            requirementDescription: "Upload 2 Troll Courses",
+            effectDescription: "Keep Precision Course milestones. You start with 87 Puzzle Courses. (Keep on buying upgrdes)",
+            done() { return player.troll.points.gte(2) },
+        },
+        2: {
+            requirementDescription: "Upload 3 Troll Courses",
+            effectDescription: "Keep Kaizo Course milestones. You start with 165 Puzzle Courses. (Keep on buying upgrdes)",
+            done() { return player.troll.points.gte(3) },
+        },
+        3: {
+            requirementDescription: "Upload 5 Troll Courses",
+            effectDescription: "^1.5 Kaizo Course hardcap.",
+            done() { return player.troll.points.gte(5) },
+        },
+        4: {
+            requirementDescription: "Upload 8 Troll Courses",
+            effectDescription: "Keep Puzzle Course miltstones.",
+            done() { return player.troll.points.gte(8) },
+        },
+        5: {
+            requirementDescription: "Upload 10 Troll Courses",
+            effectDescription: "Keep all upgrades in row 17 layers.",
+            done() { return player.troll.points.gte(10) },
+        },
+        6: {
+            requirementDescription: "Upload 15 Troll Courses",
+            effectDescription: "Weaken Cleared Course tetration-overflow.",
+            done() { return player.troll.points.gte(15) },
+        },
+        7: {
+            requirementDescription() { return `Upload ${f('2.222e22222')} Troll Courses`},
+            effectDescription: "Passive gain 100% of Troll Course every second.",
+            done() { return player.troll.points.gte('2.222e22222') },
+        },
+    },
+
+    passiveGeneration() {
+        if (hasMilestone('troll', 7)) return 1
+    },
+
+    upgrades: {
+        11: {
+            title: "1UP trap",
+            description: "Unlock Troll Course effect.",
+            cost: new Decimal(30),
+            unlocked() { return tmp.troll.layerShown },
+        },
+        12: {
+            title: "50-coin shiny",
+            description() { return `Troll Course boost itself.` },
+            canAfford() { return player.troll.points.gte(777) },
+            onPurchase() {
+                player.troll.points = player.troll.points.sub(777)
+            },
+            currencyDisplayName() {
+                return `Cleared Courses + 777 Troll Courses`
+            },
+            currencyInternalName: "points",
+            cost: new Decimal("eee1e30303"),
+            unlocked() { return hasUpgrade(this.layer, this.id - 1) },
+            effect() {
+                let eff = d(10).pow(player.troll.points.max(1).pow(0.75).log(10).pow(0.99))
+                if (hasUpgrade('troll', 41)) eff = d(10).pow(player.troll.points.max(1).pow(1.1).log(10).pow(0.999))
+                else if (hasUpgrade('troll', 32)) eff = d(10).pow(player.troll.points.max(1).pow(1.1).log(10).pow(0.99))
+                else if (hasUpgrade('troll', 31)) eff = d(10).pow(player.troll.points.max(1).pow(1.01).log(10).pow(0.99))
+                
+                if (hasUpgrade('garbage', 11)) eff = eff.pow(layerEffect('garbage'))
+                return eff
+            },
+            effectDisplay() {
+                return `${format(upgradeEffect(this.layer, this.id))}x`
+            },
+        },
+        13: {
+            title: "Mario teleportation",
+            description() { return `OoM^5s of Cleared Courses increases ON/OFF Power gain formula power.` },
+            canAfford() { return player.troll.points.gte(1e10) },
+            onPurchase() {
+                player.troll.points = player.troll.points.sub(1e10)
+            },
+            currencyDisplayName() {
+                return `Cleared Courses + ${f(1e10)} Troll Courses`
+            },
+            currencyInternalName: "points",
+            cost: new Decimal("eee1e50750"),
+            unlocked() { return hasUpgrade(this.layer, this.id - 1) },
+            effect() {
+                let eff = player.points.max('eeee10').log(10).log(10).log(10).log(10).log(10)
+                return eff
+            },
+            effectDisplay() {
+                return `+${format(upgradeEffect(this.layer, this.id))}<br>Formula: x<sup>${f(tmp.puzzle.onoffPowerFormulaPower)}</sup>`
+            },
+        },
+        14: {
+            title: "Troll and order",
+            description() { return `Make Toad level 3 and Normal Endless Clears effects much much stronger.` },
+            canAfford() { return player.troll.points.gte(5e10) },
+            onPurchase() {
+                player.troll.points = player.troll.points.sub(5e10)
+            },
+            currencyDisplayName() {
+                return `Cleared Courses + ${f(5e10)} Troll Courses`
+            },
+            currencyInternalName: "points",
+            cost: new Decimal("eee1e60000"),
+            unlocked() { return hasUpgrade(this.layer, this.id - 1) },
+        },
+        15: {
+            title: "Professional players",
+            description() { return `Unlock Super-experience in research tab and row 17 researches.` },
+            canAfford() { return player.troll.points.gte(9e15) },
+            onPurchase() {
+                player.troll.points = player.troll.points.sub(9e15)
+            },
+            currencyDisplayName() {
+                return `Cleared Courses + ${f(9e15)} Troll Courses`
+            },
+            currencyInternalName: "points",
+            cost: new Decimal("eee1e11625000"),
+            unlocked() { return hasUpgrade(this.layer, this.id - 1) },
+        },
+        21: {
+            title: "Psychological tricks",
+            description() { return `Power ON/OFF Power positive effects.` },
+            canAfford() { return player.troll.points.gte(1e37) },
+            onPurchase() {
+                player.troll.points = player.troll.points.sub(1e37)
+            },
+            currencyDisplayName() {
+                return `Cleared Courses + ${f(1e37)} Troll Courses`
+            },
+            currencyInternalName: "points",
+            cost: new Decimal("eeee1.32e8"),
+            unlocked() { return hasUpgrade(this.layer, 15) },
+            effect() {
+                let eff = d(1000)
+                if (hasUpgrade('troll', 22)) eff = eff.times(upgradeEffect('troll', 22))
+                return eff
+            },
+            effectDisplay() {
+                return `^${format(upgradeEffect(this.layer, this.id))}`
+            },
+        },
+        22: {
+            title: "Sudden disappearance",
+            description() { return `Troll Course multiplies 6th Troll Course upgrade effect.` },
+            canAfford() { return player.troll.points.gte(5e38) },
+            onPurchase() {
+                player.troll.points = player.troll.points.sub(5e38)
+            },
+            currencyDisplayName() {
+                return `Cleared Courses + ${f(5e38)} Troll Courses`
+            },
+            currencyInternalName: "points",
+            cost: new Decimal("eeee3.59e8"),
+            unlocked() { return hasUpgrade(this.layer, this.id - 1) },
+            effect() {
+                let eff = d(10).pow(player.troll.points.log(10).pow(0.75).times(0.1))
+                return eff
+            },
+            effectDisplay() {
+                return `${format(upgradeEffect(this.layer, this.id))}x`
+            },
+        },
+        23: {
+            title: "CP0",
+            description() { return `Square Troll Course effect.` },
+            canAfford() { return player.troll.points.gte(1e48) },
+            onPurchase() {
+                player.troll.points = player.troll.points.sub(1e48)
+            },
+            currencyDisplayName() {
+                return `Cleared Courses + ${f(1e48)} Troll Courses`
+            },
+            currencyInternalName: "points",
+            cost: new Decimal("eeee9e8"),
+            unlocked() { return hasUpgrade(this.layer, this.id - 1) },
+        },
+        24: {
+            title: "CP3?",
+            description() { return `If you purchased research 17-3, ON/OFF Power "negative" effect is x<sup>-0.9</sup> instead of x<sup>-0.5</sup>.` },
+            canAfford() { return player.troll.points.gte(5.4e54) },
+            onPurchase() {
+                player.troll.points = player.troll.points.sub(5.4e54)
+            },
+            currencyDisplayName() {
+                return `Cleared Courses + ${f(5.4e54)} Troll Courses`
+            },
+            currencyInternalName: "points",
+            cost: new Decimal("eeee2.35e9"),
+            unlocked() { return hasUpgrade(this.layer, this.id - 1) },
+        },
+        25: {
+            title: "Yes! Inflation!",
+            description() { return `If you purchased research 17-3, ON/OFF Power "negative" effect is x<sup>-1</sup> instead of x<sup>-0.9</sup>.` },
+            canAfford() { return player.troll.points.gte(2e57) },
+            onPurchase() {
+                player.troll.points = player.troll.points.sub(2e57)
+            },
+            currencyDisplayName() {
+                return `Cleared Courses + ${f(2e57)} Troll Courses`
+            },
+            currencyInternalName: "points",
+            cost: new Decimal("eeee3.2e9"),
+            unlocked() { return hasUpgrade(this.layer, this.id - 1) },
+        },
+        31: {
+            title: "Yes! Troll! Inflation!",
+            description() { return `Make 2nd Troll Course effect strong enough to inflate Troll Course gain.` },
+            canAfford() { return player.troll.points.gte(3e64) },
+            onPurchase() {
+                player.troll.points = player.troll.points.sub(3e64)
+            },
+            currencyDisplayName() {
+                return `Cleared Courses + ${f(3e64)} Troll Courses`
+            },
+            currencyInternalName: "points",
+            cost: new Decimal("eeee7.8e9"),
+            unlocked() { return hasUpgrade(this.layer, 25) },
+        },
+        32: {
+            title: "Goal behind you",
+            description() { return `Make 2nd Troll Course effect strong enough to inflate Troll Course gain^2.` },
+            canAfford() { return player.troll.points.gte('1e500') },
+            onPurchase() {
+                player.troll.points = player.troll.points.sub('1e500')
+            },
+            currencyDisplayName() {
+                return `Cleared Courses + ${f('1e500')} Troll Courses`
+            },
+            currencyInternalName: "points",
+            cost: new Decimal("eeee3e12"),
+            unlocked() { return hasUpgrade(this.layer, this.id - 1) },
+        },
+        33: {
+            title: "Pink coin technology",
+            description() { return `${f('1e10000')}x Troll Course gain. The PURE POWER` },
+            canAfford() { return player.troll.points.gte('1e25700') },
+            onPurchase() {
+                player.troll.points = player.troll.points.sub('1e25700')
+            },
+            currencyDisplayName() {
+                return `Cleared Courses + ${f('1e25700')} Troll Courses`
+            },
+            currencyInternalName: "points",
+            cost: new Decimal("e^5 37"),
+            unlocked() { return hasUpgrade(this.layer, this.id - 1) },
+        },
+        34: {
+            title: "Die 51 times to win",
+            description() { return `${f('1e1000000')}x Troll Course gain. The PURE POWER IN INCREMENTAL` },
+            canAfford() { return player.troll.points.gte('1e342790') },
+            onPurchase() {
+                player.troll.points = player.troll.points.sub('1e342790')
+            },
+            currencyDisplayName() {
+                return `Cleared Courses + ${f('1e342790')} Troll Courses`
+            },
+            currencyInternalName: "points",
+            cost: new Decimal("e^5 91"),
+            unlocked() { return hasUpgrade(this.layer, this.id - 1) },
+        },
+        35: {
+            title: "The road we came by",
+            description() { return `Unlock a new layer on row 18.` },
+            canAfford() { return player.troll.points.gte('1e15038256') },
+            onPurchase() {
+                player.troll.points = player.troll.points.sub('1e15038256')
+            },
+            currencyDisplayName() {
+                return `Cleared Courses + ${f('1e15038256')} Troll Courses`
+            },
+            currencyInternalName: "points",
+            cost: new Decimal("e^5 319.6"),
+            unlocked() { return hasUpgrade(this.layer, this.id - 1) },
+        },
+        41: {
+            title: "Two rooms, two ways",
+            description() { return `2nd Troll Course effect scaling is weaker.` },
+            cost: new Decimal("e1.045865e12"),
+            unlocked() { return hasUpgrade(this.layer, 35) },
+        },
+        42: {
+            title: "No softlocks",
+            description() { return `100x effective HGC in HGC effect.` },
+            cost: new Decimal("eeee24713"),
+            unlocked() { return hasUpgrade(this.layer, this.id - 1) },
+        },
+        43: {
+            title: "Anti-anti-softlocks",
+            description() { return `${f(1000)} effective HGC in HGC effect.` },
+            cost: new Decimal("eeee320684055"),
+            unlocked() { return hasUpgrade(this.layer, this.id - 1) },
+        },
+        44: {
+            title: "Hardlock",
+            description() { return `${f(10000)} effective HGC in HGC effect.` },
+            cost: new Decimal("eeee320684055"),
+            unlocked() { return hasUpgrade(this.layer, this.id - 1) },
+        },
+        45: {
+            title: "Wiggler + Buzzy Beetle Helmet",
+            description() { return `Square effective HGC in HGC effect.` },
+            cost: new Decimal("6pt1.3538"),
+            unlocked() { return hasUpgrade(this.layer, this.id - 1) },
+        },
+    },
+
+    effect() {
+        let eff = player.troll.points.add(10).max(10).log(10).pow(1.25)
+        if (hasUpgrade('troll', 23)) eff = eff.pow(2)
+        return eff
+    },
+
+    effectDescription() {
+        if (hasUpgrade('troll', 11)) return `, raising ON/OFF Switch gain to the power of ${textResourceStyle('^' + f(tmp[this.layer].effect), 'text-troll')}`
+        else return ''
+    },
+
+    update(diff) {
+
+    },
+
+    tabFormat: [
+        ["display-text", function () {
+            let bef1e1000 = "You have uploaded"
+            if (player.troll.points.gte("1e1000")) bef1e1000 = ""
+            let maindisplay = `${bef1e1000} ${textResourceStyle(formatWhole(player.troll.points), 'text-troll')} Troll Courses`
+            maindisplay += tmp.troll.effectDescription()
+            return maindisplay
+        }],
+        "blank",
+        "prestige-button",
+        ["display-text", () => `Your have uploaded ${formatWhole(player.puzzle.points)} Puzzle Courses`],
+        ["display-text", () => `Your best amount of Troll Courses is ${formatWhole(player.troll.best)}`],
+        ["microtabs", "stuff"],
+        ["blank", "65px"],
+    ],
+    microtabs: {
+        stuff: {
+            "Upgrades": {
+                unlocked() { return true },
+                content: [
+                    ["blank", "15px"],
+                    ["raw-html", () => `<div style="opacity:.5">Trolling, not hot garbage. If players did not get raged in traps in your troll course but get happy, you did a great job, you are a trolling artist!</div>`],
+                    ["upgrades", [1, 2, 3, 4, 5, 6, 7, 8, 9]],
+                ]
+            },
+            "Milestones": {
+                unlocked() { return true },
+                content: [
+                    ["blank", "15px"],
+                    "milestones",
+                ]
+            },
+        },
+    },
+})
+
+
+addLayer("garbage", {
+    componentStyles: {
+        "upgrade"() {
+            return {
+                'border-radius': '10%',
+                'width': '150px',
+                'min-height': '150px',
+            }
+        }
+    },
+    startData() {
+        return {                  // startData is a function that returns default data for a layer. 
+            unlocked: true,                     // You can add more variables here to add them to your layer.
+            points: new Decimal(0),             // "points" is the internal name for the main resource of the layer.
+            invisibleBlocks: new Decimal(0),
+        }
+    },
+
+    color: "#80808080",                       // The color for this layer, which affects many elements.
+    resource: "Hot Garbage Courses",            // The name of this layer's main prestige resource.
+    row: 17,                                 // The row this layer is on (0 is the first row).
+    symbol: "HG",
+    position: 1,
+
+    baseResource: "Cleared Courses",                 // The name of the resource your prestige gain is based on.
+    baseAmount() { return player.points },  // A function to return the current amount of baseResource.
+
+    requires: new Decimal('eeeee283.4395044592534'),              // The amount of the base needed to  gain 1 of the prestige currency.
+    // Also the amount required to unlock the layer.
+
+    type: "custom",                         // Determines the formula used for calculating prestige currency.
+    exponent: 0.8,                          // "normal" prestige gain is (currency^exponent).
+    base: new Decimal(2),
+
+    gainMult() {                            // Returns your multiplier to your gain of the prestige resource.
+        let m = new Decimal(1)               // Factor in any bonuses multiplying gain here.
+        return m
+    },
+    gainExp() {                             // Returns the exponent to your gain of the prestige resource.
+        return new Decimal(1)
+    },
+
+    layerShown() { return hasNormalAchievement(264) },
+
+    hotkeys: [
+        { key: "G", description: "Shift+G: Reset for Hot Garbage Courses", onPress() { if (canReset(this.layer)) doReset(this.layer) } },
+    ],
+
+    canReset() {
+        let enough = player.points.gte(d(10).tetrate(player.garbage.points.add(1).root(3).add(5.398747)))
+        return (enough && hasUpgrade('troll', 35))
+    },
+    getResetGain() {
+        let gain = slog(player.points).sub(5.398747).pow(3).floor()
+        if ((!tmp[this.layer].canBuyMax) || tmp[this.layer].baseAmount.lt(tmp[this.layer].requires)) return decimalOne
+        else return gain.floor().sub(player[this.layer].points).add(1).max(1)
+    },
+    getNextAt() {
+        let gain = tmp.garbage.getResetGain
+        let nextshow = new Decimal(-1)
+        if ((!tmp[this.layer].canBuyMax) || !tmp[this.layer].canReset) nextshow = new Decimal(-1)
+        else nextshow = new Decimal(0)
+        return d(10).tetrate(player.garbage.points.add(gain).add(nextshow).add(1).root(3).add(5.398747))
+    },
+    prestigeButtonText() {
+        return "Reset for <b>+" + formatWhole(tmp.garbage.getResetGain) + "</b> Hot Garbage Courses<br><br>" + format(player.points) + " / " + format(tmp.garbage.getNextAt) + " Cleared Courses"
+    },
+
+    upgrades: {
+        11: {
+            title: "Big cheep cheep",
+            description: "Unlock Hot Garbage Course effect.",
+            cost: new Decimal(1),
+            unlocked() { return tmp.garbage.layerShown },
+        },
+        12: {
+            title: "OK... Heptalogue Courses",
+            description: "Unlock more research rows.",
+            cost: new Decimal(4),
+            unlocked() { return hasUpgrade(this.layer, this.id - 1) },
+        },
+        13: {
+            title: "Well... Octalogue Courses",
+            description: "10x effective HGC in HGC effect.",
+            cost: new Decimal(27),
+            unlocked() { return hasUpgrade(this.layer, this.id - 1) },
+        },
+        14: {
+            title: "Finally... Ennalogue Courses",
+            description: "^10 effective HGC in HGC effect.",
+            cost: new Decimal(50),
+            unlocked() { return hasUpgrade(this.layer, this.id - 1) },
+        },
+        15: {
+            title: "\"How old are you?\"",
+            description: "Unlock invisible blocks.",
+            cost: new Decimal(56),
+            unlocked() { return hasUpgrade(this.layer, this.id - 1) },
+        },
+        21: {
+            title: "Oh my God hidden blocks everywhere",
+            description: "Multiply invisible block gain based on Hot Garbage Courses.",
+            currencyDisplayName: "Invisible Blocks",
+            currencyInternalName: "invisibleBlocks",
+            currencyLayer: "garbage",
+            cost: new Decimal(60),
+            unlocked() { return hasUpgrade(this.layer, 15) },
+            effect() {
+                let eff = player.garbage.points.add(1).pow(1.25)
+                return eff
+            },
+            effectDisplay() {
+                return `${format(upgradeEffect(this.layer, this.id))}x`
+            },
+        },
+        22: {
+            title: "WIP!",
+            description: "Coming in v0.14!",
+            cost: new Decimal("10^^1000"),
+            unlocked() { return hasUpgrade(this.layer, this.id - 1) },
+        },
+    },
+
+    effect() {
+        let hgc = player.garbage.points
+        if (hasUpgrade('versus', 382)) hgc = hgc.add(player.versus.s_experienceTotal)
+        if (hasUpgrade('garbage', 13)) hgc = hgc.times(10)
+        if (hasUpgrade('troll', 42)) hgc = hgc.times(100)
+        if (hasUpgrade('troll', 43)) hgc = hgc.times(1000)
+        if (hasUpgrade('troll', 44)) hgc = hgc.times(10000)
+        if (hasUpgrade('troll', 45)) hgc = hgc.pow(2)
+        if (hasUpgrade('garbage', 14)) hgc = hgc.pow(10)
+        let eff = d(1.2).pow(hgc.pow(2))
+        if (hasUpgrade('versus', 381)) eff = eff.tetrate(2.5)
+        return eff
+    },
+
+    effectDescription() {
+        if (hasUpgrade('garbage', 11)) return `, powering 2nd Troll Course effect by ${textStyle_h2('^' + f(tmp[this.layer].effect), '80808080')}`
+        else return ''
+    },
+
+    IVBmult() {
+        let m = d(1)
+        if (hasUpgrade('garbage', 21)) m = m.times(upgradeEffect('garbage', 21))
+        return m
+    },
+
+    IVBeff() {
+        let ivb = player.garbage.invisibleBlocks
+        let powerTower = ivb.pow(0.26).max(1)
+        let eff = d(10).tetrate(powerTower)
+        return eff
+    },
+
+    update(diff) {
+        if (hasUpgrade('garbage', 15) && player.garbage.invisibleBlocks.lt(12400)) player.garbage.invisibleBlocks = player.garbage.invisibleBlocks.add(tmp.garbage.IVBmult.times(diff)).min(12400)
+    },
+
+    tabFormat: [
+        ["display-text", function () {
+            let bef1e1000 = "You have beaten"
+            if (player.garbage.points.gte("1e1000")) bef1e1000 = ""
+            let maindisplay = `${bef1e1000} ${textStyle_h2(formatWhole(player.garbage.points), '80808080')} Hot Garbage Courses`
+            maindisplay += tmp.garbage.effectDescription()
+            return maindisplay
+        }],
+        "blank",
+        "prestige-button",
+        ["display-text", () => `Your have ${formatWhole(player.points)} Cleared Courses`],
+        ["display-text", () => `Your best amount of Hot Garbage Course is ${formatWhole(player.garbage.best)}`],
+        ["microtabs", "stuff"],
+        ["blank", "65px"],
+    ],
+    microtabs: {
+        stuff: {
+            "Upgrades": {
+                unlocked() { return true },
+                content: [
+                    ["blank", "15px"],
+                    ["raw-html", () => `<div style="opacity:.5">Unfortunely, most courses in SMM2 are hot garbage. Pick a door, hidden block trap, dev exit, sudden ambush, etc. Players get raged on them. But also, These are the roads we came by.`],
+                    ["upgrades", [1, 2, 3, 4, 5, 6, 7, 8, 9]],
+                ]
+            },
+            "Milestones": {
+                unlocked() { return true },
+                content: [
+                    ["blank", "15px"],
+                    "milestones",
+                ]
+            },
+            "Invisible Block": {
+                unlocked() { return hasUpgrade('garbage', 15) },
+                content: [
+                    ["blank", "15px"],
+                    ["display-text", function () {
+                        return `You have ${textStyle_h2(formatWhole(player.garbage.invisibleBlocks), '80808080')} Invisible Blocks (+${f(tmp.garbage.IVBmult)}/s)`
+                    }],
+                    ["display-text", function () {
+                        return `Cleared Course gain is multiplied by ${textStyle_h2(format(tmp.garbage.IVBeff) + 'x', '80808080')}`
+                    }], 
                 ]
             },
         },
@@ -23317,13 +26675,7 @@ addLayer("precision", {
 
 
 
-// 第三十三层：Kaizo关卡 (Kaizo Courses)
-// 第三十四层：时间杀关卡 (Time Attack Courses)
-// 第三十五层：解谜关卡 (Puzzle Courses)
-// 第三十六层：工艺关卡 (Troll Courses)
-// 第三十七层：热垃圾关卡 (Hot Garbage Courses)
-// 第三十八层：工匠点数 (Maker Points)
-// 第三十九层：Maker Teams (#TeamShell, #TeamPrecision, #LetoSquad, #Team0%... etc)
-// 第四十层：马造速通活动 (SGDQ, AGDQ, TNA)
-// 第四十一层：谁是多人闸总王 (Online Versus Tournments)
-// 第四十二层：The End?
+// 第三十五层：工艺关卡 (Troll Courses)
+// 第三十六层：热垃圾关卡 (Hot Garbage Courses)
+// 第三十七层：工匠点数 (Maker Points)
+// 第三十八层：The End? SMM3? //把社区相关层砍了，加速进程
