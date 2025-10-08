@@ -86,7 +86,7 @@ addLayer("achievements", {
     },
     update() {
         if (player.devSpeed == undefined) player.devSpeed = 1
-        //if (player.devSpeed > 1) cheat = true
+        if (player.devSpeed > 1) cheat = true
         if (cheat || cheat1 || cheat2 || cheat3 || cheat4 || cheat5 || cheat6 || cheat7 || cheat8 || cheat9) cheat = true,
             cheat1 = true,
             cheat2 = true,
