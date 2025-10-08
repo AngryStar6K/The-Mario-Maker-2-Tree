@@ -24293,7 +24293,7 @@ addLayer("precision", {
         7: {
             requirementDescription: "Upload 360 Precision Courses",
             effectDescription: "Passive generate 100% of TA Courses every second.",
-            done() { return player.precision.points.gte(180) },
+            done() { return player.precision.points.gte(360) },
         },
         8: {
             requirementDescription() { return `Upload ${f(1e18)} Precision Courses` },
