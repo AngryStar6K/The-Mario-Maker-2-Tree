@@ -134,10 +134,8 @@ function textStyle_b(text, color='ffffff', shadowcolor=color) {
 	return `<b style='color: #${color}; text-shadow: 0 0 10px #${shadowcolor}'>${text}</b>`
 }
 
-function textResourceStyle(text, type = 'b2', style = 'overlayThing') { //调用css
-	let shadow = ""
-	if (!options.textShadowShown) shadow = "style='text-shadow: none'"
-	return `<${type} class = "${style}" ${shadow} > ${text} </${type}>`
+function textResourceStyle(text, style = 'overlayThing', type = 'h2') { //调用css
+	return `<${type} class = "${style}" > ${text} </${type}>`
 }
 
 function textColor(text, color='ffffff') {
