@@ -3,3 +3,45 @@
     left: 5px;
     position: relative;
 }
+
+.reset {
+    border-radius: 15px;
+}
+
+.puzzle.reset.can,
+.upg.puzzle.can {
+    background: linear-gradient(45deg, #f9491f 50%, #6b6aff 50%);
+    background-size: 150% 150%;
+    background-position: 25% 25%;
+}
+
+.text-puzzle {
+    background: linear-gradient(45deg, #f9491f 50%, #6b6aff 50%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 10px #f9491f;
+}
+
+.troll.reset.can,
+.upg.troll.can {
+    background: linear-gradient(315deg, #1aa10f 10%, #ffb258 10%, #ffb258 20%, #1aa10f 20%, #1aa10f 30%, #ffb258 30%, #ffb258 70%, white 70%, white 80%, #ffb258 80%, #ffb258 90%, white 90%);
+    background-size: 110% 110%;
+    background-position: 40% 40%;
+}
+
+.text-troll {
+    background: linear-gradient(315deg, #1aa10f 10%, #ffb258 10%, #ffb258 20%, #1aa10f 20%, #1aa10f 30%, #ffb258 30%, #ffb258 70%, white 70%, white 80%, #ffb258 80%, #ffb258 90%, white 90%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 10px #ffb258;
+}
+
+.text-superexperience {
+    background: linear-gradient(to bottom, #ffcf03 0%, #f83a11 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 10px #ffcf03;
+}
