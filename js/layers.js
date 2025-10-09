@@ -3375,7 +3375,7 @@ addLayer("oneup_mushroom", {
         },
         21: {
             title: "In hidden blocks",
-            description: "Multiply 1UP Mushroom gain besed on Fire Flowers.",
+            description: "Multiply 1UP Mushroom gain based on Fire Flowers.",
             cost: new Decimal(1888),
             unlocked() { return hasMilestone('invincible_star', 3) },
             effect() {
