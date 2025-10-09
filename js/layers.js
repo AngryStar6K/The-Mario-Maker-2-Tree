@@ -86,7 +86,7 @@ addLayer("achievements", {
     },
     update() {
         if (player.devSpeed == undefined) player.devSpeed = 1
-        if (player.devSpeed > 1) cheat = true
+        //if (player.devSpeed > 1) cheat = true
         if (cheat || cheat1 || cheat2 || cheat3 || cheat4 || cheat5 || cheat6 || cheat7 || cheat8 || cheat9) cheat = true,
             cheat1 = true,
             cheat2 = true,
@@ -12665,7 +12665,7 @@ addLayer("toad", {
         if (player.toad.level.gte(25)) Tl1base = Tl1base.add(1) //25级奖励
         if (hasUpgrade('toadette', 24)) Tl1base = Tl1base.add(clickableEffect('toadette', 11))
         player.toad.level_rew[0] = Decimal.pow(Tl1base, player.toad.level.max(0)) //1级奖励
-        player.toad.level_rew[1] = Decimal.pow(1e10, player.toad.level.max(0)) //3级奖励
+        player.toad.level_rew[1] = Decimal.pow(1e10, player.toad.level.max(1)) //3级奖励
 
         let Tl3softcapRoot = new Decimal(1.25)
         if (hasUpgrade('easy', 34)) Tl3softcapRoot = new Decimal(1.2)
@@ -21941,8 +21941,8 @@ addLayer("versus", {
             if (rating.gte(4000)) rating = base.div(1000010000).log(10).pow(2).add(4000).floor().min(5000)
             if (rating.gte(5000)) rating = base.div(4.1954731360e40).log(10).root(2).add(5000).floor().min(6000)
             if (rating.gte(6000)) rating = base.max('1e3200001').div('1e3200000').log(10).log(10).floor().add(6000).min(6500)
-            if (rating.gte(6500)) rating = base.log(10).log(10).sub(500).pow(0.2).floor().add(6500).min(7000)
-            if (rating.gte(7000)) rating = slog(base).sub(4.05314304).pow(2).add(7000).floor()
+            if (rating.gte(6500)) rating = base.max('eee10').log(10).log(10).sub(500).pow(0.2).floor().add(6500).min(7000)
+            if (rating.gte(7000)) rating = slog(base.max(10)).sub(4.05314304).pow(2).add(7000).floor()
             return rating
         },
     },
