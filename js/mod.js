@@ -222,6 +222,7 @@ function addedPlayerData() {
 		devSpeed: 1,
 		maximumOoMsInCommas: 9,
 		devTest: d(0),
+		toggleKeys: false,
 	}
 }
 
@@ -276,22 +277,3 @@ function maxTickLength() {
 function fixOldSave(oldVersion) {
 }
 
-
-var controlDown = false
-var shiftDown = false
-
-window.addEventListener('keydown', function (event) {
-	if (player.toggleKeys) {
-		if (event.keyCode == 16) shiftDown = !shiftDown;
-		if (event.keyCode == 17) controlDown = !controlDown;
-	} else {
-		if (event.keyCode == 16) shiftDown = true;
-		if (event.keyCode == 17) controlDown = true;
-	}
-}, false)
-
-window.addEventListener('keyup', function (event) {
-	if (player.toggleKeys) return
-	if (event.keyCode == 16) shiftDown = false;
-	if (event.keyCode == 17) controlDown = false;
-}, false)
