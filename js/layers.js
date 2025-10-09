@@ -25242,20 +25242,20 @@ addLayer("kaizo", {
 
     SJeff() {
         if (!hasUpgrade('kaizo', 21)) return d(1)
-        let eff = d(10).pow(d(10).pow(player.kaizo.sj.add(1).log(2).pow(0.5)).sub(1).times(15000000))
+        let eff = d(10).pow(d(10).pow(player.kaizo.sj.add(1).max(1).log(2).pow(0.5)).sub(1).times(15000000))
         if (hasUpgrade('kaizo', 25)) eff = eff.pow(upgradeEffect('kaizo', 25))
         return eff
     },
 
     DSJeff() {
         if (!hasUpgrade('kaizo', 32)) return d(1)
-        let eff = player.kaizo.dsj.add(1).log(10).pow(0.37)
+        let eff = player.kaizo.dsj.add(1).max(1).log(10).pow(0.37)
         return eff
     },
 
     TSJeff() {
         if (!hasUpgrade('kaizo', 42)) return d(1)
-        let eff = d(10).pow(player.kaizo.tsj.add(1).log(10).pow(0.8).times(10)).max(1)
+        let eff = d(10).pow(player.kaizo.tsj.add(1).max(1).log(10).pow(0.8).times(10)).max(1)
         return eff
     },
 
