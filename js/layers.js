@@ -12666,7 +12666,7 @@ addLayer("toad", {
         if (hasUpgrade('toadette', 24)) Tl1base = Tl1base.add(clickableEffect('toadette', 11))
         player.toad.level_rew[0] = Decimal.pow(Tl1base, player.toad.level.max(0)) //1级奖励
 
-        let Tl3rw = Decimal.pow(1e10, player.toad.level.max(1)) //3级奖励
+        let Tl3rw = Decimal.pow(1e10, player.toad.level.max(0)) //3级奖励
         let Tl3softcapRoot = new Decimal(1.25)
         if (hasUpgrade('easy', 34)) Tl3softcapRoot = new Decimal(1.2)
         if (player.toad.supertier[0].gte(2434)) Tl3softcapRoot = new Decimal(1.165)
