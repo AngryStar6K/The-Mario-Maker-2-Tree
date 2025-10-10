@@ -12665,8 +12665,8 @@ addLayer("toad", {
         if (player.toad.level.gte(25)) Tl1base = Tl1base.add(1) //25级奖励
         if (hasUpgrade('toadette', 24)) Tl1base = Tl1base.add(clickableEffect('toadette', 11))
         player.toad.level_rew[0] = Decimal.pow(Tl1base, player.toad.level.max(0)) //1级奖励
-        player.toad.level_rew[1] = Decimal.pow(1e10, player.toad.level.max(1)) //3级奖励
 
+        let Tl3rw = Decimal.pow(1e10, player.toad.level.max(1)) //3级奖励
         let Tl3softcapRoot = new Decimal(1.25)
         if (hasUpgrade('easy', 34)) Tl3softcapRoot = new Decimal(1.2)
         if (player.toad.supertier[0].gte(2434)) Tl3softcapRoot = new Decimal(1.165)
@@ -12674,10 +12674,10 @@ addLayer("toad", {
 
         let Tl3TetrAdd = new Decimal(0)
         if (hasUpgrade('troll', 14)) Tl3TetrAdd = Tl3TetrAdd.add(0.15)
-        let Tl3rw = d(0)
         if (player.toad.level.gte(500)) Tl3rw = Decimal.pow(1e10, player.toad.level.max(500).sub(500).root(Tl3softcapRoot)).times("1e5000")  //3级奖励软上限
         if (Tl3TetrAdd.gt(0)) Tl3rw = d(10).tetrate(slog(Tl3rw).add(Tl3TetrAdd))
         player.toad.level_rew[1] = Tl3rw
+        
         player.toad.level_rew[2] = player.toad.points.max(1).root(5).min(decimalInfinity) //11级奖励      
         player.toad.level_rew[3] = player.luigi.points.max(1e10).log(1e10).pow(1.5).min(decimalInfinity) //66级奖励
         player.toad.level_rew[4] = player.toad.level.max(1).pow(2) //2600级奖励
