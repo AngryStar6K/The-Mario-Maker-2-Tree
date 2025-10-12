@@ -2276,7 +2276,7 @@ addLayer("coin", {
             },
             canAfford() { return player[this.layer].pink_key_coin.gte(this.cost()) },
             buy() {
-                player[this.layer].pink_key_coin = player[this.layer].pink_key_coin.sub(this.cost())
+                if (!(hasMilestone('fire_flower', 0) || hasAchievement('achievements', 33))) player[this.layer].pink_key_coin = player[this.layer].pink_key_coin.sub(this.cost())
                 setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
             },
             effect(x) { return new Decimal(5).pow(x) },
@@ -2298,7 +2298,7 @@ addLayer("coin", {
             },
             canAfford() { return player[this.layer].pink_key_coin.gte(this.cost()) },
             buy() {
-                player[this.layer].pink_key_coin = player[this.layer].pink_key_coin.sub(this.cost())
+                if (!(hasMilestone('fire_flower', 0) || hasAchievement('achievements', 33))) player[this.layer].pink_key_coin = player[this.layer].pink_key_coin.sub(this.cost())
                 setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
 
             },
@@ -2321,7 +2321,7 @@ addLayer("coin", {
             },
             canAfford() { return player[this.layer].pink_key_coin.gte(this.cost()) },
             buy() {
-                player[this.layer].pink_key_coin = player[this.layer].pink_key_coin.sub(this.cost())
+                if (!(hasMilestone("invincible_star", 0) || hasAchievement('achievements', 33))) player[this.layer].pink_key_coin = player[this.layer].pink_key_coin.sub(this.cost())
                 setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
 
             },
@@ -2336,27 +2336,10 @@ addLayer("coin", {
     },
     automate() {
         if (player.coin.pink_key_coin.lte(0)) return
-        if (hasMilestone('fire_flower', 0)) {
-            if (player.coin.pink_key_coin) {
-                hasMilestone("fire_flower", 0) ? setBuyableAmount("coin", 11, tmp.coin.buyables[11].canAfford ? player.coin.pink_key_coin.max(2).log(2).subtract(1).pow(1 / 1.5).floor().add(1) : getBuyableAmount("coin", 11)) : {}
-            }
-            if (player.coin.pink_key_coin) {
-                hasMilestone("fire_flower", 0) ? setBuyableAmount("coin", 12, tmp.coin.buyables[12].canAfford ? player.coin.pink_key_coin.max(5).log(5).subtract(1).pow(1 / 1.75).floor().add(1) : getBuyableAmount("coin", 12)) : {}
-            }
-            if (hasMilestone("invincible_star", 0)) {
-                hasMilestone("invincible_star", 0) ? setBuyableAmount("coin", 13, tmp.coin.buyables[13].canAfford ? player.coin.pink_key_coin.max(8).log(8).subtract(1).pow(1 / 2).floor().add(1) : getBuyableAmount("coin", 13)) : {}
-            }
-        }
-        if (hasAchievement('achievements', 33)) {
-            if (player.coin.pink_key_coin) {
-                hasAchievement('achievements', 33) ? setBuyableAmount("coin", 11, tmp.coin.buyables[11].canAfford ? player.coin.pink_key_coin.max(2).log(2).subtract(1).pow(1 / 1.5).floor().add(1) : getBuyableAmount("coin", 11)) : {}
-            }
-            if (player.coin.pink_key_coin) {
-                hasAchievement('achievements', 33) ? setBuyableAmount("coin", 12, tmp.coin.buyables[12].canAfford ? player.coin.pink_key_coin.max(5).log(5).subtract(1).pow(1 / 1.75).floor().add(1) : getBuyableAmount("coin", 12)) : {}
-            }
-            if (player.coin.pink_key_coin) {
-                hasAchievement('achievements', 33) ? setBuyableAmount("coin", 13, tmp.coin.buyables[13].canAfford ? player.coin.pink_key_coin.max(8).log(8).subtract(1).pow(1 / 2).floor().add(1) : getBuyableAmount("coin", 13)) : {}
-            }
+        if (hasMilestone('fire_flower', 0) || hasAchievement('achievements', 33)) {
+            if (buyableCanAfford("coin", 11)) setBuyableAmount("coin", 11, player.coin.pink_key_coin.max(2).log(2).sub(1).root(1.5).floor().add(1))
+            if (buyableCanAfford("coin", 12)) setBuyableAmount("coin", 12, player.coin.pink_key_coin.max(5).log(5).sub(1).root(1.75).floor().add(1))
+            if ((hasMilestone("invincible_star", 0) || hasAchievement('achievements', 33)) && buyableCanAfford("coin", 13)) setBuyableAmount("coin", 13, player.coin.pink_key_coin.max(8).log(8).sub(1).root(2).floor().add(1))
         }
     },
     milestones: {
