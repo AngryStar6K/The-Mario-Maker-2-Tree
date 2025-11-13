@@ -132,6 +132,7 @@ addLayer("achievements", {
         if (hasNormalAchievement(121) && !hasUpgrade('master_sword', 75)) player.master_sword.upgrades.push(75)
         if (hasNormalAchievement(121) && !hasUpgrade('usa_mushroom', 35)) player.usa_mushroom.upgrades.push(35)
         if (hasNormalAchievement(121) && !hasUpgrade('frog_suit', 35)) player.frog_suit.upgrades.push(35)
+        if (hasUpgrade('power_balloon', 14) && !hasUpgrade('master_sword', 83)) player.master_sword.upgrades.push(83)
         if (hasNormalAchievement(125) && !hasUpgrade('power_balloon', 35)) player.power_balloon.upgrades.push(15)
         if (hasNormalAchievement(125) && !hasUpgrade('super_acorn', 32)) player.super_acorn.upgrades.push(32)
         if (hasNormalAchievement(135) && !hasUpgrade('boomerang_flower', 35)) player.boomerang_flower.upgrades.push(35)
@@ -15910,7 +15911,7 @@ addLayer("expert", {
         41: {
             name: "Ludwig",
             challengeDescription: "Disable all multipliers to Cleared Courses gain before Expert Endless Challenge layer, CC gain is now based on Expert Endless Clears.",
-            goalDescription() { return `${f('1e388')} Cleared Courses` },
+            goalDescription() { return `${f('1e380')} Cleared Courses` },
             completionLimit: new Decimal("1e10000"),
             canComplete: function () {
                 return player.points.gte("1e380")
