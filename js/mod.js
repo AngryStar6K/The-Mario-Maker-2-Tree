@@ -246,7 +246,7 @@ var cheat9 = false
 
 var displayThings = [
 	function () {
-		let endgameText = `<br>Endgame: Get 130th Achievement, ~${format("e^9 10.08051")} Cleared Courses<br>`
+		let endgameText = `<br>Endgame: Get all 138 Achievements<br>`
 		let e = ""
 		if (options.endgameShown) e = endgameText
 		if (!options.endgameShown) e = ""
