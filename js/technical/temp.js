@@ -97,7 +97,7 @@ function updateTemp() {
 		setupTemp()
 
 	updateTempData(layers, tmp, funcs)
-
+	
 	for (layer in layers){
 		tmp[layer].resetGain = getResetGain(layer)
 		tmp[layer].nextAt = getNextAt(layer)

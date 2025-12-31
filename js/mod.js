@@ -13,11 +13,16 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.13 (2025/10/09)",
-	name: "Meet different courses",
+	num: "1.0 (2026/01/01)",
+	name: "Maker's Final",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
+	<h3>v1.0 (2026/01/01)</h3><br>
+		- Endgame: Unlock total 138 achievements.<br>
+		- Added 2 layers and resources for them.<br>
+		- Added 8 achievements.<br>
+		- The End.<br>
 	<h3>v0.13 (2025/10/09)</h3><br>
 		- Endgame: 1.0035F10 cleared courses, unlock total 130 achievements.<br>
 		- Added 4 layers and resources for them.<br>
@@ -256,7 +261,7 @@ var displayThings = [
 
 // Determines when the game "ends"
 function isEndgame() {
-	return hasNormalAchievement(265)
+	return hasNormalAchievement(283)
 }
 
 

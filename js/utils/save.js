@@ -236,17 +236,21 @@ function setupModInfo() {
 function fixNaNs() {
 	NaNcheck(player);
 }
-function NaNcheck(data) {
+function NaNcheck(data, previous, name, previous2, name2) {
 	for (item in data) {
 		if (data[item] == null) {
 		}
 		else if (Array.isArray(data[item])) {
-			NaNcheck(data[item]);
+			NaNcheck(data[item], data, item, previous, name);
 		}
 		else if (data[item] !== data[item] || checkDecimalNaN(data[item])) {
 			if (!NaNalert) {
-				console.log(data)
 				clearInterval(interval);
+				console.log(previous2)
+				console.log(name2)
+				console.log(previous)
+				console.log(name)
+				console.log(data)
 				NaNalert = true;
 				alert("Invalid value found in player, named '" + item + "'. Please let the creator of this mod know! You can refresh the page, and you will be un-NaNed.")
 				return
@@ -255,7 +259,7 @@ function NaNcheck(data) {
 		else if (data[item] instanceof Decimal) {
 		}
 		else if ((!!data[item]) && (data[item].constructor === Object)) {
-			NaNcheck(data[item]);
+			NaNcheck(data[item], data, item, previous, name);
 		}
 	}
 }
@@ -302,7 +306,7 @@ function importSave(imported = undefined, forced = false) {
 	}
 }
 
-function importSaveFromFile() {
+/*function importSaveFromFile() {
 	let a = document.createElement("input")
     a.type = 'file'
     a.accept = '.txt,text/plain'
@@ -339,7 +343,7 @@ function importSaveFromFile() {
     a.click();
     document.body.removeChild(a);
 
-}
+}*/
 
 function versionCheck() {
 	let setVersion = true;

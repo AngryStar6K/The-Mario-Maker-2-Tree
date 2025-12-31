@@ -1006,6 +1006,25 @@
           return this;
         }
       }
+
+      var Fparts = value.split("f");
+      if (Fparts.length === 2)
+      {
+        base = 10;
+        height = parseFloat(Fparts[1]);
+        Fparts[0] = Fparts[0].replace("(", "");
+        Fparts[0] = Fparts[0].replace(")", "");
+        var payload = parseFloat(Fparts[0]);
+        if (!isFinite(payload)) { payload = 1; }
+        if (isFinite(base) && isFinite(height))
+        {
+          var result = Decimal.tetrate(base, height, payload);
+          this.sign = result.sign;
+          this.layer = result.layer;
+          this.mag = result.mag;
+          return this;
+        }
+      }
       
       //handle XpY format (it's the same thing just with p).
       var ptparts = value.split("p");

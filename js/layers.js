@@ -1,5 +1,4 @@
 //中文版最后考虑
-
 const decimalElephant = new Decimal(74751)
 const decimalCrow = new Decimal(501761)
 const decimalPi = new Decimal(3.141592653589793)
@@ -66,6 +65,7 @@ addLayer("achievements", {
             unlocked: true,                     // You can add more variables here to add them to your layer.
             points: new Decimal(0),             // "points" is the internal name for the main resource of the layer.
             cc: new Decimal(0),
+            beyondBEJSdisplay: '',
         }
     },
 
@@ -1189,14 +1189,84 @@ addLayer("achievements", {
                 return player.achievements.points = player.achievements.points.add("10^^7")
             },
         },
+        271: {
+            name: "Boogol",
+            tooltip: "Get 1.0000F100 Cleared Courses. <br> Reward: 1.0000F20 AP",
+            done() { return player.points.gte("10^^100") },
+            onComplete() {
+                return player.achievements.points = player.achievements.points.add("10^^20")
+            },
+        },
+        272: {
+            name: "Makers' reward",
+            tooltip: "Unlock Maker Points layer. <br> Reward: 1.0000F100 AP",
+            done() { return hasUpgrade('garbage', 25) },
+            onComplete() {
+                return player.achievements.points = player.achievements.points.add("10^^100")
+            },
+        },
+        273: {
+            name: "Boo? Is that ghost?",
+            tooltip: "Unlock Evaluation. <br> Reward: 1.000F1,000 AP",
+            done() { return hasUpgrade('maker_points', 21) },
+            onComplete() {
+                return player.achievements.points = player.achievements.points.add("10^^1000")
+            },
+        },
+        274: {
+            name: "The singularity",
+            tooltip: "Unlock Evaluation. <br> Reward: F1.0000e10 AP",
+            done() { return hasUpgrade('maker_points', 35) },
+            onComplete() {
+                return player.achievements.points = player.achievements.points.add("10^^1e10")
+            },
+        },
+        275: {
+            name: "The real limit???",
+            tooltip: "Get F1.0000e308 Cleared Courses. <br> Reward: F1.0000e308 AP",
+            done() { return player.points.gte('10^^9.99999e307') },
+            onComplete() {
+                return player.achievements.points = player.achievements.points.add("10^^1e308")
+            },
+        },
+        281: {
+            name: "The future",
+            tooltip: "Unlock THE END layer. <br> Reward: F1.0000e500 AP (More than F1.0000e308 AP is not effective)",
+            done() { return hasMilestone('maker_points', 15) },
+            onComplete() {
+                return player.achievements.beyondBEJSdisplay = "F1.0000e500"
+            },
+        },
+        282: {
+            name: "Tridecal",
+            tooltip: "Get 2.00000000J10 Cleared Courses. <br> Reward: Set your AP to your CC amount",
+            done() { return tmp.the_end.beyondPoint.gte('10{10}10') },
+        },
+        283: {
+            name: "THE END",
+            tooltip: "BEAT THE GAME. <br> Reward: Congratulations!",
+            done() { return hasUpgrade('the_end', 25) },
+        },
     },
     upgrades: {
         11: {
-            title: "希望不会有BUG",
-            description: "但愿吧。",
-            cost: new Decimal("e^12413170 1.241"),
+            fullDisplay: "<h3>希望不会有BUG</h3>?<br>但愿吧。<br><br>Cost: 1.0000L10 achievement points",
+            canAfford() { return false },
         },
     },
+    update() {
+        if (hasNormalAchievement(282)) player.achievements.beyondBEJSdisplay = scientificEN(tmp.the_end.beyondPoint)
+    },
+    tabFormat: [
+        function () {
+            if (!hasNormalAchievement(281)) return "main-display"
+        },
+        ["display-text", function () { if (hasNormalAchievement(281)) return textStyle_h2(player.achievements.beyondBEJSdisplay, 'ffe125') + ' achievement points' }],
+        "blank",
+        "clickables",
+        "upgrades",
+        "achievements",
+    ],
 })
 // 特殊层：隐藏成就
 addLayer("secret_achievements", {
@@ -1996,6 +2066,28 @@ addLayer("stats", {
                     ["raw-html", function () {
                         if (hasUpgrade('garbage', 15))
                             return `<div class = "textAlignLeft">Invisible Block: ${textStyle_h4(format(player.garbage.invisibleBlocks), '80808080')}</div>`
+                    }],
+                    "blank",
+                    ["raw-html", function () {
+                        if (tmp.maker_points.layerShown)
+                            return `<div class = "textAlignLeft">Maker Point: ${textResourceStyle(format(player.maker_points.points), 'text-mp', 'h4')}</div>`
+                    }],
+                    ["raw-html", function () {
+                        if (hasUpgrade('maker_points', 21))
+                            return `<div class = "textAlignLeft">"I like it!": ${textStyle_h4(format(player.maker_points.like), 'ec625f')}</div>`
+                    }],
+                    ["raw-html", function () {
+                        if (hasUpgrade('maker_points', 21))
+                            return `<div class = "textAlignLeft">"Boo!": ${textStyle_h4(format(player.maker_points.boo), '6155bf')}</div>`
+                    }],
+                    ["raw-html", function () {
+                        if (hasUpgrade('maker_points', 35))
+                            return `<div class = "textAlignLeft">Maker Singularity: ${textStyle_h4(format(player.maker_points.singualrity), 'ffffff')}</div>`
+                    }],
+                    "blank",
+                    ["raw-html", function () {
+                        if (tmp.the_end.layerShown)
+                            return `<div class = "textAlignLeft">Cleared Course (THE END): ${textStyle_h4(scientificEN(tmp.the_end.beyondPoint), 'ffffff')}</div>`
                     }],
                     ["h-line", "600px"],
                     //开发者测试用，请不要将其显示
@@ -11737,9 +11829,9 @@ function toadTierLayerDisplay(decimal, isCapital = true) {
     let ordinal = "Layer-<span style = 'font-family: \"bahnschrift\", \"Inconsolata\", monospace\'>ω</span>"
     let ordMag = decimal
     if (decimal.gte(d(10).tetrate(Number.MAX_SAFE_INTEGER))) ordinal = ordinal + "<sup>2</sup>",
-    ordMag = decimal.layer
-    else if (decimal.gte(d(10).pow(Number.MAX_SAFE_INTEGER))) ordinal = ordinal + (decimal.layer),
-    ordMag = d(10).pow(decimal.mag)
+        ordMag = decimal.layer
+    else if (decimal.gte(d(10).pow(Number.MAX_SAFE_INTEGER))) ordinal = ordinal + (f(decimal.layer)),
+        ordMag = d(10).pow(decimal.mag)
     if (decimal.gte(Number.MAX_SAFE_INTEGER)) return ordinal + " " + formatWhole(ordMag)
     if (decimal.gte(1000)) return "Layer-" + formatWhole(decimal)
     let num = decimal.toNumber()
@@ -12660,8 +12752,10 @@ addLayer("toad", {
         if (hasUpgrade('troll', 14)) Tl3TetrAdd = Tl3TetrAdd.add(0.15)
         if (player.toad.level.gte(500)) Tl3rw = Decimal.pow(1e10, player.toad.level.max(500).sub(500).root(Tl3softcapRoot)).times("1e5000")  //3级奖励软上限
         if (Tl3TetrAdd.gt(0)) Tl3rw = d(10).tetrate(slog(Tl3rw).add(Tl3TetrAdd))
+
+        if (hasUpgrade('garbage', 23)) Tl3rw = d('10^^1.79769313e308')
         player.toad.level_rew[1] = Tl3rw
-        
+
         player.toad.level_rew[2] = player.toad.points.max(1).root(5).min(decimalInfinity) //11级奖励      
         player.toad.level_rew[3] = player.luigi.points.max(1e10).log(1e10).pow(1.5).min(decimalInfinity) //66级奖励
         player.toad.level_rew[4] = player.toad.level.max(1).pow(2) //2600级奖励
@@ -21917,7 +22011,7 @@ addLayer("versus", {
             return rating
         },
         result() {
-            let base = tmp.versus.ratingGain.fromCC.add(tmp.versus.ratingGain.fromM).add(tmp.versus.ratingGain.fromSkill).add(tmp.versus.ratingGain.fromExpRes).add(tmp.versus.batokoEff).times(tmp.kaizo.SJeff)
+            let base = tmp.versus.ratingGain.fromCC.add(tmp.versus.ratingGain.fromM).add(tmp.versus.ratingGain.fromSkill).add(tmp.versus.ratingGain.fromExpRes).add(tmp.versus.batokoEff).times(tmp.kaizo.SJeff).min("10^^1.79769313e308")
             let rating = base
             if (rating.gte(1000)) rating = base.sub(1000).div(3).add(1000).floor().min(2000)
             if (rating.gte(2000)) rating = base.sub(4000).pow(0.8).add(2000).floor().min(3000)
@@ -21926,7 +22020,10 @@ addLayer("versus", {
             if (rating.gte(5000)) rating = base.div(4.1954731360e40).log(10).root(2).add(5000).floor().min(6000)
             if (rating.gte(6000)) rating = base.max('1e3200001').div('1e3200000').log(10).log(10).floor().add(6000).min(6500)
             if (rating.gte(6500)) rating = base.max('ee500').log(10).log(10).sub(500).pow(0.2).floor().add(6500).min(7000)
-            if (rating.gte(7000)) rating = slog(base.max(10)).sub(4.05314304).pow(2).add(7000).floor()
+            if (rating.gte(7000)) rating = slog(base.max(10)).sub(4.05314304).pow(2).add(7000).floor().min(7500)
+            if (rating.gte(7500)) rating = slog(base.max(30)).sub(29).log(10).times(50).add(7500).min(7800)
+            if (rating.gte(7800)) rating = slog(base.div(1000000).max(1)).log(10).times(5).add(7800).min(7900)
+            if (rating.gte(7900)) rating = slog(base.div(1e26).max(1)).log(10).div(2.74).add(7900).min(8000)
             return rating
         },
     },
@@ -22195,10 +22292,10 @@ addLayer("versus", {
                         if (player.versus.points.gte(6000)) formula = "lg(lg(RB/1.000e3,200,000)) + 6000     (Softcapped^6 because you reached rank Pink S+)"
                         if (player.versus.points.gte(6500)) formula = "(lg(lg(RB)) - 500)<sup>0.2</sup> + 6500     (Softcapped^7 because you reached versus rating 6500)"
                         if (player.versus.points.gte(7000)) formula = "(slog<sub>10</sub>(RB) - 4.05314304)<sup>2</sup> + 7000    (Softcapped^8 because you reached versus rating 7000)"
-                        if (player.versus.points.gte(7500)) formula = "TBD     (Softcapped^9 because you reached versus rating 7500)"
-                        if (player.versus.points.gte(7800)) formula = "TBD     (Softcapped^10 because you reached versus rating 7800)"
-                        if (player.versus.points.gte(7900)) formula = "TBD     (Softcapped^11 because you reached versus rating 7900)"
-                        if (player.versus.points.gte(8000)) formula = "(Hardcapped because you reached max versus rating, GG!)"
+                        if (player.versus.points.gte(7500)) formula = "lg(slog<sub>10</sub>(RB)-29)·50 + 7500     (Softcapped^9 because you reached versus rating 7500)"
+                        if (player.versus.points.gte(7800)) formula = "lg(slog<sub>10</sub>(RB)/1,000,000)·5 + 7800     (Softcapped^10 because you reached versus rating 7800)"
+                        if (player.versus.points.gte(7900)) formula = "lg(slog<sub>10</sub>(RB)/1.000e26)/2.74 + 7900     (Softcapped^11 because you reached versus rating 7900)"
+                        if (player.versus.points.gte(8000)) formula = "     (Hardcapped because you reached max versus rating, GG!)"
                         return `Rating base (RB) formula = ${Fp}A${B}${C}${D}${E}${F}${G}${H}<br>
                         Rating: ${formula}`
                     }],
@@ -26064,7 +26161,7 @@ addLayer("troll", {
             done() { return player.troll.points.gte(15) },
         },
         7: {
-            requirementDescription() { return `Upload ${f('2.222e22222')} Troll Courses`},
+            requirementDescription() { return `Upload ${f('2.222e22222')} Troll Courses` },
             effectDescription: "Passive gain 100% of Troll Course every second.",
             done() { return player.troll.points.gte('2.222e22222') },
         },
@@ -26099,7 +26196,7 @@ addLayer("troll", {
                 if (hasUpgrade('troll', 41)) eff = d(10).pow(player.troll.points.max(1).pow(1.1).log(10).pow(0.999))
                 else if (hasUpgrade('troll', 32)) eff = d(10).pow(player.troll.points.max(1).pow(1.1).log(10).pow(0.99))
                 else if (hasUpgrade('troll', 31)) eff = d(10).pow(player.troll.points.max(1).pow(1.01).log(10).pow(0.99))
-                
+
                 if (hasUpgrade('garbage', 11)) eff = eff.pow(layerEffect('garbage'))
                 return eff
             },
@@ -26511,10 +26608,52 @@ addLayer("garbage", {
             },
         },
         22: {
-            title: "WIP!",
-            description: "Coming in v0.14!",
-            cost: new Decimal("10^^1000"),
+            title: "Cat Mario 1-1",
+            description: "Multiply invisible block gain based on Cleared Courses.",
+            currencyDisplayName: "Invisible Blocks",
+            currencyInternalName: "invisibleBlocks",
+            currencyLayer: "garbage",
+            cost: new Decimal(18000),
             unlocked() { return hasUpgrade(this.layer, this.id - 1) },
+            effect() {
+                let eff = slog(player.points.max(10)).pow(1.5)
+                return eff
+            },
+            effectDisplay() {
+                return `${format(upgradeEffect(this.layer, this.id))}x`
+            },
+        },
+        23: {
+            title: "Toad ascension",
+            description: "Set Toad Level 3 effect to break_eternity.js' limit",
+            currencyDisplayName: "Cleared Courses",
+            currencyInternalName: "points",
+            cost: new Decimal('10^^50'),
+            unlocked() { return hasUpgrade(this.layer, this.id - 1) },
+        },
+        24: {
+            title: "The singularity",
+            description: "10x Invisible Blocks gain.",
+            currencyDisplayName: "Cleared Courses",
+            currencyInternalName: "points",
+            cost: new Decimal('10^^500'),
+            unlocked() { return hasUpgrade(this.layer, this.id - 1) },
+        },
+        25: {
+            title: "In SMM2, we call a player as a maker",
+            description: "Unlock a new layer at row 19.",
+            currencyDisplayName: "Cleared Courses",
+            currencyInternalName: "points",
+            cost: new Decimal('e^2019 6.28'),
+            unlocked() { return hasUpgrade(this.layer, this.id - 1) },
+        },
+    },
+
+    milestones: {
+        0: {
+            requirementDescription: "Beat 200 Hot Garbage Courses",
+            effectDescription: "Passive gain 1 Hot Garbage Course every 50ms until limit of reset.",
+            done() { return player.garbage.points.gte(200) },
         },
     },
 
@@ -26540,18 +26679,28 @@ addLayer("garbage", {
     IVBmult() {
         let m = d(1)
         if (hasUpgrade('garbage', 21)) m = m.times(upgradeEffect('garbage', 21))
+        if (hasUpgrade('garbage', 22)) m = m.times(upgradeEffect('garbage', 22))
+        if (hasUpgrade('garbage', 24)) m = m.times(10)
+        if (hasMilestone('maker_points', 1)) m = m.times(300)
+        if (hasMilestone('maker_points', 2)) m = m.times(milestoneEffect('maker_points', 2))
+        if (hasUpgrade('maker_points', 23)) m = m.times(upgradeEffect('maker_points', 23))
         return m
     },
 
     IVBeff() {
         let ivb = player.garbage.invisibleBlocks
-        let powerTower = ivb.pow(0.26).max(1)
+        let powerTower = ivb.pow(0.26).max(1).min(1.333333333333333e308)
         let eff = d(10).tetrate(powerTower)
         return eff
     },
 
     update(diff) {
-        if (hasUpgrade('garbage', 15) && player.garbage.invisibleBlocks.lt(12400)) player.garbage.invisibleBlocks = player.garbage.invisibleBlocks.add(tmp.garbage.IVBmult.times(diff)).min(12400)
+        if (hasUpgrade('garbage', 15)) player.garbage.invisibleBlocks = player.garbage.invisibleBlocks.add(tmp.garbage.IVBmult.times(diff))
+
+        let m = d(20)
+        if (hasMilestone('maker_points', 1)) m = m.times(300)
+        if (hasUpgrade('maker_points', 22)) m = m.times(upgradeEffect('maker_points', 22))
+        if (hasMilestone('garbage', 0) && tmp.garbage.canReset) player.garbage.points = player.garbage.points.add(m.times(diff).floor().max(1)).min(slog(player.points).sub(5.398747).pow(3).floor())
     },
 
     tabFormat: [
@@ -26595,13 +26744,824 @@ addLayer("garbage", {
                     }],
                     ["display-text", function () {
                         return `Cleared Course gain is multiplied by ${textStyle_h2(format(tmp.garbage.IVBeff) + 'x', '80808080')}`
-                    }], 
+                    }],
                 ]
             },
         },
     },
 })
 
+function colorNumbertoRgb(num) {
+    let r = Math.floor(num / 65536)
+    let g = Math.floor(num / 256) % 256
+    let b = num % 256
+    return [r, g, b]
+}
+
+//文本动态颜色渐变
+function rgbToHex(red, green, blue) {
+    const toHex = (colorValue) => {
+        const hex = colorValue.toString(16);
+        return hex.length == 1 ? "0" + hex : hex;
+    };
+    return /*"#" + */toHex(red) + toHex(green) + toHex(blue);
+}
+
+function hexToRgb(hex) {
+    hex = hex.replace(/^\s*#|\s*$/g, "");
+    let red = parseInt(hex.substr(0, 2), 16);
+    let green = parseInt(hex.substr(2, 2), 16);
+    let blue = parseInt(hex.substr(4, 2), 16);
+
+    return [red, green, blue];
+}
+
+function getColorBetweenTwoColors(colorA_num, colorB_num, ratio) {
+    const colorA = colorNumbertoRgb(colorA_num);
+    const colorB = colorNumbertoRgb(colorB_num);
+    const r = Math.round((colorB[0] - colorA[0]) * ratio + colorA[0]);
+    const g = Math.round((colorB[1] - colorA[1]) * ratio + colorA[1]);
+    const b = Math.round((colorB[2] - colorA[2]) * ratio + colorA[2]);
+
+    return rgbToHex(r, g, b);
+}
+
+function makerTierCSSDisplay(tier) { //tetrio b2b surge lol
+    if (tier.eq(0)) return textStyle_h2(fw(0), 'ffffff')
+    else if (tier.lte(3)) return textStyle_h2(fw(tier), 'ffd964')
+    else if (tier.gte(4)) {
+        let fs = '25'
+        let rotate = (player.maker_points.resetTime / 2 % 1 * 360).toString()
+        const MTBg = [[0, 4, 39423, 65484], [4, 8, 65484, 65280], [8, 12, 65280, 16776960], [12, 30, 16776960, 16711680], [30, 60, 16711680, 16711935], [60, 100, 16711935, 37375], [100, 150, 37375, 9764836], [150, 250, 9764836, 16768391], [250, 500, 16768391, 16777215], [500, 1 / 0, 16777215, 16777215]];
+        if (tier.gte(100) && tier.lt(1000)) fs = '20'
+        if (tier.gte(1000)) fs = '15'
+        let color = 'ffffff'
+        let rank = 0
+        while (tier.toNumber() > MTBg[rank][1]) rank++
+        color = getColorBetweenTwoColors(MTBg[rank][2], MTBg[rank][3], (tier.toNumber() - MTBg[rank][0]) / (MTBg[rank][1] - MTBg[rank][0]))
+        colorText = tier.gte(8) ? '000000' : color
+        colorBg = tier.gte(8) ? color : color + '4c'
+        return `<button class = 'star12-shape' style = "transform: rotate(${rotate}deg); background-color: #${colorBg}"><div style = "font-size: ${fs}px; transform: rotate(-${rotate}deg)"><h2 style='color: #${colorText}'>${fw(tier)}</h2></div></button>`
+    }
+}
+
+addLayer("maker_points", {
+    componentStyles: {
+        "upgrade"() {
+            return {
+                'border-radius': '10%',
+                'width': '150px',
+                'min-height': '150px',
+            }
+        }
+    },
+    startData() {
+        return {                  // startData is a function that returns default data for a layer. 
+            unlocked: true,                     // You can add more variables here to add them to your layer.
+            points: new Decimal(0),             // "points" is the internal name for the main resource of the layer.
+            like: new Decimal(0),
+            boo: new Decimal(0),
+            singualrity: new Decimal(0),
+        }
+    },
+
+    color: "#013161",                       // The color for this layer, which affects many elements.
+    resource: "Maker Points",            // The name of this layer's main prestige resource.
+    row: 18,                                 // The row this layer is on (0 is the first row).
+    symbol: "MP",
+    position: 0,
+    nodeStyle: {
+        background: "radial-gradient(#abcfe8 6%, #00000000 6%), radial-gradient(#abcfe8 6%, #00000000 6%), linear-gradient(45deg, #0d6d87 0%, #013161 50%, #095489 100%)",
+        'background-size': '30% 30%, 30% 30%, 100% 100%',
+        'background-position': '0 0, 20% 20%, 0 0'
+    },
+
+    baseResource: "Cleared Courses",                 // The name of the resource your prestige gain is based on.
+    baseAmount() { return player.points },  // A function to return the current amount of baseResource.
+
+    requires: new Decimal('eeeee283.4395044592534'),              // The amount of the base needed to  gain 1 of the prestige currency.
+    // Also the amount required to unlock the layer.
+
+    type: "none",                         // Determines the formula used for calculating prestige currency.
+    exponent: 0.8,                          // "normal" prestige gain is (currency^exponent).
+    base: new Decimal(2),
+
+    gainMult() {                            // Returns your multiplier to your gain of the prestige resource.
+        let m = new Decimal(1)               // Factor in any bonuses multiplying gain here.
+        if (hasMilestone('maker_points', 0)) m = m.times(milestoneEffect('maker_points', 0))
+        if (hasUpgrade('maker_points', 12)) m = m.times(upgradeEffect('maker_points', 12))
+        if (hasUpgrade('maker_points', 13)) m = m.times(upgradeEffect('maker_points', 13))
+        if (hasUpgrade('maker_points', 14)) m = m.times(upgradeEffect('maker_points', 14))
+        if (hasUpgrade('maker_points', 15)) m = m.times(20)
+        if (hasMilestone('maker_points', 4)) m = m.times(milestoneEffect('maker_points', 4))
+        if (hasMilestone('maker_points', 5)) m = m.times(milestoneEffect('maker_points', 5))
+        if (hasMilestone('maker_points', 7)) m = m.times(milestoneEffect('maker_points', 7))
+        if (hasUpgrade('maker_points', 21)) m = m.times(tmp.maker_points.likeEff)
+        if (hasUpgrade('maker_points', 25)) m = m.times(100000)
+        if (hasUpgrade('maker_points', 35)) m = m.times(tmp.maker_points.singulaityEff)
+        return m
+    },
+    gainExp() {                             // Returns the exponent to your gain of the prestige resource.
+        return new Decimal(1)
+    },
+
+    layerShown() { return hasNormalAchievement(272) },
+
+    upgrades: {
+        11: {
+            title: "Someone played your course",
+            description: "Unlock Maker Tier.",
+            cost: new Decimal(10),
+            unlocked() { return tmp.maker_points.layerShown },
+        },
+        12: {
+            title: "Make an easy course first",
+            description: "Invisible Block multiplies Maker Points gain.",
+            cost: new Decimal(100),
+            unlocked() { return hasUpgrade(this.layer, this.id - 1) },
+            effect() {
+                let eff = player.garbage.invisibleBlocks.max(10).log(10)
+                return eff
+            },
+            effectDisplay() {
+                return `${format(upgradeEffect(this.layer, this.id))}x`
+            },
+        },
+        13: {
+            title: "Learning how to make better",
+            description: "Hot Garbage Course multiplies Maker Points gain.",
+            cost: new Decimal(10000),
+            unlocked() { return hasUpgrade(this.layer, this.id - 1) },
+            effect() {
+                let eff = player.garbage.points.max(10).log(2)
+                return eff
+            },
+            effectDisplay() {
+                return `${format(upgradeEffect(this.layer, this.id))}x`
+            },
+        },
+        14: {
+            title: "Yamamura's Dojo",
+            description: "Maker Point boosts itself.",
+            cost: new Decimal(1500000),
+            unlocked() { return hasUpgrade(this.layer, this.id - 1) },
+            effect() {
+                let eff = player.maker_points.points.max(10).pow(0.2)
+                if (hasUpgrade('maker_points', 33)) eff = eff.pow(1.75)
+                return eff
+            },
+            effectDisplay() {
+                return `${format(upgradeEffect(this.layer, this.id))}x`
+            },
+        },
+        15: {
+            title: "Story Mode",
+            description: "20x Maker Points gain.",
+            cost: new Decimal(1e10),
+            unlocked() { return hasUpgrade(this.layer, this.id - 1) },
+        },
+        21: {
+            title: "A comment",
+            description: "Unlock evaluation.",
+            cost: new Decimal(1e30),
+            unlocked() { return hasUpgrade(this.layer, 15) },
+        },
+        22: {
+            title: "A welcome course",
+            description: "Every Maker Tier multiplies HGC passive generation by 1.5x.",
+            cost: new Decimal(1e72),
+            unlocked() { return hasUpgrade(this.layer, this.id - 1) },
+            effect() {
+                let eff = d(1.5).pow(getBuyableAmount('maker_points', 11).max(0))
+                return eff
+            },
+            effectDisplay() {
+                return `${format(upgradeEffect(this.layer, this.id))}x`
+            },
+        },
+        23: {
+            title: "An encourage",
+            description: "Every Maker Tier multiplies Invisible block gain by 1.5x.",
+            cost: new Decimal(1e82),
+            unlocked() { return hasUpgrade(this.layer, this.id - 1) },
+            effect() {
+                let eff = d(1.5).pow(getBuyableAmount('maker_points', 11).max(0))
+                return eff
+            },
+            effectDisplay() {
+                return `${format(upgradeEffect(this.layer, this.id))}x`
+            },
+        },
+        24: {
+            title: "Music courses",
+            description: "MA1 effect base ^2",
+            cost: new Decimal(1e85),
+            unlocked() { return hasUpgrade(this.layer, this.id - 1) },
+        },
+        25: {
+            title: "Be recognized",
+            description() { return f(100000) + 'x Maker Points gain' },
+            cost: new Decimal(1e125),
+            unlocked() { return hasUpgrade(this.layer, this.id - 1) },
+        },
+        31: {
+            title: "A popular course",
+            description: "MT is cheaper.",
+            cost: new Decimal(1e182),
+            unlocked() { return hasUpgrade(this.layer, 25) },
+        },
+        32: {
+            title: "#TJ",
+            description: "Invisible Block multiplies \"I like it!\" gain",
+            cost: new Decimal('1e747'),
+            unlocked() { return hasUpgrade(this.layer, this.id - 1) },
+            effect() {
+                let eff = player.garbage.invisibleBlocks.max(10).log(10).pow(1.25)
+                return eff
+            },
+            effectDisplay() {
+                return `${format(upgradeEffect(this.layer, this.id))}x`
+            },
+        },
+        33: {
+            title: "xYMM/xMMC",
+            description: "4th Maker Point upgrade effect is stronger",
+            cost: new Decimal('1e800'),
+            unlocked() { return hasUpgrade(this.layer, this.id - 1) },
+        },
+        34: {
+            title: "GDQ speedrun",
+            description: "Maker Ascension is cheaper",
+            cost: new Decimal('1e1070'),
+            unlocked() { return hasUpgrade(this.layer, this.id - 1) },
+        },
+        35: {
+            title: "Maker Points All-time",
+            description: "Unlock Maker Singularity",
+            cost: new Decimal('1e1420'),
+            unlocked() { return hasUpgrade(this.layer, this.id - 1) },
+        },
+    },
+
+    buyables: {
+        11: {
+            title: "Increase Maker Tier",
+            cost(x) {
+                let c = new Decimal(20).pow(x.add(1).pow(1.2))
+                if (x.gte(200)) c = new Decimal(1000).pow(x.sub(199).pow(1.5)).times('1e777')
+                if (hasUpgrade('maker_points', 31)) c = c.pow(0.9)
+                if (x.gte(1000)) c = d(Infinity)
+                return c
+            },
+            display() {
+                return `Req: ${fw(this.cost())} Maker Points`
+            },
+            canAfford() { return player.maker_points.points.gte(this.cost()) },
+            buy() {
+                player.maker_points.points = d(0)
+                setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
+            },
+            effect(x) {
+                let effect = d(1)
+                return effect
+            },
+            unlocked() { return hasUpgrade('maker_points', 11) },
+            style() {
+                let s = {
+                    height: '100px',
+                    width: '180px',
+                }
+                if (this.canAfford()) s.color = 'white'
+                return s
+            }
+        },
+        21: {
+            title: "Increase Maker Ascension",
+            cost(x) {
+                let c = new Decimal(10).times(x.add(1).pow(1.25)).floor()
+                if (hasUpgrade('maker_points', 34)) c = c.pow(0.9).floor()
+                return c
+            },
+            display() {
+                return `Req: ${fw(this.cost())} Maker Tier`
+            },
+            canAfford() { return getBuyableAmount('maker_points', 11).gte(this.cost()) },
+            buy() {
+                if (!hasMilestone('maker_points', 13)) setBuyableAmount(this.layer, 11, d(0))
+                player.maker_points.like = d(0)
+                player.maker_points.boo = d(0)
+                setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
+                player.maker_points.points = d(0)
+            },
+            effect(x) {
+                let effect = d(1)
+                return effect
+            },
+            unlocked() { return hasMilestone('maker_points', 6) },
+            style() {
+                let s = {
+                    height: '100px',
+                    width: '180px',
+                }
+                if (this.canAfford()) s.color = 'white'
+                return s
+            }
+        },
+    },
+
+    milestones: {
+        0: {
+            requirementDescription: "MT1",
+            effectDescription() {
+                let des = `Every MT gives ${f(this.base())}x Maker Points gain<br>
+                Currently: ${f(this.effect())}x`
+                return des
+            },
+            base() {
+                let b = d(3)
+                if (hasMilestone('maker_points', 3)) b = d(5)
+                if (hasMilestone('maker_points', 10)) b = d(10)
+                if (hasMilestone('maker_points', 12)) b = b.times(milestoneEffect('maker_points', 12))
+                return b
+            },
+            effect() {
+                let eff = this.base().pow(getBuyableAmount('maker_points', 11))
+                return eff
+            },
+            done() { return getBuyableAmount('maker_points', 11).gte(1) },
+        },
+        1: {
+            requirementDescription: "MT2",
+            effectDescription() {
+                let des = `300x Passive HGC and Invicible Block gain.`
+                return des
+            },
+            done() { return getBuyableAmount('maker_points', 11).gte(2) },
+        },
+        2: {
+            requirementDescription: "MT3",
+            effectDescription() {
+                let des = `Every MT gives 3x Invisible Block gain<br>
+                Currently: ${f(this.effect())}x`
+                return des
+            },
+            effect() {
+                let eff = d(3).pow(getBuyableAmount('maker_points', 11))
+                return eff
+            },
+            done() { return getBuyableAmount('maker_points', 11).gte(3) },
+        },
+        3: {
+            requirementDescription: "MT4",
+            effectDescription() {
+                let des = `Base of reward of MT1 is increased to 5`
+                return des
+            },
+            done() { return getBuyableAmount('maker_points', 11).gte(4) },
+        },
+        4: {
+            requirementDescription: "MT6",
+            effectDescription() {
+                let des = `lg(slg(CC))<sup>2</sup>} multiplies Maker Point gain<br>
+                Currently: ${f(this.effect())}x`
+                return des
+            },
+            effect() {
+                let eff = slog(player.points.max(10)).max(10).log(10).pow(2)
+                return eff
+            },
+            done() { return getBuyableAmount('maker_points', 11).gte(6) },
+        },
+        5: {
+            requirementDescription: "MT8",
+            effectDescription() {
+                let des = `lg(MP)<sup>2</sup> multiplies Maker Point gain<br>
+                Currently: ${f(this.effect())}x`
+                return des
+            },
+            effect() {
+                let eff = player.maker_points.points.max(10).log(10).pow(2)
+                return eff
+            },
+            done() { return getBuyableAmount('maker_points', 11).gte(8) },
+        },
+        6: {
+            requirementDescription: "MT10",
+            effectDescription() {
+                let des = `Unlock Maker Ascension`
+                return des
+            },
+            done() { return getBuyableAmount('maker_points', 11).gte(10) },
+        },
+        7: {
+            requirementDescription: "MA1",
+            effectDescription() {
+                let des = `Every MA gives ${f(this.base())}x Maker Points gain<br>
+                Currently: ${f(this.effect())}x`
+                return des
+            },
+            base() {
+                let b = d(100000)
+                if (hasUpgrade('maker_points', 24)) b = b.pow(2)
+                if (hasMilestone('maker_points', 11)) b = b.pow(1.5)
+                return b
+            },
+            effect() {
+                let eff = this.base().pow(getBuyableAmount('maker_points', 21))
+                return eff
+            },
+            done() { return getBuyableAmount('maker_points', 21).gte(1) },
+            unlocked() { return hasMilestone('maker_points', 6) },
+        },
+        8: {
+            requirementDescription: "MA2",
+            effectDescription() {
+                let des = `Increasing "I like it!" chance to 70%`
+                return des
+            },
+            done() { return getBuyableAmount('maker_points', 21).gte(2) },
+            unlocked() { return hasMilestone('maker_points', 7) },
+        },
+        9: {
+            requirementDescription: "MA3",
+            effectDescription() {
+                let des = `Every MA gives +${f(this.base())} "I like it!" and "Boo!" gain<br>
+                Currently: +${f(this.effect())}`
+                return des
+            },
+            base() {
+                let b = d(2)
+                return b
+            },
+            effect() {
+                let eff = this.base().times(getBuyableAmount('maker_points', 21))
+                return eff
+            },
+            done() { return getBuyableAmount('maker_points', 21).gte(3) },
+            unlocked() { return hasMilestone('maker_points', 7) },
+        },
+        10: {
+            requirementDescription: "MT49",
+            effectDescription() {
+                let des = `Base of reward of MT1 is increased to 10`
+                return des
+            },
+            done() { return getBuyableAmount('maker_points', 11).gte(49) },
+            unlocked() { return hasMilestone('maker_points', 7) },
+        },
+        11: {
+            requirementDescription: "MA5",
+            effectDescription() {
+                let des = `Base of reward of MA1 is ^1.5`
+                return des
+            },
+            done() { return getBuyableAmount('maker_points', 21).gte(5) },
+            unlocked() { return hasMilestone('maker_points', 7) },
+        },
+        12: {
+            requirementDescription: "MA6",
+            effectDescription() {
+                let des = `Every MA after 5 provides +(1x) MT1 reward base<br>
+                Currently: ${f(this.effect())}x`
+                return des
+            },
+            effect() {
+                let eff = (getBuyableAmount('maker_points', 21).sub(5).max(0)).add(1)
+                return eff
+            },
+            done() { return getBuyableAmount('maker_points', 21).gte(6) },
+            unlocked() { return hasMilestone('maker_points', 7) },
+        },
+        13: {
+            requirementDescription: "MA10",
+            effectDescription() {
+                let des = `MA no longer reset MT`
+                return des
+            },
+            done() { return getBuyableAmount('maker_points', 21).gte(10) },
+            unlocked() { return hasMilestone('maker_points', 7) },
+        },
+        14: {
+            requirementDescription: "MA28",
+            effectDescription() {
+                let des = `MA multiplies Maker Singularity gain<br>
+                Currently: ${f(this.effect())}x`
+                return des
+            },
+            effect() {
+                let eff = (getBuyableAmount('maker_points', 21).pow(2)).add(1)
+                return eff
+            },
+            done() { return getBuyableAmount('maker_points', 21).gte(28) },
+            unlocked() { return hasUpgrade('maker_points', 35) },
+        },
+        15: {
+            requirementDescription: "MT1000",
+            effectDescription() {
+                let des = `Unlock the final layer on row 20`
+                return des
+            },
+            done() { return getBuyableAmount('maker_points', 11).gte(1000) },
+            unlocked() { return hasUpgrade('maker_points', 35) },
+        },
+    },
+
+    likeGain() {
+        let g = d(1)
+        if (hasMilestone('maker_points', 9)) g = g.add(milestoneEffect('maker_points', 9))
+        if (hasUpgrade('maker_points', 32)) g = g.times(upgradeEffect('maker_points', 32))
+        return g
+    },
+
+    booGain() {
+        let g = d(1)
+        if (hasMilestone('maker_points', 9)) g = g.add(milestoneEffect('maker_points', 9))
+        return g
+    },
+
+    evaluationChance() {
+        let c = 0.05
+        return c
+    },
+
+    likeChance() {
+        let c = 0.6
+        if (hasMilestone('maker_points', 8)) c = 0.7
+        return c
+    },
+
+    likeEff() {
+        let l = player.maker_points.like
+        let b = player.maker_points.boo
+        let effL = l.sub(b).max(0)
+        let eff = effL.add(1).max(1).pow(10)
+        return eff
+    },
+
+    singularityGain() {
+        let g = d(1)
+        if (hasMilestone('maker_points', 14)) g = g.times(milestoneEffect('maker_points', 14))
+        return g
+    },
+
+    singulaityEff() {
+        let eff = d(1e10).pow(player.maker_points.singualrity.max(0))
+        return eff
+    },
+
+    update(diff) {
+        if (tmp.maker_points.layerShown) player.maker_points.points = player.maker_points.points.add(tmp.maker_points.gainMult.times(diff))
+        if (player.maker_points.points.gt(player.maker_points.best)) player.maker_points.best = player.maker_points.points
+
+        if (hasUpgrade('maker_points', 21)) {
+            let r = Math.random()
+            if (r < tmp.maker_points.evaluationChance) {
+                let ev = Math.random() < tmp.maker_points.likeChance ? 'like' : 'boo'
+                player.maker_points[ev] = player.maker_points[ev].add(tmp.maker_points[ev + 'Gain'])
+            }
+        }
+
+        if (hasUpgrade('maker_points', 35)) player.maker_points.singualrity = player.maker_points.singualrity.add(tmp.maker_points.singularityGain.times(diff))
+    },
+
+    tabFormat: [
+        ["display-text", function () {
+            let bef1e1000 = "You have"
+            if (player.maker_points.points.gte("1e1000")) bef1e1000 = ""
+            let maindisplay = `${bef1e1000} ${textResourceStyle(formatWhole(player.maker_points.points), 'text-mp')} Maker Points`
+            maindisplay += ` (${textResourceStyle('+' + f(tmp.maker_points.gainMult), 'text-mp')}/sec)`
+            return maindisplay
+        }],
+        "blank",
+        "prestige-button",
+        ["display-text", () => `Your best amount of Maker Points is ${formatWhole(player.maker_points.best)}`],
+        ["microtabs", "stuff"],
+        ["blank", "65px"],
+    ],
+    microtabs: {
+        stuff: {
+            "Upgrades": {
+                unlocked() { return true },
+                content: [
+                    ["blank", "15px"],
+                    ["raw-html", () => `<div style="opacity:.5">Makers made tens of millions of courses with all the possibilities in SMM2, </div>`],
+                    ["upgrades", [1, 2, 3, 4, 5, 6, 7, 8, 9]],
+                ]
+            },
+            "Maker tier": {
+                unlocked() { return hasUpgrade('maker_points', 11) },
+                content: [
+                    ["blank", "15px"],
+                    ["buyables", [1]],
+                    "blank",
+                    ["raw-html", function () { return `Your Maker Tier: ${makerTierCSSDisplay(getBuyableAmount('maker_points', 11))}` }],
+                    "blank",
+                    ["buyables", [2]],
+                    "blank",
+                    ["raw-html", function () { if (hasMilestone('maker_points', 6)) return `Your Maker Ascension: ${makerTierCSSDisplay(getBuyableAmount('maker_points', 21))}` }]
+                ]
+            },
+            "Milestones": {
+                unlocked() { return true },
+                content: [
+                    ["blank", "15px"],
+                    "milestones",
+                ]
+            },
+            "Evaluation": {
+                unlocked() { return hasUpgrade('maker_points', 21) },
+                content: [
+                    ["blank", "15px"],
+                    ["display-text", () => `You have ${textStyle_h2(formatWhole(player.maker_points.like), 'ec625f')} "I like it!"'s`],
+                    ["display-text", () => `Maker Point gain is multiplied by ${textStyle_h2(formatWhole(tmp.maker_points.likeEff) + 'x', 'ec625f')}`],
+                    ["display-text", () => `But you also have ${textStyle_h2(formatWhole(player.maker_points.boo), '6155bf')} "Boo!"'s`],
+                    ["display-text", () => `Decreasing effective "I like it!" amount by ${textStyle_h2('-' + formatWhole(player.maker_points.boo), '6155bf')}`],
+                    "blank",
+                    ["display-text", () => `Chance: ${textStyle_h2(formatPercent(tmp.maker_points.likeChance), 'ec625f')} "I like it!", ${textStyle_h2(formatPercent(d(1).sub(tmp.maker_points.likeChance)), '6155bf')} "Boo!"`],
+                    "blank",
+                    ["display-text", () => `Every 50ms (1 tick), the game try to get an evaluation. Do not make the game out of focus!`],
+                    ["display-text", () => `Maker Ascension resets evaluation currencies`],
+                ]
+            },
+            "Singularity": {
+                unlocked() { return hasUpgrade('maker_points', 35) },
+                content: [
+                    ["blank", "15px"],
+                    ["display-text", () => `You have ${textStyle_h2(formatWhole(player.maker_points.singualrity), 'ffffff')} Maker Singularities (+${f(tmp.maker_points.singularityGain)}/sec)`],
+                    ["display-text", () => `Multiplying Maker Points gain by ${textStyle_h2(format(tmp.maker_points.singulaityEff) + 'x', 'ffffff')}`],
+                ]
+            },
+        },
+    },
+})
+
+function addTHEENDpoints(p) {
+    p = d(p)
+    player.the_end.points = player.the_end.points.add(p)
+}
+
+addLayer("the_end", {
+    componentStyles: {
+        "upgrade"() {
+            return {
+                'border-radius': '10%',
+                'width': '150px',
+                'min-height': '150px',
+            }
+        }
+    },
+    startData() {
+        return {                  // startData is a function that returns default data for a layer. 
+            unlocked: true,                     // You can add more variables here to add them to your layer.
+            points: new Decimal(0),             // "points" is the internal name for the main resource of the layer.
+        }
+    },
+
+    color: "#ffffff",                       // The color for this layer, which affects many elements.
+    resource: "THE END",            // The name of this layer's main prestige resource.
+    row: 19,                                 // The row this layer is on (0 is the first row).
+    symbol: "?",
+    position: 0,
+    unlocked() { return hasNormalAchievement(281) },
+    tooltip() {
+        let p = tmp.the_end.beyondPoint.toString()
+        p = new ExpantaNum(p)
+        return `${scientificEN(p)} Cleared Courses`
+    },
+
+    beyondPoint() {
+        let bep = player.the_end.points
+        let p = bep.toString()
+        let enp = new ExpantaNum(p)
+
+        if (bep.lt(10)) enp = enp
+        else if (bep.lt(20)) enp = new ExpantaNum(10).pow(enp.sub(9))
+        else if (bep.lt(30)) enp = new ExpantaNum(10).pow(new ExpantaNum(10).pow(enp.sub(19))).times(10)
+        else if (bep.lt(50)) enp = new ExpantaNum(10).tetrate(enp.sub(27)).pow(10)
+        else if (bep.lt(10000)) enp = new ExpantaNum(10).tetrate(new ExpantaNum(10).tetrate(enp.sub(44.329).div(5)))
+        else if (bep.lt(30000)) enp = new ExpantaNum(10).pentate(enp.div(3200))
+        else if (bep.lt(1000000)) enp = new ExpantaNum(10).pentate(new ExpantaNum(10).pow(enp.div(3000).sub(9))) //G2.1544e324
+        else if (bep.lt(3000000)) enp = new ExpantaNum(10).pentate(new ExpantaNum(10).tetrate(enp.times(2.4e-6))) //G1.584884F7
+        else if (bep.lt(5000000)) enp = new ExpantaNum(10).pentate(new ExpantaNum(10).pentate(enp.div(1450000))) //GFF1.04e2601494
+        else if (bep.lt(2e7)) enp = new ExpantaNum(10).arrow(4)(enp.div(1970000))
+        else if (bep.lt(2e8)) enp = new ExpantaNum(10).arrow(4)(new ExpantaNum(10).arrow(4)(enp.div(1e6).sub(19)))
+        else if (bep.lt(7e8)) enp = new ExpantaNum(10).arrow(5)(enp.div(6.6164e7)).min('10{5}10')
+        else if (bep.lt('7e2008')) {
+            let operator = enp.div(7e8).log10().add(6).floor()
+            let top = new ExpantaNum(5).pow(enp.div(7e8).log10().sub(operator.sub(6))).times(2)
+            enp = new ExpantaNum(10).arrow(operator)(top)
+        }
+        else if (bep.lt('7e5008')) {
+            let operator = enp.div(7e8).log10().add(2006).floor()
+            let top = new ExpantaNum(5).pow(enp.div(7e8).log10().sub(operator.sub(2006))).times(2)
+            enp = new ExpantaNum(10).arrow(new ExpantaNum(10).arrow(operator)(top))(new ExpantaNum(10))
+        }
+        else {
+            enp = new ExpantaNum(10).expansion(enp.log10().div(2000).floor().min(9e15 + 10000))
+        }
+        return enp
+    },
+
+    upgrades: {
+        11: {
+            title: "Wonder!",
+            description: "You can start generate Cleared Courses pass F1.798e308",
+            currencyDisplayName: "Cleared Courses",
+            currencyInternalName: "points",
+            cost: new Decimal("10^^9.99999e307"),
+            unlocked() { return tmp.the_end.layerShown },
+        },
+        12: {
+            fullDisplay() { return `<h3>Bubble Flower (SMBW)</h3><br>Cleared Courses generation is faster (You'll reach pentation level)<br><br>Cost: ${scientificEN('10^^10^^30')} Cleared Courses` },
+            cost: new Decimal(0),
+            canAfford() { return tmp.the_end.beyondPoint.gte('10^^10^^30') },
+            unlocked() { return hasUpgrade(this.layer, this.id - 1) },
+        },
+        13: {
+            fullDisplay() { return `<h3>Driller Mushroom (SMBW)</h3><br>Cleared Courses generation is faster!<br><br>Cost: ${scientificEN('10^^^10^20')} Cleared Courses` },
+            cost: new Decimal(0),
+            canAfford() { return tmp.the_end.beyondPoint.gte('10^^^10^20') },
+            unlocked() { return hasUpgrade(this.layer, this.id - 1) },
+        },
+        14: {
+            fullDisplay() { return `<h3>Elephant Fruit (SMBW)</h3><br>Cleared Courses generation is faster!!<br><br>Cost: ${scientificEN('10^^^^5')} Cleared Courses` },
+            cost: new Decimal(0),
+            canAfford() { return tmp.the_end.beyondPoint.gte('10^^^^5') },
+            unlocked() { return hasUpgrade(this.layer, this.id - 1) },
+        },
+        15: {
+            fullDisplay() { return `<h3>Wonder Flower (SMBW)</h3><br>Cleared Courses generation is faster!!!<br><br>Cost: ${scientificEN('10{5}10')} Cleared Courses` },
+            cost: new Decimal(0),
+            canAfford() { return tmp.the_end.beyondPoint.gte('10{5}10') },
+            unlocked() { return hasUpgrade(this.layer, this.id - 1) },
+        },
+        21: {
+            fullDisplay() { return `<h3>The Volcano Theme</h3><br>Cleared Courses generation is faster!!!!<br><br>Cost: ${scientificEN('10{7}3')} Cleared Courses` },
+            cost: new Decimal(0),
+            canAfford() { return tmp.the_end.beyondPoint.gte('10{7}3') },
+            unlocked() { return hasUpgrade(this.layer, 15) },
+        },
+        22: {
+            fullDisplay() { return `<h3>The Beach Theme</h3><br>Cleared Courses generation is faster!!!!<br><br>Cost: ${scientificEN('J1000')} Cleared Courses` },
+            cost: new Decimal(0),
+            canAfford() { return tmp.the_end.beyondPoint.gte('J1000') },
+            unlocked() { return hasUpgrade(this.layer, this.id - 1) },
+        },
+        23: {
+            fullDisplay() { return `<h3>The 40th Anniversary of SMB1</h3><br>Cleared Courses generation is faster!!!! (expansion!!!!)<br><br>Cost: ${scientificEN('J5000')} Cleared Courses` },
+            cost: new Decimal(0),
+            canAfford() { return tmp.the_end.beyondPoint.gte('J5000') },
+            unlocked() { return hasUpgrade(this.layer, this.id - 1) },
+        },
+        24: {
+            fullDisplay() { return `<h3>The Future</h3><br>Cleared Courses generation is faster!!!!!(expansion!!!!!)<br><br>Cost: ${scientificEN('J^99 10')} Cleared Courses` },
+            cost: new Decimal(0),
+            canAfford() { return tmp.the_end.beyondPoint.gte('J^99 10') },
+            unlocked() { return hasUpgrade(this.layer, this.id - 1) },
+        },
+        25: {
+            fullDisplay() { return `<h3>The End</h3><br>Beat the game<br><br>Cost: ${scientificEN('J^9000000000000000 10')} Cleared Courses` },
+            cost: new Decimal(0),
+            canAfford() { return tmp.the_end.beyondPoint.gte('J^9000000000000000 10') },
+            unlocked() { return hasUpgrade(this.layer, this.id - 1) },
+        },
+    },
+
+    endMult() {
+        let m = d(1)
+        if (hasUpgrade('the_end', 12)) m = m.times(1000)
+        if (hasUpgrade('the_end', 13)) m = m.times(100)
+        if (hasUpgrade('the_end', 14)) m = m.times(100)
+        if (hasUpgrade('the_end', 15)) m = m.times(10)
+        return m
+    },
+
+    update(diff) {
+        if (hasUpgrade('the_end', 23)) player.the_end.points = player.the_end.points.pow(1.003)
+        else if (hasUpgrade('the_end', 23)) player.the_end.points = player.the_end.points.pow(1.001)
+        else if (hasUpgrade('the_end', 22)) player.the_end.points = player.the_end.points.add(player.the_end.points.times(1000))
+        else if (hasUpgrade('the_end', 21)) player.the_end.points = player.the_end.points.add(player.the_end.points)
+        else if (hasUpgrade('the_end', 11)) player.the_end.points = player.the_end.points.add(tmp.the_end.endMult.times(diff))
+    },
+
+    tabFormat: [
+        ["display-text", function () { return 'You have ' + textStyle_h2(scientificEN(tmp.the_end.beyondPoint)) + ' Cleared Courses' }],
+        ["microtabs", "stuff"],
+        ["blank", "65px"],
+    ],
+    microtabs: {
+        stuff: {
+            "Upgrades": {
+                unlocked() { return true },
+                content: [
+                    ["blank", "15px"],
+                    ["raw-html", () => `<div style="opacity:.5">In the future, will we have a new Mario Maker game? Super Mario Bros. Wonder styles, custom rule online games? We're waiting for a new generation.</div>`],
+                    ["upgrades", [1, 2, 3, 4, 5, 6, 7, 8, 9]],
+                ]
+            },
+        }
+    }
+})
 //剧透警告！！！SPOILER ALERT!!!
 //剧透警告！！！SPOILER ALERT!!!
 //剧透警告！！！SPOILER ALERT!!!

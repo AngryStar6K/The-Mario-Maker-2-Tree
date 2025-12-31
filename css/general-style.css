@@ -5,7 +5,8 @@ body {
 	--background: #0f0f0f;
 	--color: #dfdfdf;
 	--points: #ffffff;
-	background: var(--background)
+	background: var(--background);
+	user-select: none;
 }
 
 /* General text */
