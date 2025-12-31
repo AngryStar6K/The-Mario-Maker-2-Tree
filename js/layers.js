@@ -27422,7 +27422,8 @@ addLayer("the_end", {
     row: 19,                                 // The row this layer is on (0 is the first row).
     symbol: "?",
     position: 0,
-    unlocked() { return hasNormalAchievement(281) },
+    unlocked() { return true },
+    layerShown() { return hasNormalAchievement(281) },
     tooltip() {
         let p = tmp.the_end.beyondPoint.toString()
         p = new ExpantaNum(p)
