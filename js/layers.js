@@ -84,65 +84,8 @@ addLayer("achievements", {
             display: "Fix your tab if you stuck in a layer tab."
         },
     },
-    update() {
-        if (player.devSpeed == undefined) player.devSpeed = 1
-        if (player.devSpeed > 1) cheat = true
-        if (cheat || cheat1 || cheat2 || cheat3 || cheat4 || cheat5 || cheat6 || cheat7 || cheat8 || cheat9) cheat = true,
-            cheat1 = true,
-            cheat2 = true,
-            cheat3 = true,
-            cheat4 = true,
-            cheat5 = true,
-            cheat6 = true,
-            cheat7 = true,
-            cheat8 = true,
-            cheat9 = true
-        player.achievements.cc = player.points
-        player.lgpoints = player.points.max(1).log(10)
-
-        //keep layer unlocks upgrades
-        if (hasNormalAchievement(11) && !hasUpgrade('coin', 14)) player.coin.upgrades.push(14)
-        if (hasNormalAchievement(13) && !hasMilestone('coin', 2)) player.coin.milestones.push(2)
-        if (hasNormalAchievement(15) && !hasUpgrade('super_mushroom', 15)) player.super_mushroom.upgrades.push(15)
-        if (hasNormalAchievement(25) && !hasUpgrade('fire_flower', 25)) player.fire_flower.upgrades.push(25)
-        if (hasUpgrade('invincible_star', 13) && !hasUpgrade('fire_flower', 12)) player.fire_flower.upgrades.push(12)
-        if (hasUpgrade('invincible_star', 14) && !hasMilestone('super_mushroom', 1)) player.super_mushroom.milestones.push(1)
-        if (hasUpgrade('invincible_star', 15) && !hasMilestone('fire_flower', 0)) player.fire_flower.milestones.push(0)
-        if (hasNormalAchievement(33) && !hasMilestone('invincible_star', 0)) player.invincible_star.milestones.push(0)
-        if (hasNormalAchievement(33) && !hasUpgrade('invincible_star', 15)) player.invincible_star.upgrades.push(15)
-        if (hasNormalAchievement(34) && !hasUpgrade('invincible_star', 22)) player.invincible_star.upgrades.push(22)
-        if (hasNormalAchievement(34) && !hasUpgrade('coin', 35)) player.coin.upgrades.push(35)
-        if (hasNormalAchievement(34) && !hasMilestone('super_mushroom', 0)) player.super_mushroom.milestones.push(0)
-        if (hasNormalAchievement(55) && !hasUpgrade('oneup_mushroom', 35)) player.oneup_mushroom.upgrades.push(35)
-        if (hasNormalAchievement(55) && !hasUpgrade('invincible_star', 35)) player.invincible_star.upgrades.push(35)
-        if (hasNormalAchievement(55) && !hasUpgrade('invincible_star', 25)) player.invincible_star.upgrades.push(25)
-        if (hasNormalAchievement(55) && !hasUpgrade('bouncy_ball_flower', 35)) player.bouncy_ball_flower.upgrades.push(35)
-        if (hasNormalAchievement(83) && !hasUpgrade('cape_feather', 35)) player.cape_feather.upgrades.push(35)
-        if (hasNormalAchievement(83) && !hasUpgrade('yoshi_egg', 25)) player.yoshi_egg.upgrades.push(25)
-        if (hasNormalAchievement(83) && !hasMilestone('super_leaf', 2)) player.super_leaf.milestones.push(2)
-        if (hasNormalAchievement(83) && !hasMilestone('super_leaf', 3)) player.super_leaf.milestones.push(3)
-        if (hasNormalAchievement(83) && !hasMilestone('super_leaf', 6)) player.super_leaf.milestones.push(6)
-        if (hasNormalAchievement(83) && !hasMilestone('super_leaf', 7)) player.super_leaf.milestones.push(7)
-        if (hasNormalAchievement(83) && !hasMilestone('super_leaf', 8)) player.super_leaf.milestones.push(8)
-        if (hasNormalAchievement(83) && !hasMilestone('super_leaf', 9)) player.super_leaf.milestones.push(9)
-        if (hasNormalAchievement(85) && !hasUpgrade('yoshi_egg', 31)) player.yoshi_egg.upgrades.push(31)
-        if (hasNormalAchievement(102) && !hasUpgrade('propeller_mushroom', 25)) player.propeller_mushroom.upgrades.push(25)
-        if (hasNormalAchievement(102) && !hasUpgrade('propeller_mushroom', 35)) player.propeller_mushroom.upgrades.push(35)
-        if (hasNormalAchievement(102) && !hasUpgrade('super_hammer', 35)) player.super_hammer.upgrades.push(35)
-        if (hasNormalAchievement(121) && !hasUpgrade('master_sword', 75)) player.master_sword.upgrades.push(75)
-        if (hasNormalAchievement(121) && !hasUpgrade('usa_mushroom', 35)) player.usa_mushroom.upgrades.push(35)
-        if (hasNormalAchievement(121) && !hasUpgrade('frog_suit', 35)) player.frog_suit.upgrades.push(35)
-        if (hasUpgrade('power_balloon', 14) && !hasUpgrade('master_sword', 83)) player.master_sword.upgrades.push(83)
-        if (hasNormalAchievement(125) && !hasUpgrade('power_balloon', 35)) player.power_balloon.upgrades.push(15)
-        if (hasNormalAchievement(125) && !hasUpgrade('super_acorn', 32)) player.super_acorn.upgrades.push(32)
-        if (hasNormalAchievement(135) && !hasUpgrade('boomerang_flower', 35)) player.boomerang_flower.upgrades.push(35)
-        if (hasNormalAchievement(145) && !hasUpgrade('mario', 51)) player.mario.upgrades.push(51)
-        if (hasNormalAchievement(145) && !hasMilestone('luigi', 3)) player.luigi.milestones.push(3)
-        if (hasNormalAchievement(182) && !hasUpgrade('normal', 35)) player.normal.upgrades.push(35)
-        if (hasNormalAchievement(192) && !hasUpgrade('expert', 41)) player.expert.upgrades.push(41)
-        if (hasNormalAchievement(203) && !hasUpgrade('s_expert', 41)) player.s_expert.upgrades.push(35)
-        if (hasNormalAchievement(205) && !hasUpgrade('coop', 15)) player.coop.upgrades.push(15)
-        if (hasNormalAchievement(224) && !hasMilestone('versus', 10)) player.versus.milestones.push(10)
+    update(diff) {
+        
     },
     achievements: {
         11: {
@@ -2196,6 +2139,65 @@ addLayer("coin", {
         if (hasMilestone('boomerang_flower', 8)) start = d('e3e63')
         if (hasMilestone('toad', 5)) start = d('ee800')
         if (hasUpgrade('super_acorn', 101)) player.coin.points = player.coin.points.add(start)
+
+        if (player.devSpeed == undefined) player.devSpeed = 1
+        if (player.devSpeed > 1) cheat = true
+        if (cheat || cheat1 || cheat2 || cheat3 || cheat4 || cheat5 || cheat6 || cheat7 || cheat8 || cheat9) cheat = true,
+            cheat1 = true,
+            cheat2 = true,
+            cheat3 = true,
+            cheat4 = true,
+            cheat5 = true,
+            cheat6 = true,
+            cheat7 = true,
+            cheat8 = true,
+            cheat9 = true
+        player.achievements.cc = player.points
+        player.lgpoints = player.points.max(1).log(10)
+
+        //keep layer unlocks upgrades
+        if (hasNormalAchievement(11) && !hasUpgrade('coin', 14)) player.coin.upgrades.push(14)
+        if (hasNormalAchievement(13) && !hasMilestone('coin', 2)) player.coin.milestones.push(2)
+        if (hasNormalAchievement(15) && !hasUpgrade('super_mushroom', 15)) player.super_mushroom.upgrades.push(15)
+        if (hasNormalAchievement(25) && !hasUpgrade('fire_flower', 25)) player.fire_flower.upgrades.push(25)
+        if (hasUpgrade('invincible_star', 13) && !hasUpgrade('fire_flower', 12)) player.fire_flower.upgrades.push(12)
+        if (hasUpgrade('invincible_star', 14) && !hasMilestone('super_mushroom', 1)) player.super_mushroom.milestones.push(1)
+        if (hasUpgrade('invincible_star', 15) && !hasMilestone('fire_flower', 0)) player.fire_flower.milestones.push(0)
+        if (hasNormalAchievement(33) && !hasMilestone('invincible_star', 0)) player.invincible_star.milestones.push(0)
+        if (hasNormalAchievement(33) && !hasUpgrade('invincible_star', 15)) player.invincible_star.upgrades.push(15)
+        if (hasNormalAchievement(34) && !hasUpgrade('invincible_star', 22)) player.invincible_star.upgrades.push(22)
+        if (hasNormalAchievement(34) && !hasUpgrade('coin', 35)) player.coin.upgrades.push(35)
+        if (hasNormalAchievement(34) && !hasMilestone('super_mushroom', 0)) player.super_mushroom.milestones.push(0)
+        if (hasNormalAchievement(55) && !hasUpgrade('oneup_mushroom', 35)) player.oneup_mushroom.upgrades.push(35)
+        if (hasNormalAchievement(55) && !hasUpgrade('invincible_star', 35)) player.invincible_star.upgrades.push(35)
+        if (hasNormalAchievement(55) && !hasUpgrade('invincible_star', 25)) player.invincible_star.upgrades.push(25)
+        if (hasNormalAchievement(55) && !hasUpgrade('bouncy_ball_flower', 35)) player.bouncy_ball_flower.upgrades.push(35)
+        if (hasNormalAchievement(83) && !hasUpgrade('cape_feather', 35)) player.cape_feather.upgrades.push(35)
+        if (hasNormalAchievement(83) && !hasUpgrade('yoshi_egg', 25)) player.yoshi_egg.upgrades.push(25)
+        if (hasNormalAchievement(83) && !hasMilestone('super_leaf', 2)) player.super_leaf.milestones.push(2)
+        if (hasNormalAchievement(83) && !hasMilestone('super_leaf', 3)) player.super_leaf.milestones.push(3)
+        if (hasNormalAchievement(83) && !hasMilestone('super_leaf', 6)) player.super_leaf.milestones.push(6)
+        if (hasNormalAchievement(83) && !hasMilestone('super_leaf', 7)) player.super_leaf.milestones.push(7)
+        if (hasNormalAchievement(83) && !hasMilestone('super_leaf', 8)) player.super_leaf.milestones.push(8)
+        if (hasNormalAchievement(83) && !hasMilestone('super_leaf', 9)) player.super_leaf.milestones.push(9)
+        if (hasNormalAchievement(85) && !hasUpgrade('yoshi_egg', 31)) player.yoshi_egg.upgrades.push(31)
+        if (hasNormalAchievement(102) && !hasUpgrade('propeller_mushroom', 25)) player.propeller_mushroom.upgrades.push(25)
+        if (hasNormalAchievement(102) && !hasUpgrade('propeller_mushroom', 35)) player.propeller_mushroom.upgrades.push(35)
+        if (hasNormalAchievement(102) && !hasUpgrade('super_hammer', 35)) player.super_hammer.upgrades.push(35)
+        if (hasNormalAchievement(121) && !hasUpgrade('master_sword', 75)) player.master_sword.upgrades.push(75)
+        if (hasNormalAchievement(121) && !hasUpgrade('usa_mushroom', 35)) player.usa_mushroom.upgrades.push(35)
+        if (hasNormalAchievement(121) && !hasUpgrade('frog_suit', 35)) player.frog_suit.upgrades.push(35)
+        if (hasUpgrade('power_balloon', 14) && !hasUpgrade('master_sword', 83)) player.master_sword.upgrades.push(83)
+        if (hasNormalAchievement(125) && !hasUpgrade('power_balloon', 35)) player.power_balloon.upgrades.push(15)
+        if (hasNormalAchievement(125) && !hasUpgrade('super_acorn', 32)) player.super_acorn.upgrades.push(32)
+        if (hasNormalAchievement(135) && !hasUpgrade('boomerang_flower', 35)) player.boomerang_flower.upgrades.push(35)
+        if (hasNormalAchievement(145) && !hasUpgrade('mario', 51)) player.mario.upgrades.push(51)
+        if (hasNormalAchievement(145) && !hasMilestone('luigi', 3)) player.luigi.milestones.push(3)
+        if (hasNormalAchievement(182) && !hasUpgrade('normal', 35)) player.normal.upgrades.push(35)
+        if (hasNormalAchievement(192) && !hasUpgrade('expert', 41)) player.expert.upgrades.push(41)
+        if (hasNormalAchievement(203) && !hasUpgrade('s_expert', 41)) player.s_expert.upgrades.push(35)
+        if (hasNormalAchievement(205) && !hasUpgrade('coop', 15)) player.coop.upgrades.push(15)
+        if (hasNormalAchievement(224) && !hasMilestone('versus', 10)) player.versus.milestones.push(10)
     },
     autoUpgrade() { return hasUpgrade('fire_flower', 12) || hasAchievement('achievements', 31) },
     pinkKeyCoinEffect() {
