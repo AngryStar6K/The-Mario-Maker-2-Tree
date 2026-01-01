@@ -1215,7 +1215,7 @@ addLayer("achievements", {
         },
         274: {
             name: "The singularity",
-            tooltip: "Unlock Evaluation. <br> Reward: F1.0000e10 AP",
+            tooltip: "Unlock Maker Singularity. <br> Reward: F1.0000e10 AP",
             done() { return hasUpgrade('maker_points', 35) },
             onComplete() {
                 return player.achievements.points = player.achievements.points.add("10^^1e10")
