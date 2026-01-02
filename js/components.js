@@ -1,12 +1,5 @@
 var app;
 
-const touchState = {
-	isTouching: false,
-	touchStartX: 0,
-	touchStartY: 0,
-	touchIdentifier: null
-};
-
 function loadVue() {
 	// data = a function returning the content (actually HTML)
 	Vue.component('display-text', {
@@ -16,13 +9,13 @@ function loadVue() {
 		`
 	})
 
-	// data = a function returning the content (actually HTML)
+// data = a function returning the content (actually HTML)
 	Vue.component('raw-html', {
-		props: ['layer', 'data'],
-		template: `
+			props: ['layer', 'data'],
+			template: `
 				<span class="instant"  v-html="data"></span>
 			`
-	})
+		})
 
 	// Blank space, data = optional height in px or pair with width and height in px
 	Vue.component('blank', {
@@ -43,12 +36,12 @@ function loadVue() {
 			<img class="instant" v-bind:src= "data" v-bind:alt= "data">
 		`
 	})
-
+		
 	// data = an array of Components to be displayed in a row
 	Vue.component('row', {
 		props: ['layer', 'data'],
 		computed: {
-			key() { return this.$vnode.key }
+			key() {return this.$vnode.key}
 		},
 		template: `
 		<div class="upgTable instant">
@@ -67,7 +60,7 @@ function loadVue() {
 	Vue.component('column', {
 		props: ['layer', 'data'],
 		computed: {
-			key() { return this.$vnode.key }
+			key() {return this.$vnode.key}
 		},
 		template: `
 		<div class="upgTable instant">
@@ -86,7 +79,7 @@ function loadVue() {
 	Vue.component('layer-proxy', {
 		props: ['layer', 'data'],
 		computed: {
-			key() { return this.$vnode.key }
+			key() {return this.$vnode.key}
 		},
 		template: `
 		<div>
@@ -114,10 +107,10 @@ function loadVue() {
 	// Data = width in px, by default fills the full area
 	Vue.component('h-line', {
 		props: ['layer', 'data'],
-		template: `
+			template:`
 				<hr class="instant" v-bind:style="data ? {'width': data} : {}" class="hl">
 			`
-	})
+		})
 
 	// Data = height in px, by default is bad
 	Vue.component('v-line', {
@@ -179,83 +172,19 @@ function loadVue() {
 	Vue.component('upgrade', {
 		props: ['layer', 'data'],
 		template: `
-		<button v-if="tmp[layer].upgrades && tmp[layer].upgrades[data]!== undefined && tmp[layer].upgrades[data].unlocked" :id='"upgrade-" + layer + "-" + data' v-on:mousedown="handleMouseEvent" v-on:mouseenter="handleMouseEvent" v-on:touchstart="handleTouchStart" v-on:touchmove="handleTouchMove" v-on:touchcancel="handleTouchEnd" v-bind:class="{ [layer]: true, tooltipBox: true, upg: true, bought: hasUpgrade(layer, data), locked: (!(canAffordUpgrade(layer, data))&&!hasUpgrade(layer, data)), can: (canAffordUpgrade(layer, data)&&!hasUpgrade(layer, data))}"
+		<button v-if="tmp[layer].upgrades && tmp[layer].upgrades[data]!== undefined && tmp[layer].upgrades[data].unlocked" :id='"upgrade-" + layer + "-" + data' v-on:click="buyUpg(layer, data)" v-bind:class="{ [layer]: true, tooltipBox: true, upg: true, bought: hasUpgrade(layer, data), locked: (!(canAffordUpgrade(layer, data))&&!hasUpgrade(layer, data)), can: (canAffordUpgrade(layer, data)&&!hasUpgrade(layer, data))}"
 			v-bind:style="[((!hasUpgrade(layer, data) && canAffordUpgrade(layer, data)) ? {'background-color': tmp[layer].color} : {}), tmp[layer].upgrades[data].style]">
 			<span v-if="layers[layer].upgrades[data].fullDisplay" v-html="run(layers[layer].upgrades[data].fullDisplay, layers[layer].upgrades[data])"></span>
 			<span v-else>
 				<span v-if= "tmp[layer].upgrades[data].title"><h3 v-html="tmp[layer].upgrades[data].title"></h3><br></span>
 				<span v-html="tmp[layer].upgrades[data].description"></span>
 				<span v-if="layers[layer].upgrades[data].effectDisplay"><br>Currently: <span v-html="run(layers[layer].upgrades[data].effectDisplay, layers[layer].upgrades[data])"></span></span>
-				<br><br>Cost: {{ formatWhole(tmp[layer].upgrades[data].cost) }} 
-				<span v-html="tmp[layer].upgrades[data].currencyDisplayName ? tmp[layer].upgrades[data].currencyDisplayName : tmp[layer].resource"></span>
+				<br><br>Cost: {{ formatWhole(tmp[layer].upgrades[data].cost) }} {{(tmp[layer].upgrades[data].currencyDisplayName ? tmp[layer].upgrades[data].currencyDisplayName : tmp[layer].resource)}}
 			</span>
 			<tooltip v-if="tmp[layer].upgrades[data].tooltip" :text="tmp[layer].upgrades[data].tooltip"></tooltip>
 
 			</button>
-		`,
-		methods: {
-			handleMouseEvent(event) {
-				// event.buttons is a bitmask, 0b1 is primary mouse button (usually left)
-				if (event.buttons & 1) {
-					buyUpg(this.layer, this.data)
-				}
-			},
-
-			handleTouchStart(event) {
-				// 防止默认行为以避免页面滚动
-				event.preventDefault();
-
-				// 只处理主要触摸点
-				if (event.changedTouches.length > 0) {
-					const touch = event.changedTouches[0];
-					touchState.isTouching = true;
-					touchState.touchStartX = touch.clientX;
-					touchState.touchStartY = touch.clientY;
-					touchState.touchIdentifier = touch.identifier;
-
-					// 立即购买当前升级
-					this.purchaseUpgrade();
-				}
-			},
-
-			handleTouchMove(event) {
-				if (!touchState.isTouching) return;
-
-				// 防止默认行为以避免页面滚动
-				event.preventDefault();
-
-				// 查找当前触摸点
-				for (let i = 0; i < event.changedTouches.length; i++) {
-					const touch = event.changedTouches[i];
-
-					// 检查是否是我们的触摸点
-					if (touch.identifier === touchState.touchIdentifier) {
-						// 获取触摸点下的元素
-						const element = document.elementFromPoint(touch.clientX, touch.clientY);
-
-						// 检查元素是否是升级按钮
-						if (element && element.classList.contains('upg')) {
-							// 提取层级和ID信息
-							const idParts = element.id.split('-');
-							if (idParts.length === 3) {
-								const layer = idParts[1];
-								const data = idParts[2];
-
-								// 购买这个升级
-								buyUpg(layer, data);
-							}
-						}
-						break;
-					}
-				}
-			},
-
-			handleTouchEnd(event) {
-				// 重置触摸状态
-				touchState.isTouching = false;
-				touchState.touchIdentifier = null;
-			},
-		}
+		`
 	})
 
 	Vue.component('milestones', {
@@ -300,7 +229,7 @@ function loadVue() {
 			v-html="prestigeButtonText(layer)" v-on:click="doReset(layer)">
 		</button>
 		`
-
+	
 	})
 
 	// Displays the main resource for the layer
@@ -358,21 +287,20 @@ function loadVue() {
 			<sell-all :layer="layer" :data="data" v-bind:style="tmp[layer].componentStyles['sell-all']" v-if="(tmp[layer].buyables[data].sellAll)&& !(tmp[layer].buyables[data].canSellAll !== undefined && tmp[layer].buyables[data].canSellAll == false)"></sell-all>
 		</div>
 		`,
-		data() { return { interval: false, time: 0, } },
+		data() { return { interval: false, time: 0,}},
 		methods: {
 			start() {
 				if (!this.interval) {
-					this.interval = setInterval((function () {
-						if (this.time >= 5)
+					this.interval = setInterval((function() {
+						if(this.time >= 5)
 							buyBuyable(this.layer, this.data)
-						this.time = this.time + 1
-					}).bind(this), 50)
-				}
+						this.time = this.time+1
+					}).bind(this), 50)}
 			},
 			stop() {
 				clearInterval(this.interval)
 				this.interval = false
-				this.time = 0
+			  	this.time = 0
 			}
 		},
 	})
@@ -386,7 +314,7 @@ function loadVue() {
 			</div>
 			`
 	})
-
+	
 	Vue.component('clickables', {
 		props: ['layer', 'data'],
 		template: `
@@ -418,23 +346,22 @@ function loadVue() {
 
 		</button>
 		`,
-		data() { return { interval: false, time: 0, } },
+		data() { return { interval: false, time: 0,}},
 		methods: {
 			start() {
 				if (!this.interval && layers[this.layer].clickables[this.data].onHold) {
-					this.interval = setInterval((function () {
+					this.interval = setInterval((function() {
 						let c = layers[this.layer].clickables[this.data]
-						if (this.time >= 5 && run(c.canClick, c)) {
+						if(this.time >= 5 && run(c.canClick, c)) {
 							run(c.onHold, c)
-						}
-						this.time = this.time + 1
-					}).bind(this), 50)
-				}
+						}	
+						this.time = this.time+1
+					}).bind(this), 50)}
 			},
 			stop() {
 				clearInterval(this.interval)
 				this.interval = false
-				this.time = 0
+			  	this.time = 0
 			}
 		},
 	})
@@ -478,27 +405,24 @@ function loadVue() {
 
 		</button>
 		`,
-		data() { return { interval: false, time: 0, } },
+		data() { return { interval: false, time: 0,}},
 		computed: {
 			canClick() {
-				return gridRun(this.layer, 'getCanClick', player[this.layer].grid[this.data], this.data)
-			}
+				return gridRun(this.layer, 'getCanClick', player[this.layer].grid[this.data], this.data)}
 		},
 		methods: {
 			start() {
 				if (!this.interval && layers[this.layer].grid.onHold) {
-					this.interval = setInterval((function () {
-						if (this.time >= 5 && gridRun(this.layer, 'getCanClick', player[this.layer].grid[this.data], this.data)) {
-							gridRun(this.layer, 'onHold', player[this.layer].grid[this.data], this.data)
-						}
-						this.time = this.time + 1
-					}).bind(this), 50)
-				}
+					this.interval = setInterval((function() {
+						if(this.time >= 5 && gridRun(this.layer, 'getCanClick', player[this.layer].grid[this.data], this.data)) {
+							gridRun(this.layer, 'onHold', player[this.layer].grid[this.data], this.data)						}	
+						this.time = this.time+1
+					}).bind(this), 50)}
 			},
 			stop() {
 				clearInterval(this.interval)
 				this.interval = false
-				this.time = 0
+			  	this.time = 0
 			}
 		},
 	})
@@ -507,7 +431,7 @@ function loadVue() {
 	Vue.component('microtabs', {
 		props: ['layer', 'data'],
 		computed: {
-			currentTab() { return player.subtabs[layer][data] }
+			currentTab() {return player.subtabs[layer][data]}
 		},
 		template: `
 		<div v-if="tmp[layer].microtabs" :style="{'border-style': 'solid'}">
@@ -526,7 +450,7 @@ function loadVue() {
 	Vue.component('bar', {
 		props: ['layer', 'data'],
 		computed: {
-			style() { return constructBarStyle(this.layer, this.data) }
+			style() {return constructBarStyle(this.layer, this.data)}
 		},
 		template: `
 		<div v-if="tmp[layer].bars && tmp[layer].bars[data].unlocked" v-bind:style="{'position': 'relative'}"><div v-bind:style="[tmp[layer].bars[data].style, style.dims, {'display': 'table'}]">
@@ -574,7 +498,7 @@ function loadVue() {
 	Vue.component('tree', {
 		props: ['layer', 'data'],
 		computed: {
-			key() { return this.$vnode.key }
+			key() {return this.$vnode.key}
 		},
 		template: `<div>
 		<span class="upgRow" v-for="(row, r) in data"><table>
@@ -591,7 +515,7 @@ function loadVue() {
 	Vue.component('upgrade-tree', {
 		props: ['layer', 'data'],
 		computed: {
-			key() { return this.$vnode.key }
+			key() {return this.$vnode.key}
 		},
 		template: `<thing-tree :layer="layer" :data = "data" :type = "'upgrade'"></thing-tree>`
 	})
@@ -600,7 +524,7 @@ function loadVue() {
 	Vue.component('buyable-tree', {
 		props: ['layer', 'data'],
 		computed: {
-			key() { return this.$vnode.key }
+			key() {return this.$vnode.key}
 		},
 		template: `<thing-tree :layer="layer" :data = "data" :type = "'buyable'"></thing-tree>`
 	})
@@ -609,7 +533,7 @@ function loadVue() {
 	Vue.component('clickable-tree', {
 		props: ['layer', 'data'],
 		computed: {
-			key() { return this.$vnode.key }
+			key() {return this.$vnode.key}
 		},
 		template: `<thing-tree :layer="layer" :data = "data" :type = "'clickable'"></thing-tree>`
 	})
@@ -617,7 +541,7 @@ function loadVue() {
 	Vue.component('thing-tree', {
 		props: ['layer', 'data', 'type'],
 		computed: {
-			key() { return this.$vnode.key }
+			key() {return this.$vnode.key}
 		},
 		template: `<div>
 		<span class="upgRow" v-for="(row, r) in data"><table>
@@ -738,4 +662,4 @@ function loadVue() {
 	})
 }
 
-
+ 
