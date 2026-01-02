@@ -3575,6 +3575,7 @@ addLayer("oneup_mushroom", {
                 let dest = ''
                 if (hasUpgrade('super_leaf', 25)) dest = ' (Destroyed)'
                 let des = `Multiply Pink Key Coin gain based on 1UP Mushrooms. (Hardcap at ${f('1e5000')}${dest})`
+                return des
             },
             rewardEffect() {
                 if (hasUpgrade('super_leaf', 25)) return player.oneup_mushroom.points.pow(Decimal.log10((player.oneup_mushroom.points.max(0).add(10))).min(75)).max(1)
