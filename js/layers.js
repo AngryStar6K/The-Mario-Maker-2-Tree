@@ -1133,7 +1133,7 @@ addLayer("achievements", {
             },
         },
         271: {
-            name: "Boogol",
+            name: "Giggol",
             tooltip: "Get 1.0000F100 Cleared Courses. <br> Reward: 1.0000F20 AP",
             done() { return player.points.gte("10^^100") },
             onComplete() {
