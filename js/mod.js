@@ -18,7 +18,7 @@ let VERSION = {
 }
 
 let changelog = `<h1>Changelog:</h1><br>
-	<h3>v1.1 (2026/09/??)</h3><br>
+	<h3>v1.1 (2026/09/16)</h3><br>
 		- Fixed some mistype.<br>
 	<h3>v1.0 (2026/01/01)</h3><br>
 		- Endgame: Unlock total 138 achievements.<br>
