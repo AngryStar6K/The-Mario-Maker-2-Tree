@@ -1,0 +1,105 @@
+@font-face {
+  font-family: 'a';
+  src: local('bahnschrift'), local(monospace);
+  unicode-range: U+0000-001F, U+0020-007F, U+00B7, U+0391-03C9;
+}
+
+@font-face {
+  font-family: 'b';
+  src: local('楷体'), local('宋体');
+  unicode-range: U+0020, U+0080-00B6, U+00B8-0390, U+03CA-FFFF;
+}
+
+.textAlignLeft {
+    text-align: left;
+    left: 5px;
+    position: relative;
+}
+
+.reset {
+    border-radius: 15px;
+}
+
+.puzzle.reset.can,
+.upg.puzzle.can {
+    background: linear-gradient(45deg, #f9491f 50%, #6b6aff 50%);
+    background-size: 150% 150%;
+    background-position: 25% 25%;
+}
+
+.upg.maker_points.can {
+    background: linear-gradient(45deg, #0d6d87 0%, #013161 50%, #095489 100%);
+    color: white;
+}
+
+.text-puzzle {
+    background: linear-gradient(45deg, #f9491f 50%, #6b6aff 50%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 10px #f9491f;
+}
+
+.troll.reset.can,
+.upg.troll.can {
+    background: linear-gradient(315deg, #1aa10f 10%, #ffb258 10%, #ffb258 20%, #1aa10f 20%, #1aa10f 30%, #ffb258 30%, #ffb258 70%, white 70%, white 80%, #ffb258 80%, #ffb258 90%, white 90%);
+    background-size: 110% 110%;
+    background-position: 40% 40%;
+}
+
+.text-troll {
+    background: linear-gradient(315deg, #1aa10f 10%, #ffb258 10%, #ffb258 20%, #1aa10f 20%, #1aa10f 30%, #ffb258 30%, #ffb258 70%, white 70%, white 80%, #ffb258 80%, #ffb258 90%, white 90%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 10px #ffb258;
+}
+
+.text-superexperience {
+    background: linear-gradient(to bottom, #ffcf03 0%, #f83a11 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 10px #ffcf03;
+}
+
+.text-mp {
+    background: linear-gradient(45deg, #0d6d87 0%, #013161 50%, #095489 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 10px #013161;
+}
+
+.star12-shape {
+    clip-path: polygon(
+        100% 50%, /*x,y*/
+        89.43% 60.57%,
+        93.33% 75%,
+        78.87% 78.87%,
+        75% 93.33%,
+        60.56% 89.43%,
+        50% 100%,
+        39.43% 89.43%,
+        25% 93.33%,
+        21.13% 78.87%,
+        6.67% 75%,
+        10.57% 60.57%,
+        0% 50%,
+        10.57% 39.43%,
+        6.67% 25%,
+        21.13% 21.13%,
+        25% 6.67%,
+        39.43% 10.57%,
+        50% 0%,
+        60.56% 10.57%,
+        75% 6.67%,
+        78.87% 21.13%,
+        93.33% 25%,
+        89.43% 39.43%
+    );
+    height: 100px;
+    width: 100px;
+    background-color: red;
+    z-index: 1;
+}

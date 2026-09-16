@@ -1,9 +1,26 @@
+// 编码（导出）
+function encodeToBase64(str) {
+    // 将字符串转为 UTF-8 字节数组
+    const utf8Bytes = new TextEncoder().encode(str);
+    // 将字节数组转为二进制字符串（btoa 可接受）
+    const binaryStr = String.fromCharCode(...utf8Bytes);
+    return btoa(binaryStr);
+}
+
+// 解码（导入）
+function decodeFromBase64(base64) {
+    const binaryStr = atob(base64);
+    // 将二进制字符串转回字节数组
+    const bytes = Uint8Array.from([...binaryStr].map(ch => ch.charCodeAt(0)));
+    return new TextDecoder('utf-8').decode(bytes);
+}
+
 // ************ Save stuff ************
 function save(force) {
 	NaNcheck(player)
 	if (NaNalert && !force) return
-	localStorage.setItem(modInfo.id, btoa(unescape(encodeURIComponent(JSON.stringify(player)))));
-	localStorage.setItem(modInfo.id+"_options", btoa(unescape(encodeURIComponent(JSON.stringify(options)))));
+	localStorage.setItem(modInfo.id, encodeToBase64(unescape(encodeURIComponent(JSON.stringify(player)))));
+	localStorage.setItem(modInfo.id+"_options", encodeToBase64(unescape(encodeURIComponent(JSON.stringify(options)))));
 
 }
 function startPlayerBase() {
@@ -192,7 +209,7 @@ function load() {
 		options = getStartOptions();
 	}
 	else {
-		player = Object.assign(getStartPlayer(), JSON.parse(decodeURIComponent(escape(atob(get)))));
+		player = Object.assign(getStartPlayer(), JSON.parse(decodeURIComponent(escape(decodeFromBase64(get)))));
 		fixSave();
 		loadOptions();
 	}
@@ -265,7 +282,7 @@ function NaNcheck(data, previous, name, previous2, name2) {
 }
 function exportSave() {
 	//if (NaNalert) return
-	let str = btoa(JSON.stringify(player));
+	let str = encodeToBase64(JSON.stringify(player));
 
 	const el = document.createElement("textarea");
 	el.value = str;
@@ -277,7 +294,7 @@ function exportSave() {
 }
 
 function exportSaveToFile() {
-    let str = btoa(JSON.stringify(player))
+    let str = decodeFromBase64(JSON.stringify(player))
     save();
     let file = new Blob([str], {type: "text/plain"})
     window.URL = window.URL || window.webkitURL;
@@ -306,7 +323,7 @@ function importSave(imported = undefined, forced = false) {
 	}
 }
 
-/*function importSaveFromFile() {
+function importSaveFromFile() {
 	let a = document.createElement("input")
     a.type = 'file'
     a.accept = '.txt,text/plain'
@@ -343,7 +360,7 @@ function importSave(imported = undefined, forced = false) {
     a.click();
     document.body.removeChild(a);
 
-}*/
+}
 
 function versionCheck() {
 	let setVersion = true;

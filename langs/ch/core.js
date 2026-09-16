@@ -9,7 +9,7 @@
 
 */
 
-var CNITEM_DEBUG = 1;
+var CNITEM_DEBUG = 0;
 function cnItemByTag(text, itemgroup, node, textori){
 	for (let i in itemgroup){
 		if (i[0] == '.') { //匹配节点及其父节点的class

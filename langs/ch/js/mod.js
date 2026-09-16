@@ -1,8 +1,8 @@
 let modInfo = {
-	name: "The Mario Maker 2 Tree",
+	name: "马力欧创作家 2 树",
 	id: "SMM2",
 	author: "AngryStar6K",
-	pointsName: "Cleared Courses",
+	pointsName: "通过的关卡数",
 	modFiles: ["layers.js", "tree.js"],
 
 	discordName: "AngryStar6K",
@@ -18,8 +18,7 @@ let VERSION = {
 }
 
 let changelog = `<h1>Changelog:</h1><br>
-	<h3>v1.1 (2026/09/??)</h3><br>
-		- Fixed some mistype.<br>
+	<h3>更新日志不提供中文版本</h3><br>
 	<h3>v1.0 (2026/01/01)</h3><br>
 		- Endgame: Unlock total 138 achievements.<br>
 		- Added 2 layers and resources for them.<br>
@@ -135,7 +134,7 @@ let changelog = `<h1>Changelog:</h1><br>
 		- Added 5 super mushroom upgrades, 1 super mushroom milestone, 1 super mushroom challenge.<br>
 		- Added 5 Achievements.`
 
-let winText = `Congratulations! You have reached the end and beaten this game, but there will be more updates in the future!<br>`
+let winText = `恭喜你通关了此游戏！<br>`
 
 // If you add new functions anywhere inside of a layer, and those functions have an effect when called, add them here.
 // (The ones here are examples, all official functions are already taken care of)
@@ -155,7 +154,7 @@ function inExpertBossChallenge() {
 	if (inChallenge('expert', 11) || inChallenge('expert', 12) || inChallenge('expert', 21) || inChallenge('expert', 22) || inChallenge('expert', 31) || inChallenge('expert', 32) || inChallenge('expert', 41)) return true
 }
 
-function originalPointGen () {
+function originalPointGen() {
 	if (!canGenPoints())
 		return new Decimal(0)
 
@@ -248,13 +247,13 @@ var cheat9 = false
 
 var displayThings = [
 	function () {
-		let endgameText = `<br>Endgame: Get all 138 Achievements<br>`
+		let endgameText = `<br>版本终点:获得全部138成就<br>`
 		let e = ""
 		if (options.endgameShown) e = endgameText
 		if (!options.endgameShown) e = ""
 		let cheatText = "<br><h4 style='color: #ff0000; text-shadow: 0 0 10px #ff0000'>This Save is Cheated!</h4>"
 		let tfp = d(1).sub(tetraflowPower())
-		if (getPointGen().gte('eee2.997e45')) e += "<br>Due to your cleared course tetration-overflow<br>Your cleared courses gain is <div class = 'text-superexperience' style = 'display: inline-block'>x→lg<sup>" + f(slog(originalPointGen()).sub(5.219529205449591).times(tfp)) + "</sup>(x)</div><br>Original gain: " + format(originalPointGen()) + " cleared courses/sec<br>"
+		if (getPointGen().gte('eee2.997e45')) e += "<br>由于你的通过的关卡数的四级运算溢出，<br>你的通过的关卡数获取变为 <div class = 'text-superexperience' style = 'display: inline-block'>x→lg<sup>" + f(slog(originalPointGen()).sub(5.219529205449591).times(tfp)) + "</sup>(x)</div><br>溢出前获取: " + format(originalPointGen()) + " 通过的关卡数/sec<br>"
 		if (!cheat) return e
 		if (cheat) return e + cheatText
 	}
