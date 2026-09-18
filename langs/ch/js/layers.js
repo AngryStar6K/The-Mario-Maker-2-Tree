@@ -2238,7 +2238,7 @@ addLayer("coin", {
     upgrades: {
         11: {
             title: "游戏开始了",
-            description: "金币获取变为3x",
+            description: "通过的关卡数获取变为3x",
             cost: new Decimal(1),
         },
         12: {
@@ -24018,7 +24018,7 @@ addLayer("speedrun", {
         "prestige-button",
         ["display-text", () => `跑酷关卡层级重置就像标准关卡层级, 它们重置相同的内容`],
         ["display-text", () => `你有 ${formatWhole(player.s_expert.points)} 超难耐力挑战关卡`],
-        ["display-text", () => `你最多拥有 跑酷关卡 is ${formatWhole(player.speedrun.best)}`],
+        ["display-text", () => `你最多拥有 ${formatWhole(player.speedrun.best)} 跑酷关卡`],
         ["microtabs", "stuff"],
         ["blank", "65px"],
     ],
