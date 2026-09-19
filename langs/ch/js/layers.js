@@ -2613,7 +2613,7 @@ addLayer("super_mushroom", {
         },
         13: {
             title: "在敌人上跳！",
-            description: "此层级重置的时间加成超级蘑菇获取",
+            description: "此层级重置的时间加成通过的关卡数获取",
             cost: new Decimal(1528),
             effect() {
                 let SMU13factor = player.super_mushroom.resetTime + 1
@@ -3116,7 +3116,7 @@ addLayer("invincible_star", {
         },
         14: {
             title: "多耀眼的星星啊！",
-            description: "重置保留第2超级蘑菇升级 (立刻生效)",
+            description: "重置保留第2超级蘑菇里程碑 (立刻生效)",
             cost: new Decimal(2),
             unlocked() { return hasUpgrade('invincible_star', 13) },
         },
@@ -3196,7 +3196,7 @@ addLayer("invincible_star", {
     milestones: {
         0: {
             requirementDescription: "获得 1 无敌星",
-            effectDescription: "自动购买第3无敌星购买项，第3行重置保留超级蘑菇里程碑1",
+            effectDescription: "自动购买第3金币购买项，第3行重置保留超级蘑菇里程碑1",
             done() { return player.invincible_star.points.gte(1) },
         },
         1: {
@@ -3460,7 +3460,7 @@ addLayer("oneup_mushroom", {
         },
         15: {
             title: "刷命大师",
-            description: "解锁2个无敌星挑战",
+            description: "解锁2个无敌星挑战（先解锁第1个，完成第1个解锁第2个）",
             cost: new Decimal(512),
             unlocked() { return hasUpgrade('oneup_mushroom', 14) },
         },
