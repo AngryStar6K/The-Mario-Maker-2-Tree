@@ -306,7 +306,7 @@ function importSave(imported = undefined, forced = false) {
 	}
 }
 
-/*function importSaveFromFile() {
+function importSaveFromFile() {
 	let a = document.createElement("input")
     a.type = 'file'
     a.accept = '.txt,text/plain'
@@ -343,7 +343,7 @@ function importSave(imported = undefined, forced = false) {
     a.click();
     document.body.removeChild(a);
 
-}*/
+}
 
 function versionCheck() {
 	let setVersion = true;
