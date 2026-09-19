@@ -3447,7 +3447,7 @@ addLayer("oneup_mushroom", {
         },
         15: {
             title: "Life farming master",
-            description: "Unlock two Invincible Star challenges.",
+            description: "Unlock two Invincible Star challenges. (Unlock the first chal. first, once you complete the fiest chal. unlock the second chal.)",
             cost: new Decimal(512),
             unlocked() { return hasUpgrade('oneup_mushroom', 14) },
         },
