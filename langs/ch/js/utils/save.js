@@ -294,7 +294,7 @@ function exportSave() {
 }
 
 function exportSaveToFile() {
-    let str = decodeFromBase64(JSON.stringify(player))
+    let str = encodeToBase64(JSON.stringify(player))
     save();
     let file = new Blob([str], {type: "text/plain"})
     window.URL = window.URL || window.webkitURL;
