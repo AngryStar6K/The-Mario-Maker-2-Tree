@@ -4180,7 +4180,7 @@ addLayer("big_mushroom", {
             effectDisplay() { return format(upgradeEffect(this.layer, this.id)) + "x" },
         },
         23: {
-            title: "Stronger jumps",
+            title: "Stronger^2 jumps",
             description: "Multiply Bouncy Ball Flower based on Big Mushroom.",
             cost: new Decimal(3125),
             unlocked() { return hasUpgrade('big_mushroom', 22) },
@@ -22905,7 +22905,7 @@ addLayer("themed", {
                 player.themed.points = player.themed.points.sub(1e46)
             },
             currencyDisplayName() {
-                return `Cleared Courses + ${f(1e30)} Themed Courses`
+                return `Cleared Courses + ${f(1e46)} Themed Courses`
             },
             currencyInternalName: "cc",
             currencyLayer: "achievements",
