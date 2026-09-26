@@ -4200,7 +4200,7 @@ addLayer("big_mushroom", {
             effectDisplay() { return format(upgradeEffect(this.layer, this.id)) + "x" },
         },
         23: {
-            title: "更强的跳跃",
+            title: "更强的跳跃^2",
             description: "大蘑菇加成弹力球之花获取",
             cost: new Decimal(3125),
             unlocked() { return hasUpgrade('big_mushroom', 22) },
@@ -23049,7 +23049,7 @@ addLayer("themed", {
                 player.themed.points = player.themed.points.sub(1e46)
             },
             currencyDisplayName() {
-                return `通过的关卡数 + ${f(1e30)} 标准关卡`
+                return `通过的关卡数 + ${f(1e46)} 标准关卡`
             },
             currencyInternalName: "cc",
             currencyLayer: "achievements",
