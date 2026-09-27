@@ -5542,7 +5542,7 @@ addLayer("yoshi_egg", {
         },
         33: {
             title: "Yoshi's skills",
-            description: "Multiply Yoshi gain based on SL Skill Points.",
+            description: "Multiply Yoshi Egg gain based on SL Skill Points.",
             cost: new Decimal('1e321'),
             unlocked() { return hasUpgrade('yoshi_egg', 32) },
             effect() {
