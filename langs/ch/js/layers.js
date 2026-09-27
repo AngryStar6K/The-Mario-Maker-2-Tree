@@ -5571,7 +5571,7 @@ addLayer("yoshi_egg", {
         },
         33: {
             title: "耀西的技能",
-            description: "超级叶子技能点加成耀西获取",
+            description: "超级叶子技能点加成耀西蛋获取",
             cost: new Decimal('1e321'),
             unlocked() { return hasUpgrade('yoshi_egg', 32) },
             effect() {
@@ -5803,7 +5803,7 @@ addLayer("yoshi_egg", {
                     }],
                     ["display-text", function () {
                         let t = '你获得 <h2 style=\'color: #f80000; text-shadow: 0 0 10px #f80000\'>' + format(tmp.yoshi_egg.yoshiEff.red2)
-                            + "x </h2> 的斗篷羽毛"
+                            + "x </h2> 的斗篷精华"
                         if (hasUpgrade('propeller_mushroom', 12)) return t
                     }],
                 ],
@@ -5994,7 +5994,7 @@ addLayer("propeller_mushroom", {
         // Look in the upgrades docs to see what goes here!
     },
     hotkeys: [
-        { key: "p", description: "P: 进行再次螺旋桨蘑菇重置", onPress() { if (canReset(this.layer)) doReset(this.layer) } },
+        { key: "p", description: "P: 进行螺旋桨蘑菇重置", onPress() { if (canReset(this.layer)) doReset(this.layer) } },
     ],
     milestones: {
         0: {
