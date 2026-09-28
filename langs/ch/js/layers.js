@@ -486,7 +486,7 @@ addLayer("achievements", {
         },
         105: {
             name: "你仍然记得这个",
-            tooltip: "获得 1e258 超级锤子 <br> 奖励: e1.000e10 成就点数, 解锁第33大师之剑层级",
+            tooltip: "获得 1e258 超级锤子 <br> 奖励: e1.000e10 成就点数, 解锁第33大师之剑升级",
             done() { return player.super_hammer.points.gte(1e258) },
             onComplete() {
                 return player.achievements.points = player.achievements.points.add("ee10")
@@ -494,7 +494,7 @@ addLayer("achievements", {
         },
         111: {
             name: "超级马力欧兄弟USA？",
-            tooltip: "Unlock SMB2 Mushroom layer. <br> 奖励: e1.111e11 成就点数.",
+            tooltip: "解锁马力欧USA的蘑菇层级 <br> 奖励: e1.111e11 成就点数.",
             done() { return hasUpgrade('master_sword', 75) },
             onComplete() {
                 return player.achievements.points = player.achievements.points.add("e1.111e11")
