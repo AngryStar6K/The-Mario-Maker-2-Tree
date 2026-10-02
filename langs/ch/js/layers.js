@@ -11932,7 +11932,7 @@ function toadTierLayerDisplay(decimal, isCapital = true) {
         ordMag = d(10).pow(decimal.mag)
     if (decimal.gte(Number.MAX_SAFE_INTEGER)) return ordinal + "重阶层" + " " + formatWhole(ordMag)
     if (decimal.gte(1000)) return formatWhole(decimal) + "重阶层"
-    return tiersNameChinese(decimal)
+    return tiersNameChinese(decimal) + "重阶层"
     /*let num = decimal.toNumber()
     if (num <= 9 && isCapital) return onesC[num]
     if (num <= 9 && !isCapital) return onesL[num]
@@ -12524,14 +12524,14 @@ addLayer("toad", {
                 let c_2 = l.sub(9)
                 if (player.toad.tierlayer.eq(7))
                     return "奇诺比奥" + toadTierLayerDisplay(l) + " " + formatWhole(player.toad.supertier[3])
-                if (player.toad.tierlayer.eq(8))
+                else if (player.toad.tierlayer.eq(8))
                     return "奇诺比奥" + toadTierLayerDisplay(l) + " " + formatWhole(player.toad.supertier[3].div(100).floor()) + "<br>"
                         + "奇诺比奥" + toadTierLayerDisplay(l.sub(1)) + " " + formatWhole(player.toad.supertier[3])
-                if (player.toad.tierlayer.eq(9))
+                else if (player.toad.tierlayer.gte(9) && player.toad.tierlayer.lt(9e15))
                     return "奇诺比奥" + toadTierLayerDisplay(l) + " " + formatWhole(player.toad.supertier[3].div(Decimal.pow(10, c.times(3).add(c.pow(2)).div(2))).floor()) + "<br>"
                         + "奇诺比奥" + toadTierLayerDisplay(l.sub(1)) + " " + formatWhole(player.toad.supertier[3].div(Decimal.pow(10, c_1.times(3).add(c_1.pow(2)).div(2))).floor()) + "<br>"
                         + "奇诺比奥" + toadTierLayerDisplay(l.sub(2)) + " " + formatWhole(player.toad.supertier[3].div(Decimal.pow(10, c_2.times(3).add(c_2.pow(2)).div(2))).floor())
-                if (player.toad.tierlayer.gte(9e15))
+                else if (player.toad.tierlayer.gte(9e15))
                     return "奇诺比奥" + toadTierLayerDisplay(l)
             },
             display() {
@@ -19133,7 +19133,7 @@ addLayer("s_expert", {
                         return `你一次性可以击败 ${format(tmp.s_expert.multBoomBoom)} 碰碰`
                     }],
                     ["display-text", function () {
-                        return `你的碰碰倍增熔岩获取和上限 ${textStyle_h2(format(tmp.s_expert.effectBoomBoom) + 'x', '6a4fae')}`
+                        return `你的碰碰倍增毒液获取和上限 ${textStyle_h2(format(tmp.s_expert.effectPoomPoom) + 'x', '6a4fae')}`
                     }],
                     ["display-text", function () {
                         return `如果你选择了射击模式，你就可以同时击败奔奔和碰碰`
@@ -19474,13 +19474,13 @@ addLayer("coop", {
             },
             effectDisplay() { return format(upgradeEffect(this.layer, this.id)) + "x" },
         },
-        45: {
+        45: { //!!!!!!!
             title: "一起游玩！",
             description: `“技术：举起玩家”效果变为 ^2`,
             currencyDisplayName: "通过的关卡数",
             currencyInternalName: "cc",
             currencyLayer: "achievements",
-            cost: new Decimal("ee1.5e60"),
+            cost: new Decimal("ee5e64"),
             unlocked() { return hasUpgrade(this.layer, this.id - 1) },
         },
         51: {
@@ -23303,7 +23303,7 @@ addLayer("themed", {
         },
         4: {
             requirementDescription: "上传 20 标准关卡",
-            effectDescription: "每秒被动获取 100% 的中间点并且自动购买多人过关购买项",
+            effectDescription: "每秒被动获取 100% 的中间点并且多人过关购买项可以购买最大",
             done() { return player.themed.points.gte(20) },
         },
         5: {
