@@ -12428,14 +12428,14 @@ addLayer("toad", {
                 let c_2 = l.sub(9)
                 if (player.toad.tierlayer.eq(7))
                     return "Toad " + toadTierLayerDisplay(l) + " " + formatWhole(player.toad.supertier[3])
-                if (player.toad.tierlayer.eq(8))
+                else if (player.toad.tierlayer.eq(8))
                     return "Toad " + toadTierLayerDisplay(l) + " " + formatWhole(player.toad.supertier[3].div(100).floor()) + "<br>"
                         + "Toad " + toadTierLayerDisplay(l.sub(1)) + " " + formatWhole(player.toad.supertier[3])
-                if (player.toad.tierlayer.eq(9))
+                else if (player.toad.tierlayer.gte(9) && player.toad.tierlayer.lt(9e15))
                     return "Toad " + toadTierLayerDisplay(l) + " " + formatWhole(player.toad.supertier[3].div(Decimal.pow(10, c.times(3).add(c.pow(2)).div(2))).floor()) + "<br>"
                         + "Toad " + toadTierLayerDisplay(l.sub(1)) + " " + formatWhole(player.toad.supertier[3].div(Decimal.pow(10, c_1.times(3).add(c_1.pow(2)).div(2))).floor()) + "<br>"
                         + "Toad " + toadTierLayerDisplay(l.sub(2)) + " " + formatWhole(player.toad.supertier[3].div(Decimal.pow(10, c_2.times(3).add(c_2.pow(2)).div(2))).floor())
-                if (player.toad.tierlayer.gte(9e15))
+                else if (player.toad.tierlayer.gte(9e15))
                     return "Toad " + toadTierLayerDisplay(l)
             },
             display() {
@@ -19347,7 +19347,7 @@ addLayer("coop", {
             currencyDisplayName: "Cleared Courses",
             currencyInternalName: "cc",
             currencyLayer: "achievements",
-            cost: new Decimal("ee1.5e60"),
+            cost: new Decimal("ee5e64"),
             unlocked() { return hasUpgrade(this.layer, this.id - 1) },
         },
         51: {
