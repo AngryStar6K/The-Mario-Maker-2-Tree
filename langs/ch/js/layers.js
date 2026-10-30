@@ -11182,7 +11182,7 @@ addLayer("mario", {
                 let MB2base = new Decimal(0.018)
                 if (hasUpgrade("toad", 11)) MB2base = MB2base.add(upgradeEffect("toad", 11))
                 if (hasUpgrade(this.layer, 42)) MB2base = MB2base.times(1.5)
-                let display = `5级之前，每级提升马力欧推进器1基数+${format(MB2base)}, 等级在5之后效果变为${format(MB2base)}·((x-5)^0.2+10)<br>
+                let display = `5级之前，每级提升马力欧推进器2基数+${format(MB2base)}, 等级在5之后效果变为${format(MB2base)}·((x-5)^0.2+10)<br>
             当前效果: +${format(this.effect())} <br>
             等级: ${formatWhole(player[this.layer].buyables[this.id])}<br>
             价格: ${format(this.cost())} 马力欧通过的关卡数`
