@@ -11116,7 +11116,7 @@ addLayer("mario", {
                 let MB2base = new Decimal(0.018)
                 if (hasUpgrade("toad", 11)) MB2base = MB2base.add(upgradeEffect("toad", 11))
                 if (hasUpgrade(this.layer, 42)) MB2base = MB2base.times(1.5)
-                let display = ` Increase Mario booster 1 base by +${format(MB2base)} per every level before level 5, and ${format(MB2base)}·((x-5)^0.2+10) after level 5.<br>
+                let display = ` Increase Mario booster 2 base by +${format(MB2base)} per every level before level 5, and ${format(MB2base)}·((x-5)^0.2+10) after level 5.<br>
             Effect: +${format(this.effect())} <br>
             Level: ${formatWhole(player[this.layer].buyables[this.id])}<br>
             Cost: ${format(this.cost())} Mario's cleared courses`
